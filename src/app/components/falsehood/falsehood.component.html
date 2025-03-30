@@ -1,0 +1,40 @@
+
+<div class="container" *ngIf="falsehoodService.currentFalsehood">
+
+    <nav class="rs-nav-bar navbar navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#factcheckNavCollapse" aria-controls="factcheckNavCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Common Across the entire app -->
+        <div class="collapse navbar-collapse" id="factcheckNavCollapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><p class="nav-link" (click)="setMode(META)">Details</p></li>
+                <li class="nav-item"><p class="nav-link" (click)="setMode(CONTENT)">Content</p></li>
+                <li class="nav-item"><p class="nav-link" (click)="setMode(META)">Briefs</p></li>
+            </ul>
+        </div>
+    </nav>
+
+    <form *ngIf="mode == META" class="form">
+        <div class="form-group">
+            <label class="form-label">Status: {{ falsehoodService.currentFalsehood.metadata?.status }}</label>
+        </div>
+        <div class="form-group">
+
+            <label>Public Figure</label>
+            <p>{{ falsehoodService.currentFalsehood.fullMetaData?.publicFigure?.name || 'N.A.' }}</p>
+            <div *ngIf="canSubEdit() || canEmpEdit()">
+                <button class="btn btn-primary" (click)="editingPF = true" *ngIf="!editingPF">Edit Public Figure</button>
+                <button class="btn btn-danger" (click)="editingPF = false" *ngIf="editingPF">Edit Public Figure</button>
+                <app-brand-searcher *ngIf="editingPF" (brandInfoSelected)="publicFigure = $event"></app-brand-searcher>
+                <button class="btn btn-light" *ngIf="changedPf()" (click)="updatePublicFigure()">Update Public Figure</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<div *ngIf="!falsehoodService.currentFalsehood">
+    <!--ToDo: handle situation-->
+</div>

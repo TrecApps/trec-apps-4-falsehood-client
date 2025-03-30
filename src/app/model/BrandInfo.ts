@@ -54,3 +54,21 @@ export interface BrandInfo
     defaultLanguage: string;
     brandId: string | undefined;
 }
+
+export class BrandInfoImg {
+    brandInfo: BrandInfo;
+    imgData: string | undefined;
+    constructor(brandInfo: BrandInfo){
+        this.brandInfo = brandInfo;
+    }
+}
+
+export interface ObjectMap {
+    [key: string]: string;
+}
+
+export class ResourceMetadata {
+    profileBase64: string | undefined;
+    profileDesc: string | undefined;
+    metadata: ObjectMap = {};
+}

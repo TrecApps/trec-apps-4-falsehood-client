@@ -1,1 +1,76 @@
-<p>search-falsehood works!</p>
+<div class="container">
+    <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
+        <div class="form-group">
+            <select class="form-select" [(ngModel)]="searchOption">
+                <option *ngFor="let opt of searchOptions | searchOptionFilter:authService.tcUser" [value]="opt">{{ opt.displayStatus }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Public Figure/Institution/Media Outlet</label>
+            <app-brand-searcher [label]="'This can be blank'" (brandInfoSelected)="setBrandInfo($event)"></app-brand-searcher>
+
+            <div class="brand-option"  *ngIf="brandInfo">
+                <div class="brand-img-holder">
+                    <img [src]="brandInfo.imgData || '/assets/icons/none.png'">
+                </div>
+                <div class="brand-name-holder">
+                    <h5 class="brand-name">{{ brandInfo.brandInfo.name }}</h5>
+                    <p>{{ getBrandType(brandInfo.brandInfo) }}</p>
+                </div>
+                <div (click)="setBrandInfo(undefined)">
+                    (X) <!-- ToDo: Style this -->
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="form-check-label">Before</label>
+            <input class="form-check-button" type="checkbox" [(ngModel)]="useBefore">
+            <input class="" type="date" [(ngModel)]="before">
+        </div>
+        <div class="form-group">
+            <label class="form-check-label">After</label>
+            <input class="form-check-button" type="checkbox" [(ngModel)]="useAfter">
+            <input class="" type="date" [(ngModel)]="after">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Max Results Per Page</label>
+            <input class="form-control" type="number" [(ngModel)]="pageSize">
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary" *ngIf="currentFalsehoodList.length == 0" (click)="performSearch()">Search</button>
+            <button class="btn btn-warning" (click)="clearFields()">Clear Fields</button>
+        </div>
+    </form>
+    <div *ngIf="currentFalsehoodList.length">
+        <p>Showing {{ (pageSize * currentPage) + 1}} - {{ pageSize * (currentPage + 1) }} Falsehoods</p>
+        <table>
+            <thead>
+                <th>Submitter</th>
+                <th>Tags</th>
+                <th>Date Made</th>
+                <th>Public Figure</th>
+                <th>Media Outlet/Institution</th>
+                <th>Severity</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let f of currentFalsehoodList" (click)="onSelect(f)">
+                    <td>{{f.authorDisplayName}}</td>
+                    <td>{{f.tags.join(",").substring(0, 100)}}</td>
+                    <td>{{ f.dateMade }}</td>
+                    <td>{{ f.publicFigure?.name || '(unknown)' }}</td>
+                    <td>{{ f.mediaOutlet?.name || f.institution?.name || '(unknown)'}}</td>
+                    <td>{{ f.severity }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <!--ToDo: Create stylized buttons-->
+            <button class="btn btn-primary" *ngIf="currentPage > 0" (click)="onSwitchPage(false)">Previous</button>
+            <p>Page {{ currentPage + 1 }}</p>
+            <button class="btn btn-primary" *ngIf="currentPage < falsehoodCollection.length - 1 || hasMore()" (click)="onSwitchPage(true)">Next</button>
+        </div>
+    </div>
+</div>

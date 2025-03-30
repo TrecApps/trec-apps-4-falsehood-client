@@ -1,1 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+.element-container {
+    border: solid black 1px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.flex-and-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-and-center-top {
+    display: flex;
+    flex-direction: row wrap;
+    justify-content: center;
+}
+
+.element-container-default {
+    background-color: rgb(209, 209, 209);
+}
+
+.element-item-default {
+    background-color: white;
+    color: black;
+}
+
+.element-item-default:hover {
+    transition: border 0.5s;
+    border: 1px solid #303030; /* Bright blue color */
+    /* padding: 10px; */
+    box-shadow: 0 0 10px #f7f7f7; /* Glowing effect */
+}
+
+.element-item-default:focus {
+    border: 3px solid #303030;
+}

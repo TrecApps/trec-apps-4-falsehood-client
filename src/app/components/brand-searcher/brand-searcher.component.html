@@ -1,0 +1,17 @@
+<div class="form-group searcher-group">
+    <label>{{ label }}</label>
+    <input type="text" class="form-control" [(ngModel)]="name" (click)="onInputTextedClicked()" (input)="onInputChange()">
+
+    <div class="option-holder" *ngIf="showOptions">
+        <div class="brand-option" *ngFor="let brand of entries" (click)="onBrandSelected(brand)">
+            <div class="brand-img-holder">
+                <img [src]="brand.imgData || '/assets/icons/none.png'">
+            </div>
+            <div class="brand-name-holder">
+                <h5 class="brand-name">{{ brand.brandInfo.name }}</h5>
+                <p>{{ getBrandType(brand.brandInfo) }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
