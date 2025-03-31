@@ -152,7 +152,7 @@ export class FalsehoodService {
   }
 
 
-  runPatch( field: string, value:string, onUpdated?: Function){
+  runPatch( field: string, value:string | undefined, onUpdated?: Function){
     if(!this.currentFalsehood?.fullMetaData?.id) return;
     this.client.patch<ResponseObj>(`${environment.FALSEHOOD_URL}/Falsehood/${this.currentFalsehood.fullMetaData.id}`, {
       field, value

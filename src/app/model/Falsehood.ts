@@ -52,7 +52,7 @@ export interface FalsehoodRet {
     
     id: string;
 
-    dateMade: Date;
+    dateMade: Date | undefined;
 
     userId: string;
     brandId: string;

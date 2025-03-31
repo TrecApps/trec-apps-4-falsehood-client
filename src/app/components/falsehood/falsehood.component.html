@@ -15,7 +15,7 @@
         </div>
     </nav>
 
-    <form *ngIf="mode == META" class="form">
+    <form *ngIf="mode == META" class="form element-container" [ngClass]="'element-container-' + styleService.style">
         <div class="form-group">
             <label class="form-label">Status: {{ falsehoodService.currentFalsehood.metadata?.status }}</label>
         </div>
@@ -31,6 +31,99 @@
             </div>
 
         </div>
+        <div class="form-group">
+
+            <label>Media Outlet</label>
+            <p>{{ falsehoodService.currentFalsehood.fullMetaData?.mediaOutlet?.name || 'N.A.' }}</p>
+            <div *ngIf="canSubEdit() || canEmpEdit()">
+                <button class="btn btn-primary" (click)="editingMO = true" *ngIf="!editingMO">Edit Media Outlet</button>
+                <button class="btn btn-danger" (click)="editingMO = false" *ngIf="editingMO">Edit Media Outlet</button>
+                <app-brand-searcher *ngIf="editingMO" (brandInfoSelected)="mediaOutlet = $event"></app-brand-searcher>
+                <button class="btn btn-light" *ngIf="changedMo()" (click)="updateMediaOutlet()">Update Media Outlet</button>
+            </div>
+
+        </div>
+        <div class="form-group">
+
+            <label>Institution</label>
+            <p>{{ falsehoodService.currentFalsehood.fullMetaData?.institution?.name || 'N.A.' }}</p>
+            <div *ngIf="canSubEdit() || canEmpEdit()">
+                <button class="btn btn-primary" (click)="editingIN = true" *ngIf="!editingIN">Edit Institution</button>
+                <button class="btn btn-danger" (click)="editingIN = false" *ngIf="editingIN">Edit Institution</button>
+                <app-brand-searcher *ngIf="editingIN" (brandInfoSelected)="institution = $event"></app-brand-searcher>
+                <button class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label>Date Made</label>
+            <p>{{ falsehoodService.currentFalsehood.fullMetaData?.dateMade }}</p>
+            <div *ngIf="canSubEdit()">
+                <button class="btn btn-primary" (click)="editingDate = true" *ngIf="!editingDate">Edit Date</button>
+                <button class="btn btn-danger" (click)="editingDate = false" *ngIf="editingDate">Edit Date</button>
+                <input class="form-check-button" *ngIf="editingDate" [(ngModel)]="useDate">
+                <label class="form-check-label">Use Date</label>
+                <input type="date" *ngIf="editingDate && useDate" [(ngModel)]="date">
+                <button class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Severity</label>
+            <p>{{ falsehoodService.currentFalsehood.fullMetaData?.severity }}</p>
+            
+            <div *ngIf="canSubEdit() || canEmpEdit()">
+                <button class="btn btn-primary" (click)="editingSeverity = true" *ngIf="!editingSeverity">Edit Severity</button>
+                <button class="btn btn-danger" (click)="editingSeverity = false" *ngIf="editingSeverity">Edit Severity</button>
+                <select class="form-select" [(ngModel)]="severity">
+                    <option [value]="severityObjective">Objective</option>
+                    <option [value]="severityOppWithheld">Opposing Evidence Withheld</option>
+                    <option [value]="severitySuppWithheld">Supporting Evidence Withheld</option>
+                    <option [value]="severitySubjective">Double Stadard</option>
+                    <option [value]="severityLogic">Faulty Logic</option>
+                    <option [value]="severityNarrative">Misleading Narrative</option>
+                    <option [value]="severitySlogan">Misleading Title/Slogan</option>
+                </select>
+                <button class="btn btn-light" *ngIf="falsehoodService.currentFalsehood.fullMetaData?.severity !== severity" (click)="updateInstitution()">Update Institution</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Tags</label>
+            <p><span *ngFor="let tag of falsehoodService.currentFalsehood.fullMetaData?.tags"> {{tag }}</span></p>
+            
+            <div *ngIf="canSubEdit()">
+                <button class="btn btn-primary" (click)="editingTags = true" *ngIf="!editingTags">Edit Tags</button>
+                <button class="btn btn-danger" (click)="editingTags = false" *ngIf="editingTags">Edit Tags</button>
+                <lib-tag-input  #tagComp [tags]="falsehoodService.currentFalsehood.fullMetaData?.tags || []"></lib-tag-input>
+                <p class="text-danger" *ngIf="cantUpdateTags.length">Each tag must be found within the contents of the Falsehood. {{cantUpdateTags}} was not found</p>
+                <button class="btn btn-light" (click)="updateTags()">Update Tags</button>
+            </div>
+        </div>
+
+        <div *ngfor="let record of falsehoodService.currentFalsehood.fullMetaData.records" class="element-item" [ngClass]="'element-item-' + styleService.style">
+            <p><b>By: </b>{{ record.displayName }}</p>
+            <p><b>Made: </b>{{ record.date }}</p>
+            <p><b>Event: </b>{{ record.event }}</p>
+            <p><b>Notes: </b>{{ record.comment }}</p>
+        </div>
+    </form>
+
+    <form *ngIf="mode == CONTENT" class="form element-container" [ngClass]="'element-container-' + styleService.style">
+        <h3>Explaination</h3>
+        <div *ngIf="canSubEdit()">
+            <button class="btn btn-primary" (click)="editingContent = true" *ngIf="!editingContent">Edit Tags</button>
+            <button class="btn btn-danger" (click)="editingContent = false" *ngIf="editingContent">Edit Tags</button>
+
+            <lib-markdown-editor #fcMdEditor *ngIf="editingContent" [content]="getContent()"></lib-markdown-editor>
+            <p class="text-danger" *ngIf="cantUpdateTags.length">Each tag must be found within the contents of the Falsehood. {{cantUpdateTags}} was not found</p>
+            <button class="btn btn-light" *ngIf="editingContent" (click)="updateContent()">Update Tags</button>
+        </div>
+        <div *ngIf="!editingContent" class="md-preview-side" [innerHtml]="getContent() | markdown"></div>
+    </form>
+
+    <form *ngIf="mode == BRIEFS" class="form element-container" [ngClass]="'element-container-' + styleService.style">
+        
     </form>
 </div>
 
