@@ -293,4 +293,44 @@ export class FalsehoodComponent {
       }
     })
   }
+
+
+  // Review
+  isReviewing: boolean = false;
+  reviewOptions: string[] = [];
+  reviewOption: string = "";
+  reviewComent: string = "";
+  reviewPoints: number = 0;
+  canReview(): boolean {
+    return this.falsehoodService.canReview();
+  }
+  prepReview(){
+    this.reviewOptions = this.falsehoodService.getReviewOptions()
+    this.isReviewing = this.reviewOptions.length > 0;
+    this.reviewOption = "";
+    this.reviewPoints = 0;
+  }
+
+  submitReview(){
+    this.falsehoodService.submitReview(this.reviewComent, this.reviewOption, this.reviewPoints, () => {
+      this.isReviewing = false;
+      this.reviewOption = "";
+      this.reviewComent = "";
+      this.reviewPoints = 0;
+      this.reviewOptions = [];
+    })
+  }
+
+  // Appeal
+  isAppealing: boolean = false;
+  appealComment: string = "";
+  canAppeal(): boolean {
+    return this.falsehoodService.canAppeal();
+  }
+  submitAppeal(){
+    this.falsehoodService.submitAppeal(this.appealComment, () => {
+      this.appealComment = "";
+      this.isAppealing = false;
+    })
+  }
 }

@@ -15,7 +15,7 @@
     <div class="element-item" [ngClass]="'element-item-' + styleService.style">
         <div *ngIf="!editing" class="md-preview-side" [innerHtml]="getContent() | markdown"></div>
 
-        <lib-markdown-editor #fcMdEditor *ngIf="editing" [content]="getContent()"></lib-markdown-editor>
+        <lib-markdown-editor #editBriefEditor *ngIf="editing" [content]="getContent()"></lib-markdown-editor>
         <button class="btn btn-light" *ngIf="editing" (click)="updateContent()">Update Tags</button>
     </div>
 
