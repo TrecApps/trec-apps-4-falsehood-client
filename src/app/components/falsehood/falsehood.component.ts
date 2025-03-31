@@ -10,10 +10,14 @@ import { ActivatedRoute, NavigationEnd, Router, RouterEvent, RouterLink } from '
 
 import { TagInputComponent, MarkdownEditorComponent } from "@tc/tc-ngx-general";
 import { StylesService } from '../../services/styles.service';
+import { BriefComponent } from '../brief/brief.component';
+import { Brief, BriefPurpose } from '../../model/Brief';
+import { FalsehoodStage } from '../../model/Factcheck';
+import ResponseObj from '../../model/ResponseObj';
 
 @Component({
   selector: 'app-falsehood',
-  imports: [CommonModule, FormsModule, BrandSearcherComponent, TagInputComponent, MarkdownPipe, MarkdownEditorComponent],
+  imports: [CommonModule, FormsModule, BrandSearcherComponent, TagInputComponent, MarkdownPipe, MarkdownEditorComponent, BriefComponent],
   templateUrl: './falsehood.component.html',
   styleUrl: './falsehood.component.css'
 })
@@ -27,6 +31,9 @@ export class FalsehoodComponent {
 
   @ViewChild("fcMdEditor")
   fcMdEditor: MarkdownEditorComponent = new MarkdownEditorComponent();
+
+  @ViewChild("briefEditor")
+  briefEditor: MarkdownEditorComponent = new MarkdownEditorComponent();
 
   constructor(falsehoodService: FalsehoodService, authService: AuthService, router: Router,private route: ActivatedRoute, styleService: StylesService){
     this.falsehoodService = falsehoodService;
@@ -238,6 +245,52 @@ export class FalsehoodComponent {
         });
       }
       this.editingContent = false;
+    })
+  }
+
+
+  isAccepted(): boolean {
+    return FalsehoodStage.ACCEPTED == this.falsehoodService.currentFalsehood?.fullMetaData?.status;
+  }
+
+  addingBrief: boolean = false;
+  canAddbrief(): boolean {
+    if(!this.authService.hasActiveTokens() || !this.authService.tcUser?.credibilityRating) return false;
+
+    // ToDo: handle additional authorization constraints
+    return this.authService.tcUser.credibilityRating >= 55;
+  }
+  briefContents: string = "";
+  purposeAffirm = BriefPurpose.AFFIRM;
+  purposeOppose = BriefPurpose.OPPOSE;
+  purposeSuggest = BriefPurpose.SUGGEST;
+  purpose: BriefPurpose = this.purposeAffirm;
+
+  submitBrief() {
+    let id = this.falsehoodService.currentFalsehood?.fullMetaData?.id;
+    if(!id) return;
+    let content = this.briefEditor.getContent().toString();
+    this.falsehoodService.submitBrief(id, this.purpose, content).subscribe({
+      next: (value: ResponseObj) => {
+        let brief: Brief = {
+          id: value.id || '',
+          falsehoodId: id,
+          userId: '',
+          brandId: '',
+          version: 0,
+          displayName: this.authService.getCurrentDisplayName()?.toString() || "",
+          purpose: this.purpose,
+          created: new Date(),
+          content: [{
+            contents: content,
+            version: 1,
+            made: new Date()
+          }]
+        };
+
+        this.falsehoodService.currentFalsehood?.briefs.push(brief);
+        this.addingBrief = false;
+      }
     })
   }
 }

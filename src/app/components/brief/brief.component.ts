@@ -1,11 +1,75 @@
-import { Component } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { Brief, BriefPurpose } from '../../model/Brief';
+import { AuthService, MarkdownEditorComponent, MarkdownPipe } from '@tc/tc-ngx-general';
+import { CommonModule } from '@angular/common';
+import { StylesService } from '../../services/styles.service';
+import { FalsehoodService } from '../../services/falsehood.service';
+import ResponseObj from '../../model/ResponseObj';
 
 @Component({
   selector: 'app-brief',
-  imports: [],
+  imports: [CommonModule, MarkdownPipe, MarkdownEditorComponent],
   templateUrl: './brief.component.html',
   styleUrl: './brief.component.css'
 })
 export class BriefComponent {
+
+  @Input()
+  brief: Brief = {
+    id: "",
+    falsehoodId: '',
+    userId: '',
+    brandId: '',
+    version: 0,
+    displayName: '',
+    purpose: BriefPurpose.AFFIRM,
+    created: new Date(),
+    content: []
+  }
+
+  @Input()
+  falsehoodId: string = "";
+
+  @ViewChild('editBriefEditor')
+  editBriefEditor: MarkdownEditorComponent = new MarkdownEditorComponent();
+
+  styleService: StylesService;
+
+  constructor(private authService: AuthService,styleService: StylesService, private falsehoodService: FalsehoodService){
+    this.styleService = styleService;
+  }
+
+  canEdit(): boolean {
+    if(!this.authService.hasActiveTokens()) return false;
+
+    let user = this.authService.tcUser;
+    if(!user) return false;
+
+    return this.brief.userId == user.id && user.authRoles.includes("FALSEHOOD_SUBSCRIPTION");
+  }
+
+  editing: boolean = false;
+
+  getContent(): string {
+    return this.brief.content.length > 0 ? (
+      this.brief.content[this.brief.content.length - 1].contents
+    ) : "";
+  }
+
+
+  updateContent( ) {
+    
+    this.falsehoodService.editBrief(this.falsehoodId, this.brief.id, this.editBriefEditor.getContent().toString()).subscribe({
+      next: (value: ResponseObj) => {
+        this.brief.content.push({
+          contents: this.editBriefEditor.getContent().toString(),
+          made: new Date(),
+          version: this.brief.content.length + 1
+        });
+      }
+    })
+
+    this.editing = false;
+  }
 
 }

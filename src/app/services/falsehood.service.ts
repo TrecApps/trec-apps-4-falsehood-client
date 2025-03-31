@@ -5,6 +5,7 @@ import { FalsehoodFull, FalsehoodRet } from '../model/Falsehood';
 import { Observable } from 'rxjs';
 import { environment } from '../environment/environment';
 import ResponseObj from '../model/ResponseObj';
+import { BriefPurpose } from '../model/Brief';
 
 @Injectable({
   providedIn: 'root'
@@ -165,5 +166,16 @@ export class FalsehoodService {
     });
   }
 
+  // Briefs
+  submitBrief(falsehoodId: string, type: BriefPurpose, content: string): Observable<ResponseObj> {
+    return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Brief/${falsehoodId}`, {
+      type, content
+    },{headers: this.authService.getHttpHeaders(true, true)});
+  }
 
+  editBrief(falsehoodId: string, id: string, content:string): Observable<ResponseObj> {
+     return this.client.put<ResponseObj>(`${environment.FALSEHOOD_URL}/Brief/${falsehoodId}`, content, {
+      headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain"),
+     })
+  }
 }

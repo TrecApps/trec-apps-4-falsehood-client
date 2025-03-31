@@ -122,8 +122,24 @@
         <div *ngIf="!editingContent" class="md-preview-side" [innerHtml]="getContent() | markdown"></div>
     </form>
 
-    <form *ngIf="mode == BRIEFS" class="form element-container" [ngClass]="'element-container-' + styleService.style">
-        
+    <form *ngIf="mode == BRIEFS">
+
+        <button class="btn btn-primary" *ngIf="canAddbrief() && !addingBrief && isAccepted()" (click)="addingBrief = true">Submit Brief</button>
+        <div *ngIf="addingBrief">
+            <select class="form-select" [(ngModel)]="purpose">
+                <option [value]="purposeAffirm">Affirm (you support Confirmation)</option>
+                <option [value]="purposeOppose">Oppose (you oppose Confirmation)</option>
+                <option [value]="purposeSuggest">Suggest</option>
+            </select>
+
+            <lib-markdown-editor #briefEditor [content]="getContent()"></lib-markdown-editor>
+            <button class="btn btn-danger" (click)="addingBrief = false">Cancel</button>
+            <button class="btn btn-primary" (click)="submitBrief()">Submit</button>
+        </div>
+
+        <hr>
+
+        <app-brief *ngFor="let brief of falsehoodService.currentFalsehood.briefs" [brief]="brief" [falsehoodId]="falsehoodService.currentFalsehood.fullMetaData?.id || 'null'"></app-brief>
     </form>
 </div>
 

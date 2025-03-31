@@ -1,12 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-
-.element-container {
-    border: solid black 1px;
-    padding: 5px;
-    border-radius: 5px;
-}
-
 .flex-and-center {
     display: flex;
     justify-content: center;
@@ -17,6 +10,12 @@
     display: flex;
     flex-direction: row wrap;
     justify-content: center;
+}
+
+.element-container {
+    border: solid black 1px;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .element-container-default {

@@ -1,1 +1,22 @@
-<p>brief works!</p>
+<div class="element-container"  [ngClass]="'element-container-' + styleService.style">
+
+    <div class="element-item" style="display: flex;" [ngClass]="'element-item-' + styleService.style">
+        <p><b>Submitter: </b>{{ brief.displayName }}</p>
+        <button class="btn btn-submit" *ngIf="canEdit() && !editing" (click)="editing = true">Edit</button>
+    </div>
+
+    <div class="element-item" [ngClass]="'element-item-' + styleService.style">
+        <p><b>Type: </b>{{ brief.purpose }}</p>
+    </div>
+    <div class="element-item" [ngClass]="'element-item-' + styleService.style">
+        <p><b>Added: </b>{{ brief.created }}</p>
+    </div>
+
+    <div class="element-item" [ngClass]="'element-item-' + styleService.style">
+        <div *ngIf="!editing" class="md-preview-side" [innerHtml]="getContent() | markdown"></div>
+
+        <lib-markdown-editor #fcMdEditor *ngIf="editing" [content]="getContent()"></lib-markdown-editor>
+        <button class="btn btn-light" *ngIf="editing" (click)="updateContent()">Update Tags</button>
+    </div>
+
+</div>
