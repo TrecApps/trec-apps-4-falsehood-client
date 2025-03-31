@@ -1,0 +1,12 @@
+<div class="container">
+
+
+    <h1>Welcome to the TrecApps Falsehood Tracking Service</h1>
+    
+    <div *ngFor="let guideline of guidelines">
+        <h2>{{ guideline.label }}</h2>
+        <p *ngFor="let detail of guideline.content">{{ detail }}</p>
+    </div>
+    
+    
+    </div>

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { AuthService, BackendService } from '@tc/tc-ngx-general';
+import { environment } from './environment/environment';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +11,18 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'trecapps-falsehoods';
+
+  authService: AuthService;
+  router: Router;
+
+  constructor(authService: AuthService, private backEndService: BackendService, router: Router) {
+    this.authService = authService;
+    this.router = router;
+
+
+    this.backEndService.appendUrl("UserService", environment.USER_SERVICE_URL);
+    this.backEndService.setAppName(environment.app_name);
+    this.authService.setLoginSuccessRoute("Welcome");
+    this.authService.attemptRefresh(undefined);
+  }
 }
