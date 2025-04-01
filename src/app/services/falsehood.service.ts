@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from '@tc/tc-ngx-general';
-import { FalsehoodFull, FalsehoodRet } from '../model/Falsehood';
+import { FalsehoodFull, FalsehoodRet, FalsehoodSubmission } from '../model/Falsehood';
 import { Observable } from 'rxjs';
 import { environment } from '../environment/environment';
 import ResponseObj from '../model/ResponseObj';
@@ -333,5 +333,16 @@ export class FalsehoodService {
         if(onAppealed) onAppealed();
       }
     })
+  }
+
+
+  submitFalsehood(newFalsehood: FalsehoodSubmission, doSubmit: boolean): Observable<ResponseObj>{
+    
+    let params = new HttpParams().append("submit", doSubmit);
+    
+    return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Falsehood`, newFalsehood, {
+      headers: this.authService.getHttpHeaders(true, true),
+      params
+    });
   }
 }

@@ -1,0 +1,95 @@
+<div class="container" *ngIf="newFalsehood">
+
+    <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
+        <div class="form-group">
+            <label class="form-label">Severity</label>
+            <select class="form-select" [(ngModel)]="newFalsehood.severity">
+                <option [value]="severityObjective">Objective</option>
+                <option [value]="severityOppWithheld">Opposing Evidence Withheld</option>
+                <option [value]="severitySuppWithheld">Supporting Evidence Withheld</option>
+                <option [value]="severitySubjective">Double Stadard</option>
+                <option [value]="severityLogic">Faulty Logic</option>
+                <option [value]="severityNarrative">Misleading Narrative</option>
+                <option [value]="severitySlogan">Misleading Title/Slogan</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Public Figure<span *ngIf="!publicFigure">: Not Selected</span></label>
+            <div class="brand-option"  *ngIf="publicFigure">
+                <div class="brand-img-holder">
+                    <img [src]="publicFigure.imgData || '/assets/icons/none.png'">
+                </div>
+                <div class="brand-name-holder">
+                    <h5 class="brand-name">{{ publicFigure.brandInfo.name }}</h5>
+                </div>
+                <div (click)="publicFigure = (undefined)">
+                    (X) <!-- ToDo: Style this -->
+                </div>
+            </div>
+
+            <app-brand-searcher (brandInfoSelected)="publicFigure = $event"></app-brand-searcher>
+
+        </div>
+        <div class="form-group">
+            <label class="form-label">Media Outlet<span *ngIf="!mediaOutlet">: Not Selected</span></label>
+            <div class="brand-option"  *ngIf="mediaOutlet">
+                <div class="brand-img-holder">
+                    <img [src]="mediaOutlet.imgData || '/assets/icons/none.png'">
+                </div>
+                <div class="brand-name-holder">
+                    <h5 class="brand-name">{{ mediaOutlet.brandInfo.name }}</h5>
+                </div>
+                <div (click)="mediaOutlet = (undefined)">
+                    (X) <!-- ToDo: Style this -->
+                </div>
+            </div>
+            <app-brand-searcher (brandInfoSelected)="mediaOutlet = $event"></app-brand-searcher>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Institution<span *ngIf="!institution">: Not Selected</span></label>
+            <div class="brand-option"  *ngIf="institution">
+                <div class="brand-img-holder">
+                    <img [src]="institution.imgData || '/assets/icons/none.png'">
+                </div>
+                <div class="brand-name-holder">
+                    <h5 class="brand-name">{{ institution.brandInfo.name }}</h5>
+                </div>
+                <div (click)="institution = (undefined)">
+                    (X) <!-- ToDo: Style this -->
+                </div>
+            </div>
+            <app-brand-searcher (brandInfoSelected)="institution = $event"></app-brand-searcher>
+        </div>
+
+
+        <div class="form-group">
+            <label class="form-label">Date Made</label>
+            <input class="form-control" [(ngModel)]="newFalsehood.dateMade">
+            <button class="btn btn-danger" (click)="newFalsehood.dateMade = undefined">Remove Date</button>
+            <p *ngIf="newFalsehood.severity != severitySlogan">The severity is not set to Title/Slogan - a date must be provided</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Tags</label>
+            <p *ngIf="tag.length" class="text-danger">The tag {{ tag }} is not present in your article!</p>
+            <lib-tag-input #tagComp [tags]="newFalsehood.tags"></lib-tag-input>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Content</label>
+            <lib-markdown-editor #fcMdEditor ></lib-markdown-editor>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" [(ngModel)]="newFalsehood.notes"></textarea>
+        </div>
+
+        <button class="btn btn-primary">Submit</button>
+
+    </form>
+</div>
+
+<div >
+
+</div>

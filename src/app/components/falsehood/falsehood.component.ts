@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FalsehoodService } from '../../services/falsehood.service';
 import { AuthService, MarkdownPipe } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { BriefComponent } from '../brief/brief.component';
 import { Brief, BriefPurpose } from '../../model/Brief';
 import { FalsehoodStage } from '../../model/Factcheck';
 import ResponseObj from '../../model/ResponseObj';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-falsehood',
@@ -21,10 +22,12 @@ import ResponseObj from '../../model/ResponseObj';
   templateUrl: './falsehood.component.html',
   styleUrl: './falsehood.component.css'
 })
-export class FalsehoodComponent {
+export class FalsehoodComponent implements OnDestroy{
   falsehoodService: FalsehoodService;
   authService: AuthService;
   styleService: StylesService;
+
+  routerSubscription: Subscription;
 
   @ViewChild("tagComp")
   tagComp: TagInputComponent = new TagInputComponent();
@@ -41,7 +44,7 @@ export class FalsehoodComponent {
     this.styleService = styleService;
 
 
-    router.events.subscribe((event) => {
+    this.routerSubscription = router.events.subscribe((event) => {
       if(event instanceof NavigationEnd){
         let endEvent : NavigationEnd = event;
 
@@ -61,6 +64,9 @@ export class FalsehoodComponent {
         }
       }
     })
+  }
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
   }
 
   META = 1;
