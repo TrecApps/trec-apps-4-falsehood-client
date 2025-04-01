@@ -15,8 +15,33 @@
         </div>
 
         <button class="btn btn-primary" (click)="performSearch()">Search</button>
-
-
-
     </form>
+
+    <div *ngIf="currentFactcheckList.length">
+        <p>Showing {{ (pageSize * currentPage) + 1}} - {{ pageSize * (currentPage + 1) }} Factchecks</p>
+        <table>
+            <thead>
+                <th>Submitter</th>
+                <th>Title</th>
+                <th>Tags</th>
+                <th>Status</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let f of currentFactcheckList">
+                    <td>{{ f.authorDisplayName }}</td>
+                    <td>{{ f.name }}</td>
+                    <td>{{ f.tags }} </td>
+                    <td>{{ f.status }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <!--ToDo: Create stylized buttons-->
+            <button class="btn btn-primary" *ngIf="currentPage > 0" (click)="onSwitchPage(false)">Previous</button>
+            <p>Page {{ currentPage + 1 }}</p>
+            <button class="btn btn-primary" *ngIf="currentPage < factcheckContainer.length - 1 || hasMore()" (click)="onSwitchPage(true)">Next</button>
+        </div>
+    </div>
+
+
 </div>
