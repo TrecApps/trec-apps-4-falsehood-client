@@ -1,0 +1,22 @@
+<div class="container">
+    <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
+        <div class="form-group">
+            <select class="form-select" *ngIf="isAuthenticated" [(ngModel)]="mode">
+                <option value="query">Query</option>
+                <option value="owned">Your Factchecks</option>
+                <option value="submitted">Submitted Factchecks</option>
+                <option value="appealed">Appealed Factchecks</option>
+            </select>
+        </div>
+
+        <div *ngIf="mode == 'query'" class="form-group">
+            <label class="form-label">Query</label>
+            <input class="form-control" [(ngModel)]="query">
+        </div>
+
+        <button class="btn btn-primary" (click)="performSearch()">Search</button>
+
+
+
+    </form>
+</div>
