@@ -61,7 +61,23 @@ export class FactcheckService {
     });
   }
 
-  
+  submit(id:string): Observable<ResponseObj> {
+    return this.client.put<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/submit/${id}`, null, {
+      headers: this.authService.getHttpHeaders(false, false)
+    })
+  }
+
+  reviewFactcheck(id:string, comment:string, action: string): Observable<ResponseObj> {
+    return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/review/${action}/${id}`, comment, {
+      headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain")
+    })
+  }
+
+  appealFactcheck(id: string, comment: string): Observable<ResponseObj> {
+    return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/appeal/${id}`, comment, {
+      headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain")
+    })
+  }
 
   
 }

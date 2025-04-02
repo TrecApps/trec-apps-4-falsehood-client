@@ -27,6 +27,8 @@
     <form *ngIf="!submission && factcheckService.currentFactcheck && factcheckService.currentContents" class="container element-container" [ngClass]="'element-container-' + styleService.style">
     
         <button *ngIf="canEdit()" class="btn btn-primary" (click)="isEditing = !isEditing">{{ isEditing ? 'Stop Editing' : 'Edit'}}</button>
+        <button *ngIf="canReview()" class="btn btn-primary" (click)="isReviewing = !isReviewing">{{ isReviewing ? 'Stop Reviewing' : 'Review'}}</button>
+        <button *ngIf="canAppeal()" class="btn btn-primary" (click)="isAppealing = !isAppealing">{{ isAppealing ? 'Stop Appealing' : 'Appeal'}}</button>
 
         <div class="form-group">
             <label class="form-label">Title</label>
@@ -55,6 +57,37 @@
         </div>
     
     </form>
+
+    <div *ngIf="factcheckService.currentFactcheck && isReviewing" class="review-panel">
+        <form class="form">
+            <div class="form-group">
+                <div *ngFor="let act of reviewMode" class="form-check">
+                    <input class="form-check-input" type="radio" [(ngModel)]="reviewMode" name="actionSelection" [id]="'actSelect'+ act">
+                    <label class="form-check-label" [for]="'actSelect'+ act">
+                      {{act}}
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Comment</label>
+                <textarea [(ngModel)]="reviewComment" class="form-control"></textarea>
+            </div>
+            <button class="btn btn-primary" (click)="submitReview()" *ngIf="reviewMode.length > 0 && reviewComment.trim().length > 0">Post Review</button>
+            <button class="btn btn-danger" (click)="isReviewing = false">Cancel</button>
+        </form>
+    </div>
+    
+    <div *ngIf="factcheckService.currentFactcheck && isAppealing" class="review-panel">
+        <form class="form">
+            <div class="form-group">
+                <label>Comment</label>
+                <textarea [(ngModel)]="appealComment" class="form-control"></textarea>
+            </div>
+    
+            <button class="btn btn-primary" (click)="submitAppeal()" *ngIf="appealComment.trim().length > 0">Post Appeal</button>
+            <button class="btn btn-danger" (click)="isAppealing = false">Cancel</button>
+        </form>
+    </div>
 
 
 

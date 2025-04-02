@@ -148,6 +148,60 @@ export class FactcheckComponent {
     return user.authRoles.includes("FALSEHOOD_EMPLOYEE") && (status == FalsehoodStage.SUBMITTED || status == FalsehoodStage.R_APPEALED);
   }
 
+  reviewComment: string = "";
+  reviewMode: string = "";
+  reviewSubmitted: boolean = false;
+  postReview(){
+    if(!this.factcheckService.currentFactcheck || this.reviewSubmitted) return;
+
+    this.reviewSubmitted = true;
+
+    this.factcheckService.reviewFactcheck(this.factcheckService.currentFactcheck.id, this.reviewComment, this.reviewMode).subscribe({
+      next: (value: ResponseObj) => {
+        this.reviewSubmitted = false;
+        this.isReviewing = false;
+        this.reviewComment = "";
+        this.reviewMode = "";
+      },
+      error: ()=> {
+        this.reviewSubmitted = false;
+      }
+    })
+  }
+
+
+
+  isAppealing: boolean = false;
+  canAppeal():boolean {
+    let factcheck = this.factcheckService.currentFactcheck;
+    if(!factcheck) return false;
+
+    if(factcheck.status != FalsehoodStage.REJECTED && factcheck.status != FalsehoodStage.R_APPEALED) return false;
+
+    if(factcheck.status == FalsehoodStage.REJECTED)
+      return factcheck.userId == this.authService.getCurrentUserId();
+
+    let user = this.authService.tcUser;
+    return user != undefined && (user.authRoles.includes("FALSEHOOD_EMPLOYEE") || user.authRoles.includes("FALSEHOOD_JUROR"));
+  }
+  appealComment: string = "";
+  appealSubmitted: boolean = false;
+  postAppeal(){
+    if(!this.factcheckService.currentFactcheck || this.appealSubmitted) return;
+
+    this.appealSubmitted = true;
+
+    this.factcheckService.appealFactcheck(this.factcheckService.currentFactcheck.id, this.reviewComment).subscribe({
+      next: (value: ResponseObj) => {
+        this.appealSubmitted = false;
+        this.isAppealing = false;
+        this.appealComment = "";
+      },
+      error: ()=> {
+        this.appealSubmitted = false;
+      }
+    })
+  }
 
 
 }
