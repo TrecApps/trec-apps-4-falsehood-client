@@ -72,7 +72,7 @@
                 <label>Comment</label>
                 <textarea [(ngModel)]="reviewComment" class="form-control"></textarea>
             </div>
-            <button class="btn btn-primary" (click)="submitReview()" *ngIf="reviewMode.length > 0 && reviewComment.trim().length > 0">Post Review</button>
+            <button class="btn btn-primary" (click)="postReview()" *ngIf="reviewMode.length > 0 && reviewComment.trim().length > 0">Post Review</button>
             <button class="btn btn-danger" (click)="isReviewing = false">Cancel</button>
         </form>
     </div>
@@ -84,7 +84,7 @@
                 <textarea [(ngModel)]="appealComment" class="form-control"></textarea>
             </div>
     
-            <button class="btn btn-primary" (click)="submitAppeal()" *ngIf="appealComment.trim().length > 0">Post Appeal</button>
+            <button class="btn btn-primary" (click)="postAppeal()" *ngIf="appealComment.trim().length > 0">Post Appeal</button>
             <button class="btn btn-danger" (click)="isAppealing = false">Cancel</button>
         </form>
     </div>

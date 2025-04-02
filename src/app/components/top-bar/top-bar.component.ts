@@ -1,11 +1,11 @@
-import { Component, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@tc/tc-ngx-general';
-import { EventEmitter } from 'stream';
 
 @Component({
   selector: 'app-top-bar',
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './top-bar.component.html',
   styleUrl: './top-bar.component.css'
 })
@@ -21,6 +21,6 @@ export class TopBarComponent {
   }
 
   preData() {
-    this.dataEmitter.emit("");
+    this.dataEmitter.emit();
   }
 }
