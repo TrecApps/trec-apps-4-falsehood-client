@@ -12,10 +12,6 @@ import { Observable } from 'rxjs';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 
 
-
-
-
-
 @Component({
   selector: 'app-search-falsehood',
   imports: [CommonModule, FormsModule, BrandSearcherComponent, SearchOptionFilterPipe, TopBarComponent],

@@ -20,7 +20,7 @@ export class TopBarComponent {
     this.authService = authService;
   }
 
-  preData() {
+  prepData() {
     this.dataEmitter.emit();
   }
 }
