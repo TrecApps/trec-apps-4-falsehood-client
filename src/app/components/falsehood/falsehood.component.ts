@@ -15,14 +15,21 @@ import { Brief, BriefPurpose } from '../../model/Brief';
 import { FalsehoodStage } from '../../model/Factcheck';
 import ResponseObj from '../../model/ResponseObj';
 import { Subscription } from 'rxjs';
+import { TopBarComponent } from '../top-bar/top-bar.component';
 
 @Component({
   selector: 'app-falsehood',
-  imports: [CommonModule, FormsModule, BrandSearcherComponent, TagInputComponent, MarkdownPipe, MarkdownEditorComponent, BriefComponent],
+  imports: [CommonModule, FormsModule, BrandSearcherComponent, TagInputComponent, MarkdownPipe, MarkdownEditorComponent, BriefComponent, TopBarComponent],
   templateUrl: './falsehood.component.html',
   styleUrl: './falsehood.component.css'
 })
 export class FalsehoodComponent implements OnDestroy{
+
+  prepData(){
+
+  }
+
+
   falsehoodService: FalsehoodService;
   authService: AuthService;
   styleService: StylesService;

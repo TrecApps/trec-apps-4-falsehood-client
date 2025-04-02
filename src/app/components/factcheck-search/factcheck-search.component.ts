@@ -8,14 +8,19 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Factcheck } from '../../model/Factcheck';
 import { FactcheckService } from '../../services/factcheck.service';
 import ResponseObj from '../../model/ResponseObj';
+import { TopBarComponent } from '../top-bar/top-bar.component';
 
 @Component({
   selector: 'app-factcheck-search',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TopBarComponent],
   templateUrl: './factcheck-search.component.html',
   styleUrl: './factcheck-search.component.css'
 })
 export class FactcheckSearchComponent implements OnDestroy{
+
+  prepData(){
+    
+  }
 
   styleService: StylesService;
   authService: AuthService;

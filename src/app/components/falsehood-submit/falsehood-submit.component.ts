@@ -10,10 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.component';
 import { FalsehoodService } from '../../services/falsehood.service';
 import ResponseObj from '../../model/ResponseObj';
+import { TopBarComponent } from '../top-bar/top-bar.component';
 
 @Component({
   selector: 'app-falsehood-submit',
-  imports: [CommonModule, FormsModule, TagInputComponent, MarkdownEditorComponent, BrandSearcherComponent],
+  imports: [CommonModule, FormsModule, TagInputComponent, MarkdownEditorComponent, BrandSearcherComponent, TopBarComponent],
   templateUrl: './falsehood-submit.component.html',
   styleUrl: './falsehood-submit.component.css'
 })
@@ -131,6 +132,10 @@ export class FalsehoodSubmitComponent implements OnDestroy {
       }
     })
 
+    
+  }
+
+  prepData(){
     
   }
 

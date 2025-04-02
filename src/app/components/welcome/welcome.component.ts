@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AuthService } from '@tc/tc-ngx-general';
 import { environment } from '../../environment/environment';
+import { TopBarComponent } from '../top-bar/top-bar.component';
 
 interface GuidelineEntry{
   label: string;
@@ -11,7 +12,7 @@ interface GuidelineEntry{
 
 @Component({
   selector: 'app-welcome',
-  imports: [CommonModule],
+  imports: [CommonModule, TopBarComponent],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.css'
 })

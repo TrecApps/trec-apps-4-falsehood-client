@@ -9,6 +9,7 @@ import { AuthService } from '@tc/tc-ngx-general';
 import { SearchOptionFilterPipe, SearchStatusOption } from '../../pipes/search-option-filter.pipe';
 import { FalsehoodRet } from '../../model/Falsehood';
 import { Observable } from 'rxjs';
+import { TopBarComponent } from '../top-bar/top-bar.component';
 
 
 
@@ -17,11 +18,16 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search-falsehood',
-  imports: [CommonModule, FormsModule, BrandSearcherComponent, SearchOptionFilterPipe],
+  imports: [CommonModule, FormsModule, BrandSearcherComponent, SearchOptionFilterPipe, TopBarComponent],
   templateUrl: './search-falsehood.component.html',
   styleUrl: './search-falsehood.component.css'
 })
 export class SearchFalsehoodComponent {
+
+
+  prepData(){
+
+  }
 
   falsehoodService: FalsehoodService;
 
