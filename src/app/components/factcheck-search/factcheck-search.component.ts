@@ -58,6 +58,9 @@ export class FactcheckSearchComponent implements OnDestroy{
     this.factcheckService.getFactcheck(factcheck.id).subscribe({
       next: (value: ResponseObj) => {
         // ToDo: Navigate to Factcheck
+        this.factcheckService.currentFactcheck = factcheck;
+        this.factcheckService.currentContents = value.message;
+        
       }
     })
   }

@@ -19,7 +19,7 @@ export interface Factcheck {
 
     name: string;
     userId: string;
-    brandId: string;
+    brandId: string | undefined;
     authorDisplayName: string;
 
     created: Date;
@@ -27,5 +27,11 @@ export interface Factcheck {
 
     status: FalsehoodStage;
     records: Record[];
+    tags: string[];
+}
+
+export interface FactcheckSubmission {
+    content: string;
+    title: string;
     tags: string[];
 }

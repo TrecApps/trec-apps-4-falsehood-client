@@ -4,12 +4,16 @@ import { AuthService } from '@tc/tc-ngx-general';
 import ResponseObj from '../model/ResponseObj';
 import { Observable } from 'rxjs';
 import { environment } from '../environment/environment';
-import { Factcheck } from '../model/Factcheck';
+import { Factcheck, FactcheckSubmission } from '../model/Factcheck';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FactcheckService {
+
+  currentFactcheck: Factcheck | undefined;
+  currentContents: string = "";
+
 
   constructor(private authService: AuthService, private client: HttpClient){
 
@@ -41,4 +45,23 @@ export class FactcheckService {
       params
     });
   }
+
+
+  // Write methods
+  postFactcheck(submission: FactcheckSubmission, doSubmit: boolean): Observable<ResponseObj> {
+    let params = new HttpParams().append("submit", doSubmit);
+    return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck`, submission, {
+      headers: this.authService.getHttpHeaders(true, true), params
+    });
+  }
+
+  patchFactcheck(field: string, value: string, id: string): Observable<ResponseObj> {
+    return this.client.patch<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/${id}`, {field, value}, {
+      headers: this.authService.getHttpHeaders(true, true)
+    });
+  }
+
+  
+
+  
 }

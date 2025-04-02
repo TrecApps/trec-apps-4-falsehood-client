@@ -1,0 +1,61 @@
+
+<div class="container">
+
+    <form *ngIf="submission" class="container element-container" [ngClass]="'element-container-' + styleService.style">
+
+        <div class="form-group">
+            <label class="form-label">Title</label>
+            <input class="form-control" type="text" [(ngModel)]="submission.title">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Article</label>
+            <lib-markdown-editor #subMarkdownEditor [content]="submission.content"></lib-markdown-editor>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Tags</label>
+            <lib-tag-input #subTagEditor [tags]="submission.tags"></lib-tag-input>
+        </div>
+
+        <button class="btn btn-primary" (click)="postFactcheck(true)">Submit</button>
+        <button class="btn btn-black" (click)="postFactcheck(false)">Save</button>
+
+    </form>
+
+    
+    <form *ngIf="!submission && factcheckService.currentFactcheck && factcheckService.currentContents" class="container element-container" [ngClass]="'element-container-' + styleService.style">
+    
+        <button *ngIf="canEdit()" class="btn btn-primary" (click)="isEditing = !isEditing">{{ isEditing ? 'Stop Editing' : 'Edit'}}</button>
+
+        <div class="form-group">
+            <label class="form-label">Title</label>
+            <input [disabled]="!isEditing" class="form-control" [(ngModel)]="factcheckService.currentFactcheck.name" (change)="titleChanged = true">
+            <button class="btn btn-warning" *ngIf="isEditing || titleChanged" (click)="patchFactcheck('title')">Update Title</button>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Article</label>
+            <div *ngIf="!isEditing" class="md-preview-side" [innerHtml]="factcheckService.currentContents| markdown"></div>
+            <div *ngIf="isEditing" >
+                <lib-markdown-editor #editMardownEditor [content]="factcheckService.currentContents"></lib-markdown-editor>
+                <button class="btn btn-warning" (click)="patchFactcheck('content')" >Update Article</button>
+            </div>
+            
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Tags</label>
+            <p *ngIf="!isEditing"><span *ngFor="let tag of factcheckService.currentFactcheck.tags"> {{tag }}</span></p>
+            <div *ngIf="isEditing">
+                <lib-tag-input #editTagEditor [tags]="factcheckService.currentFactcheck.tags"></lib-tag-input>
+                <p class="text-danger" *ngIf="tag.length">Each tag must be found within the contents of the Falsehood. {{tag}} was not found</p>
+                <button class="btn btn-warning"  (click)="patchFactcheck('tags')">Update Tags</button>
+            </div>
+        </div>
+    
+    </form>
+
+
+
+</div>
