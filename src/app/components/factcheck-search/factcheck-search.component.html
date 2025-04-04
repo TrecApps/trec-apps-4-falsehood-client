@@ -2,7 +2,7 @@
 <div class="container">
     <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
         <div class="form-group">
-            <select class="form-select" *ngIf="isAuthenticated" [(ngModel)]="mode">
+            <select class="form-select" *ngIf="isAuthenticated" [(ngModel)]="mode" name="factcheckMode">
                 <option value="query">Query</option>
                 <option value="owned">Your Factchecks</option>
                 <option value="submitted">Submitted Factchecks</option>
@@ -12,16 +12,16 @@
 
         <div *ngIf="mode == 'query'" class="form-group">
             <label class="form-label">Query</label>
-            <input class="form-control" [(ngModel)]="query">
+            <input class="form-control" [(ngModel)]="query" name="factcheckQuery">
         </div>
 
         <button class="btn btn-primary" (click)="performSearch()">Search</button>
     </form>
 
-    <div *ngIf="currentFactcheckList.length">
+    <div *ngIf="currentFactcheckList.length" class="search-container">
         <p>Showing {{ (pageSize * currentPage) + 1}} - {{ pageSize * (currentPage + 1) }} Factchecks</p>
-        <table>
-            <thead>
+        <table class="table table-striped table-hover">
+            <thead class="tc-header-row">
                 <th>Submitter</th>
                 <th>Title</th>
                 <th>Tags</th>
@@ -36,11 +36,17 @@
                 </tr>
             </tbody>
         </table>
-        <div>
+        <div style="display: flex;gap: 5px;">
             <!--ToDo: Create stylized buttons-->
-            <button class="btn btn-primary" *ngIf="currentPage > 0" (click)="onSwitchPage(false)">Previous</button>
+            <button class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)">
+                <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
+                Previous
+            </button>
             <p>Page {{ currentPage + 1 }}</p>
-            <button class="btn btn-primary" *ngIf="currentPage < factcheckContainer.length - 1 || hasMore()" (click)="onSwitchPage(true)">Next</button>
+            <button class="arrow-button" [disabled]="currentPage >= factcheckContainer.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
+                Next
+                <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%" style="transform: rotate(180deg);"/>
+            </button>
         </div>
     </div>
 

@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { BrandInfo, BrandInfoImg } from '../../model/BrandInfo';
 import { FormsModule } from '@angular/forms';
 import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.component';
-import { FalsehoodFull, FalsehoodSeverity } from '../../model/Falsehood';
+import { FalsehoodFull, FalsehoodRet, FalsehoodSeverity } from '../../model/Falsehood';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent, RouterLink } from '@angular/router';
 
 import { TagInputComponent, MarkdownEditorComponent } from "@tc/tc-ngx-general";
@@ -26,7 +26,29 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
 export class FalsehoodComponent implements OnDestroy{
 
   prepData(){
-
+    let metadata: FalsehoodRet = {
+      id: '',
+      dateMade: undefined,
+      userId: '',
+      brandId: '',
+      authorDisplayName: '',
+      publicFigure: undefined,
+      mediaOutlet: undefined,
+      institution: undefined,
+      status: FalsehoodStage.SAVED,
+      severity: FalsehoodSeverity.OBJECTIVE,
+      factcheck: undefined,
+      records: [],
+      tags: [],
+      notes: ''
+    }
+    this.falsehoodService.currentFalsehood = {
+      content: [{ version: 1, contents: "Stuff", made: new Date()}],
+      fullMetaData:metadata,
+      initContent: undefined,
+      briefs: [],
+      metadata: undefined
+    }
   }
 
 

@@ -46,10 +46,10 @@
             <button class="btn btn-warning" (click)="clearFields()">Clear Fields</button>
         </div>
     </form>
-    <div *ngIf="currentFalsehoodList.length">
+    <div *ngIf="currentFalsehoodList.length" class="search-container">
         <p>Showing {{ (pageSize * currentPage) + 1}} - {{ pageSize * (currentPage + 1) }} Falsehoods</p>
-        <table>
-            <thead>
+        <table class="table table-striped table-hover">
+            <thead class="tc-header-row">
                 <th>Submitter</th>
                 <th>Tags</th>
                 <th>Date Made</th>
@@ -70,9 +70,13 @@
         </table>
         <div>
             <!--ToDo: Create stylized buttons-->
-            <button class="btn btn-primary" *ngIf="currentPage > 0" (click)="onSwitchPage(false)">Previous</button>
+            <button class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)"><img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
+                Previous</button>
             <p>Page {{ currentPage + 1 }}</p>
-            <button class="btn btn-primary" *ngIf="currentPage < falsehoodCollection.length - 1 || hasMore()" (click)="onSwitchPage(true)">Next</button>
+            <button class="arrow-button" [disabled]="currentPage >= falsehoodCollection.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
+                Next
+                <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%" style="transform: rotate(180deg);"/>
+            </button>
         </div>
     </div>
 </div>

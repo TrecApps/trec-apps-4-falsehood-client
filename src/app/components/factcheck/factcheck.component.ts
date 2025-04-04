@@ -3,17 +3,49 @@ import { FactcheckService } from '../../services/factcheck.service';
 import { StylesService } from '../../services/styles.service';
 import { FactcheckSubmission, FalsehoodStage } from '../../model/Factcheck';
 import ResponseObj from '../../model/ResponseObj';
-import { AuthService, MarkdownEditorComponent, MarkdownPipe, TagInputComponent } from '@tc/tc-ngx-general';
+import { AuthService, MarkdownEditorComponent, MarkdownPipe, TagInputComponent, TcUser } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TopBarComponent } from '../top-bar/top-bar.component';
 
 @Component({
   selector: 'app-factcheck',
-  imports: [CommonModule, FormsModule, TagInputComponent,MarkdownEditorComponent, MarkdownPipe],
+  imports: [CommonModule, FormsModule, TagInputComponent,MarkdownEditorComponent, MarkdownPipe, TopBarComponent],
   templateUrl: './factcheck.component.html',
   styleUrl: './factcheck.component.css'
 })
 export class FactcheckComponent {
+
+  prepData(){
+    this.factcheckService.currentFactcheck = {
+      id: '3',
+      name: 'Title3',
+      userId: '1',
+      brandId: undefined,
+      authorDisplayName: 'Steve Rogers',
+      created: new Date(),
+      published: new Date(),
+      status: FalsehoodStage.SAVED,
+      records: [],
+      tags: ["three", "triez", "trois"]
+    }
+
+    this.factcheckService.currentContents = "# Thanos is coming \n The avengers need to assemble";
+
+    this.authService.loginToken = {
+      access_token: "access",
+      refresh_token: "refresh",
+      token_type: "temp",
+      id_token: "id",
+      expires_in: 1000
+    }
+    let user = new TcUser();
+    this.authService.tcUser = user;
+
+    user.id = "1";
+    user.displayName = "John";
+
+  }
 
   factcheckService: FactcheckService;
   styleService: StylesService;

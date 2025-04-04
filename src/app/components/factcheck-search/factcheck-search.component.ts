@@ -5,7 +5,7 @@ import { AuthService } from '@tc/tc-ngx-general';
 import { StylesService } from '../../services/styles.service';
 import { Observable, Subscription } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
-import { Factcheck } from '../../model/Factcheck';
+import { Factcheck, FalsehoodStage } from '../../model/Factcheck';
 import { FactcheckService } from '../../services/factcheck.service';
 import ResponseObj from '../../model/ResponseObj';
 import { TopBarComponent } from '../top-bar/top-bar.component';
@@ -19,7 +19,52 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
 export class FactcheckSearchComponent implements OnDestroy{
 
   prepData(){
-    
+    this.pageSize = 2;
+    let fList:Factcheck[] = [];
+
+
+    fList.push({
+      id: '1',
+      name: 'Title1',
+      userId: '',
+      brandId: undefined,
+      authorDisplayName: 'Obi-Wan',
+      created: new Date(),
+      published: new Date(),
+      status: FalsehoodStage.SAVED,
+      records: [],
+      tags: ["One", "uno", "une"]
+    },{
+      id: '2',
+      name: 'Title2',
+      userId: '',
+      brandId: undefined,
+      authorDisplayName: 'Padme',
+      created: new Date(),
+      published: new Date(),
+      status: FalsehoodStage.SAVED,
+      records: [],
+      tags: ["Two", "douze", "deux"]
+    });
+
+    this.factcheckContainer = [];
+    this.factcheckContainer.push(fList);
+
+    this.currentFactcheckList = fList;
+    this.factcheckContainer.push([
+      {
+        id: '3',
+        name: 'Title3',
+        userId: '1',
+        brandId: undefined,
+        authorDisplayName: 'Steve Rogers',
+        created: new Date(),
+        published: new Date(),
+        status: FalsehoodStage.SAVED,
+        records: [],
+        tags: ["three", "triez", "trois"]
+      }
+    ])
   }
 
   styleService: StylesService;
