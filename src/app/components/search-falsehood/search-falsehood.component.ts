@@ -1,16 +1,34 @@
 import { Component } from '@angular/core';
 import { FalsehoodService } from '../../services/falsehood.service';
 import { BrandInfo, BrandInfoImg, ResourceType } from '../../model/BrandInfo';
-import { StylesService } from '../../services/styles.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.component';
-import { AuthService } from '@tc/tc-ngx-general';
+import { AuthService, StylesService } from '@tc/tc-ngx-general';
 import { SearchOptionFilterPipe, SearchStatusOption } from '../../pipes/search-option-filter.pipe';
-import { FalsehoodRet } from '../../model/Falsehood';
+import { FalsehoodRet, FalsehoodSeverity } from '../../model/Falsehood';
 import { Observable } from 'rxjs';
 import { TopBarComponent } from '../top-bar/top-bar.component';
+import { FalsehoodStage } from '../../model/Factcheck';
 
+function createFalsehoodRet(id: string, userId: string, authorDisplayName: string, tags: string[]) : FalsehoodRet {
+  return {
+        id,
+        dateMade: new Date(),
+        userId,
+        brandId: '',
+        authorDisplayName,
+        publicFigure: undefined,
+        mediaOutlet: undefined,
+        institution: undefined,
+        status: FalsehoodStage.SAVED,
+        severity: FalsehoodSeverity.OBJECTIVE,
+        factcheck: undefined,
+        records: [],
+        tags,
+        notes: ''
+      };
+}
 
 @Component({
   selector: 'app-search-falsehood',
@@ -22,7 +40,50 @@ export class SearchFalsehoodComponent {
 
 
   prepData(){
+    let tempList: FalsehoodRet[] = [
+      createFalsehoodRet('1', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('2', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('3', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('4', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('5', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('6', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('7', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('8', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('9', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('10', '1', "Trooper", ['Microsoft']),
+    ];
 
+    this.currentFalsehoodList = tempList;
+    this.falsehoodCollection = [];
+    this.falsehoodCollection.push(tempList);
+
+    tempList = [
+      createFalsehoodRet('11', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('12', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('13', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('14', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('15', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('16', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('17', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('18', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('19', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('20', '1', "Trooper", ['Microsoft']),
+    ];
+    this.falsehoodCollection.push(tempList);
+
+    tempList = [
+      createFalsehoodRet('21', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('22', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('23', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('24', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('25', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('26', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('27', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('28', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('29', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('30', '1', "Trooper", ['Microsoft']),
+    ];
+    this.falsehoodCollection.push(tempList);
   }
 
   falsehoodService: FalsehoodService;

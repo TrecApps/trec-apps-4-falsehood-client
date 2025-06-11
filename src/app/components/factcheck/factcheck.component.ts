@@ -1,9 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { FactcheckService } from '../../services/factcheck.service';
-import { StylesService } from '../../services/styles.service';
 import { FactcheckSubmission, FalsehoodStage } from '../../model/Factcheck';
 import ResponseObj from '../../model/ResponseObj';
-import { AuthService, MarkdownEditorComponent, MarkdownPipe, TagInputComponent, TcUser } from '@tc/tc-ngx-general';
+import { AuthService, MarkdownEditorComponent, MarkdownPipe, TagInputComponent, TcUser, StylesService } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TopBarComponent } from '../top-bar/top-bar.component';

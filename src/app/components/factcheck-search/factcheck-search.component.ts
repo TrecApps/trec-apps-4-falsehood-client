@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '@tc/tc-ngx-general';
-import { StylesService } from '../../services/styles.service';
+import { AuthService, StylesService } from '@tc/tc-ngx-general';
 import { Observable, Subscription } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 import { Factcheck, FalsehoodStage } from '../../model/Factcheck';

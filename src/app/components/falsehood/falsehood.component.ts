@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FalsehoodService } from '../../services/falsehood.service';
-import { AuthService, MarkdownPipe } from '@tc/tc-ngx-general';
+import { AuthService, MarkdownPipe, UpSliderComponent } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
 import { BrandInfo, BrandInfoImg } from '../../model/BrandInfo';
 import { FormsModule } from '@angular/forms';
@@ -8,8 +8,7 @@ import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.compone
 import { FalsehoodFull, FalsehoodRet, FalsehoodSeverity } from '../../model/Falsehood';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent, RouterLink } from '@angular/router';
 
-import { TagInputComponent, MarkdownEditorComponent } from "@tc/tc-ngx-general";
-import { StylesService } from '../../services/styles.service';
+import { TagInputComponent, MarkdownEditorComponent, StylesService } from "@tc/tc-ngx-general";
 import { BriefComponent } from '../brief/brief.component';
 import { Brief, BriefPurpose } from '../../model/Brief';
 import { FalsehoodStage } from '../../model/Factcheck';
@@ -19,7 +18,9 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
 
 @Component({
   selector: 'app-falsehood',
-  imports: [CommonModule, FormsModule, BrandSearcherComponent, TagInputComponent, MarkdownPipe, MarkdownEditorComponent, BriefComponent, TopBarComponent],
+  imports: [CommonModule, FormsModule, MarkdownPipe, 
+    BrandSearcherComponent, TagInputComponent, UpSliderComponent, 
+    MarkdownEditorComponent, BriefComponent, TopBarComponent],
   templateUrl: './falsehood.component.html',
   styleUrl: './falsehood.component.css'
 })

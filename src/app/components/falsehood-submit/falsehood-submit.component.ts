@@ -1,11 +1,10 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AuthService, MarkdownEditorComponent, TagInputComponent, TcUser } from '@tc/tc-ngx-general';
+import { AuthService, MarkdownEditorComponent, TagInputComponent, TcUser, StylesService } from '@tc/tc-ngx-general';
 import { Subscription } from 'rxjs';
 import { FalsehoodSeverity, FalsehoodSubmission } from '../../model/Falsehood';
 import { BrandInfoImg } from '../../model/BrandInfo';
 import { CommonModule } from '@angular/common';
-import { StylesService } from '../../services/styles.service';
 import { FormsModule } from '@angular/forms';
 import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.component';
 import { FalsehoodService } from '../../services/falsehood.service';

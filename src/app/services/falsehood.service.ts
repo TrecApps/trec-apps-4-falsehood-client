@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '@tc/tc-ngx-general';
+import { AuthService, HttpContentType } from '@tc/tc-ngx-general';
 import { FalsehoodFull, FalsehoodRet, FalsehoodSubmission } from '../model/Falsehood';
 import { Observable } from 'rxjs';
 import { environment } from '../environment/environment';
@@ -37,12 +37,12 @@ export class FalsehoodService {
 
     if(this.authService.hasActiveTokens()){
       return this.client.get<FalsehoodRet[]>(`${environment.FALSEHOOD_URL}/Falsehoods/search/${mode}`, {
-        headers: this.authService.getHttpHeaders(false, false),
+        headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
         params
       })
     }
     return this.client.get<FalsehoodRet[]>(`${environment.FALSEHOOD_URL}/Falsehoods/public/search/${mode}`, {
-      headers: this.authService.getHttpHeaders(false, false),
+      headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params
     })
 
@@ -64,12 +64,12 @@ export class FalsehoodService {
 
     if(this.authService.hasActiveTokens()){
       return this.client.get<FalsehoodRet[]>(`${environment.FALSEHOOD_URL}/Falsehoods/search/${mode}`, {
-        headers: this.authService.getHttpHeaders(false, false),
+        headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
         params
       })
     }
     return this.client.get<FalsehoodRet[]>(`${environment.FALSEHOOD_URL}/Falsehoods/public/search/${mode}`, {
-      headers: this.authService.getHttpHeaders(false, false),
+      headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params
     })
 
@@ -91,12 +91,12 @@ export class FalsehoodService {
 
     if(this.authService.hasActiveTokens()){
       return this.client.get<FalsehoodRet[]>(`${environment.FALSEHOOD_URL}/Falsehoods/search/${mode}`, {
-        headers: this.authService.getHttpHeaders(false, false),
+        headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
         params
       })
     }
     return this.client.get<FalsehoodRet[]>(`${environment.FALSEHOOD_URL}/Falsehoods/public/search/${mode}`, {
-      headers: this.authService.getHttpHeaders(false, false),
+      headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params
     })
 
@@ -118,12 +118,12 @@ export class FalsehoodService {
 
     if(this.authService.hasActiveTokens()){
       return this.client.get<FalsehoodRet[]>(`${environment.FALSEHOOD_URL}/Falsehoods/search/${mode}`, {
-        headers: this.authService.getHttpHeaders(false, false),
+        headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
         params
       })
     }
     return this.client.get<FalsehoodRet[]>(`${environment.FALSEHOOD_URL}/Falsehoods/public/search/${mode}`, {
-      headers: this.authService.getHttpHeaders(false, false),
+      headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params
     })
 
@@ -133,11 +133,11 @@ export class FalsehoodService {
     let ret: Observable<FalsehoodFull>;
     if(this.authService.hasActiveTokens()){
       ret = this.client.get<FalsehoodFull>(`${environment.FALSEHOOD_URL}/Falsehoods/${id}`, {
-        headers: this.authService.getHttpHeaders(false, false)
+        headers: this.authService.getHttpHeaders2(HttpContentType.NONE)
       })
     } else {
       ret = this.client.get<FalsehoodFull>(`${environment.FALSEHOOD_URL}/Falsehoods/public/${id}`, {
-        headers: this.authService.getHttpHeaders(false, false)
+        headers: this.authService.getHttpHeaders2(HttpContentType.NONE)
       })
     }
 
@@ -159,7 +159,7 @@ export class FalsehoodService {
     if(!this.currentFalsehood?.fullMetaData?.id) return;
     this.client.patch<ResponseObj>(`${environment.FALSEHOOD_URL}/Falsehood/${this.currentFalsehood.fullMetaData.id}`, {
       field, value
-    }, {headers: this.authService.getHttpHeaders(true, true)}).subscribe({
+    }, {headers: this.authService.getHttpHeaders2(HttpContentType.JSON)}).subscribe({
       next: (value: ResponseObj) => {
         if(onUpdated){
           onUpdated();
@@ -172,12 +172,12 @@ export class FalsehoodService {
   submitBrief(falsehoodId: string, type: BriefPurpose, content: string): Observable<ResponseObj> {
     return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Brief/${falsehoodId}`, {
       type, content
-    },{headers: this.authService.getHttpHeaders(true, true)});
+    },{headers: this.authService.getHttpHeaders2(HttpContentType.JSON)});
   }
 
   editBrief(falsehoodId: string, id: string, content:string): Observable<ResponseObj> {
      return this.client.put<ResponseObj>(`${environment.FALSEHOOD_URL}/Brief/${falsehoodId}`, content, {
-      headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain"),
+      headers: this.authService.getHttpHeaders2(HttpContentType.PLAIN_TEXT),
      })
   }
 
@@ -237,10 +237,10 @@ export class FalsehoodService {
         falsehoodId: id,
         comment,
         denyPoints: points
-      }, { headers: this.authService.getHttpHeaders(true, true)});
+      }, { headers: this.authService.getHttpHeaders2(HttpContentType.JSON)});
     } else {
       ret = this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/FalsehoodReview/${action}/${id}`, comment, {
-        headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain")
+        headers: this.authService.getHttpHeaders2(HttpContentType.PLAIN_TEXT)
       })
     }
 
@@ -302,12 +302,12 @@ export class FalsehoodService {
 
     if(status == FalsehoodStage.REJECTED){
       ret = this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/FalsehoodReview/appeal/${id}`, comment, {
-        headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain")
+        headers: this.authService.getHttpHeaders2(HttpContentType.PLAIN_TEXT)
       })
       action = "appeal1";
     } else {
       ret = this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Review2/appeal/${id}`, comment, {
-        headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain")
+        headers: this.authService.getHttpHeaders2(HttpContentType.PLAIN_TEXT)
       })
       action = "appeal2";
     }
@@ -341,7 +341,7 @@ export class FalsehoodService {
     let params = new HttpParams().append("submit", doSubmit);
     
     return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Falsehood`, newFalsehood, {
-      headers: this.authService.getHttpHeaders(true, true),
+      headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
       params
     });
   }

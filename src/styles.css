@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-.flex-and-center {
+@import '../node_modules/@tc/tc-ngx-general/assets/tc-styles.css';
+
+/* .flex-and-center {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,12 +33,12 @@
     transition: border 0.5s;
     border: 1px solid #303030; /* Bright blue color */
     /* padding: 10px; */
-    box-shadow: 0 0 10px #f7f7f7; /* Glowing effect */
-}
+    /* box-shadow: 0 0 10px #f7f7f7; /* Glowing effect 
+} */
 
 .element-item-default:focus {
     border: 3px solid #303030;
-}
+} */
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

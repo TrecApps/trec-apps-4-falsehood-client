@@ -1,8 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Brief, BriefPurpose } from '../../model/Brief';
-import { AuthService, MarkdownEditorComponent, MarkdownPipe } from '@tc/tc-ngx-general';
+import { AuthService, MarkdownEditorComponent, MarkdownPipe, StylesService } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
-import { StylesService } from '../../services/styles.service';
 import { FalsehoodService } from '../../services/falsehood.service';
 import ResponseObj from '../../model/ResponseObj';
 

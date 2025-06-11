@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '@tc/tc-ngx-general';
+import { AuthService, HttpContentType } from '@tc/tc-ngx-general';
 import ResponseObj from '../model/ResponseObj';
 import { Observable } from 'rxjs';
 import { environment } from '../environment/environment';
@@ -23,7 +23,7 @@ export class FactcheckService {
   getFactcheck(id: string): Observable<ResponseObj> {
     if(this.authService.hasActiveTokens()){
       return this.client.get<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/seekById/${id}`, {
-        headers: this.authService.getHttpHeaders(false, false)
+        headers: this.authService.getHttpHeaders2(HttpContentType.NONE)
       });
     }
 
@@ -34,7 +34,7 @@ export class FactcheckService {
   searchFactCheckByMode(mode: string, page:number, size:number): Observable<Factcheck[]>{
     let params = new HttpParams().append("page", page).append("size", size);
     return this.client.get<Factcheck[]>(`${environment.FALSEHOOD_URL}/Factcheck/${mode}`, {
-      headers: this.authService.getHttpHeaders(false, false),
+      headers: this.authService.getHttpHeaders2(HttpContentType.NONE),
       params
     });
   }
@@ -51,31 +51,31 @@ export class FactcheckService {
   postFactcheck(submission: FactcheckSubmission, doSubmit: boolean): Observable<ResponseObj> {
     let params = new HttpParams().append("submit", doSubmit);
     return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck`, submission, {
-      headers: this.authService.getHttpHeaders(true, true), params
+      headers: this.authService.getHttpHeaders2(HttpContentType.JSON), params
     });
   }
 
   patchFactcheck(field: string, value: string, id: string): Observable<ResponseObj> {
     return this.client.patch<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/${id}`, {field, value}, {
-      headers: this.authService.getHttpHeaders(true, true)
+      headers: this.authService.getHttpHeaders2(HttpContentType.JSON)
     });
   }
 
   submit(id:string): Observable<ResponseObj> {
     return this.client.put<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/submit/${id}`, null, {
-      headers: this.authService.getHttpHeaders(false, false)
+      headers: this.authService.getHttpHeaders2(HttpContentType.NONE)
     })
   }
 
   reviewFactcheck(id:string, comment:string, action: string): Observable<ResponseObj> {
     return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/review/${action}/${id}`, comment, {
-      headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain")
+      headers: this.authService.getHttpHeaders2(HttpContentType.PLAIN_TEXT)
     })
   }
 
   appealFactcheck(id: string, comment: string): Observable<ResponseObj> {
     return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Factcheck/appeal/${id}`, comment, {
-      headers: this.authService.getHttpHeaders(false, false).append("Content-Type", "text/plain")
+      headers: this.authService.getHttpHeaders2(HttpContentType.PLAIN_TEXT)
     })
   }
 

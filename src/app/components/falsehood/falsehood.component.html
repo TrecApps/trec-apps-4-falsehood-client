@@ -146,7 +146,7 @@
     </form>
 </div>
 
-<div *ngIf="falsehoodService.currentFalsehood && isReviewing" class="review-panel">
+<lib-up-slider (onClose)="isReviewing = false" [isActive]="(falsehoodService.currentFalsehood !== undefined) && isReviewing">
     <form class="form">
         <div class="form-group">
             <div *ngFor="let act of reviewOptions" class="form-check">
@@ -167,9 +167,13 @@
         <button class="btn btn-primary" (click)="submitReview()" *ngIf="reviewOption.length > 0 && reviewComent.trim().length > 0">Post Review</button>
         <button class="btn btn-danger" (click)="isReviewing = false">Cancel</button>
     </form>
-</div>
+</lib-up-slider>
 
-<div *ngIf="falsehoodService.currentFalsehood && isAppealing" class="review-panel">
+<!-- <div *ngIf="falsehoodService.currentFalsehood && isReviewing" class="review-panel">
+    
+</div> -->
+
+<lib-up-slider (onClose)="isAppealing = false" [isActive]="(falsehoodService.currentFalsehood !== undefined) && isAppealing">
     <form class="form">
         <div class="form-group">
             <label>Comment</label>
@@ -179,7 +183,11 @@
         <button class="btn btn-primary" (click)="submitAppeal()" *ngIf="appealComment.trim().length > 0">Post Appeal</button>
         <button class="btn btn-danger" (click)="isAppealing = false">Cancel</button>
     </form>
-</div>
+</lib-up-slider>
+
+<!-- <div *ngIf="falsehoodService.currentFalsehood && isAppealing" class="review-panel">
+
+</div> -->
 
 <div *ngIf="!falsehoodService.currentFalsehood">
     <!--ToDo: handle situation-->
