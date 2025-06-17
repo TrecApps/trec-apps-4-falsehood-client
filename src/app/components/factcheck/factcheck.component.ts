@@ -9,7 +9,9 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
 
 @Component({
   selector: 'app-factcheck',
-  imports: [CommonModule, FormsModule, TagInputComponent,MarkdownEditorComponent, MarkdownPipe, TopBarComponent],
+  imports: [CommonModule, FormsModule, MarkdownPipe, 
+    TagInputComponent, MarkdownEditorComponent,  
+    TopBarComponent, ],
   templateUrl: './factcheck.component.html',
   styleUrl: './factcheck.component.css'
 })

@@ -96,7 +96,8 @@ export class FalsehoodSubmitComponent implements OnDestroy {
               factcheck: undefined,
               tags: [],
               content: "",
-              notes: ""
+              notes: "",
+              title: ""
             }
           }
 

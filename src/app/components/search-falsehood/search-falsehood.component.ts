@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { FalsehoodStage } from '../../model/Factcheck';
 
-function createFalsehoodRet(id: string, userId: string, authorDisplayName: string, tags: string[]) : FalsehoodRet {
+function createFalsehoodRet(id: string, userId: string, authorDisplayName: string, tags: string[], title: string) : FalsehoodRet {
   return {
         id,
         dateMade: new Date(),
@@ -26,7 +26,8 @@ function createFalsehoodRet(id: string, userId: string, authorDisplayName: strin
         factcheck: undefined,
         records: [],
         tags,
-        notes: ''
+        notes: '',
+        title
       };
 }
 
@@ -41,16 +42,16 @@ export class SearchFalsehoodComponent {
 
   prepData(){
     let tempList: FalsehoodRet[] = [
-      createFalsehoodRet('1', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('2', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('3', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('4', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('5', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('6', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('7', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('8', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('9', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('10', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('1', '1', "Trooper", ['Microsoft'], "Windows 1"),
+      createFalsehoodRet('2', '1', "Trooper", ['Microsoft'], "Windows 2"),
+      createFalsehoodRet('3', '1', "Trooper", ['Microsoft'], "Windows 3"),
+      createFalsehoodRet('4', '1', "Trooper", ['Microsoft'], "Windows 4"),
+      createFalsehoodRet('5', '1', "Trooper", ['Microsoft'], "Windows 5"),
+      createFalsehoodRet('6', '1', "Trooper", ['Microsoft'], "Windows 6"),
+      createFalsehoodRet('7', '1', "Trooper", ['Microsoft'], "Windows 7"),
+      createFalsehoodRet('8', '1', "Trooper", ['Microsoft'], "Windows 8"),
+      createFalsehoodRet('9', '1', "Trooper", ['Microsoft'], "Windows 9"),
+      createFalsehoodRet('10', '1', "Trooper", ['Microsoft'], "Windows 10"),
     ];
 
     this.currentFalsehoodList = tempList;
@@ -58,30 +59,30 @@ export class SearchFalsehoodComponent {
     this.falsehoodCollection.push(tempList);
 
     tempList = [
-      createFalsehoodRet('11', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('12', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('13', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('14', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('15', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('16', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('17', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('18', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('19', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('20', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('11', '1', "Trooper", ['Microsoft'], "Windows 11"),
+      createFalsehoodRet('12', '1', "Trooper", ['Microsoft'], "Windows 12"),
+      createFalsehoodRet('13', '1', "Trooper", ['Microsoft'], "Windows 13"),
+      createFalsehoodRet('14', '1', "Trooper", ['Microsoft'], "Windows 14"),
+      createFalsehoodRet('15', '1', "Trooper", ['Microsoft'], "Windows 15"),
+      createFalsehoodRet('16', '1', "Trooper", ['Microsoft'], "Windows 16"),
+      createFalsehoodRet('17', '1', "Trooper", ['Microsoft'], "Windows 17"),
+      createFalsehoodRet('18', '1', "Trooper", ['Microsoft'], "Windows 18"),
+      createFalsehoodRet('19', '1', "Trooper", ['Microsoft'], "Windows 19"),
+      createFalsehoodRet('20', '1', "Trooper", ['Microsoft'], "Windows 20"),
     ];
     this.falsehoodCollection.push(tempList);
 
     tempList = [
-      createFalsehoodRet('21', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('22', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('23', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('24', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('25', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('26', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('27', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('28', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('29', '1', "Trooper", ['Microsoft']),
-      createFalsehoodRet('30', '1', "Trooper", ['Microsoft']),
+      createFalsehoodRet('21', '1', "Trooper", ['Microsoft'], "Windows 21"),
+      createFalsehoodRet('22', '1', "Trooper", ['Microsoft'], "Windows 22"),
+      createFalsehoodRet('23', '1', "Trooper", ['Microsoft'], "Windows 23"),
+      createFalsehoodRet('24', '1', "Trooper", ['Microsoft'], "Windows 24"),
+      createFalsehoodRet('25', '1', "Trooper", ['Microsoft'], "Windows 25"),
+      createFalsehoodRet('26', '1', "Trooper", ['Microsoft'], "Windows 26"),
+      createFalsehoodRet('27', '1', "Trooper", ['Microsoft'], "Windows 27"),
+      createFalsehoodRet('28', '1', "Trooper", ['Microsoft'], "Windows 28"),
+      createFalsehoodRet('29', '1', "Trooper", ['Microsoft'], "Windows 29"),
+      createFalsehoodRet('30', '1', "Trooper", ['Microsoft'], "Windows 30"),
     ];
     this.falsehoodCollection.push(tempList);
   }

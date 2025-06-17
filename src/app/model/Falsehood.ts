@@ -44,6 +44,7 @@ export interface Falsehood {
     tags: string[];
 
     notes: string;
+    title: string;
 }
 
 
@@ -70,6 +71,7 @@ export interface FalsehoodRet {
     tags: string[];
 
     notes: string;
+    title: string;
 }
 
 export interface FalsehoodFull {
@@ -95,4 +97,6 @@ export interface FalsehoodSubmission {
     content: string;
 
     notes: string | undefined;
+
+    title: string;
 }

@@ -41,7 +41,8 @@ export class FalsehoodComponent implements OnDestroy{
       factcheck: undefined,
       records: [],
       tags: [],
-      notes: ''
+      notes: '',
+      title: ''
     }
     this.falsehoodService.currentFalsehood = {
       content: [{ version: 1, contents: "Stuff", made: new Date()}],
@@ -186,6 +187,17 @@ export class FalsehoodComponent implements OnDestroy{
     this.falsehoodService.runPatch("dateMade", this.useDate ? this.date.toUTCString() : undefined, () => {
       if(this.falsehoodService.currentFalsehood?.fullMetaData)
         this.falsehoodService.currentFalsehood.fullMetaData.dateMade = this.useDate ? this.date : undefined;
+    })
+  }
+
+  titleChanged: boolean = false;
+  titleUpdating: boolean = false;
+  onUpdateTitle(){
+    if(this.titleUpdating) return;
+    this.titleUpdating = true;
+    this.falsehoodService.runPatch("title", this.falsehoodService.currentFalsehood?.fullMetaData?.title, (result: boolean) => {
+      this.titleChanged = result;
+      this.titleUpdating = false;
     })
   }
 

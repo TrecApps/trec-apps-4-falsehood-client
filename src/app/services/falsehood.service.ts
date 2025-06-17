@@ -162,7 +162,11 @@ export class FalsehoodService {
     }, {headers: this.authService.getHttpHeaders2(HttpContentType.JSON)}).subscribe({
       next: (value: ResponseObj) => {
         if(onUpdated){
-          onUpdated();
+          onUpdated(true);
+        }
+      }, error: () => {
+        if(onUpdated){
+          onUpdated(false);
         }
       }
     });
