@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Output, EventEmitter } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { AuthService, NavBarComponent } from '@tc/tc-ngx-general';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService, NavBarComponent, NavClickDetails, NavOption, NavOptionShow } from '@tc/tc-ngx-general';
+
 
 @Component({
   selector: 'app-top-bar',
@@ -16,11 +17,45 @@ export class TopBarComponent {
 
   authService: AuthService;
 
-  constructor(authService: AuthService){
+  navOptions: NavOption[];
+
+  constructor(authService: AuthService, private router:Router){
     this.authService = authService;
+
+    this.navOptions = [
+      {
+        displayText: 'Welcome',
+        title: 'Welcome',
+        showOption: NavOptionShow.BASIC_DESKTOP
+      },
+      {
+        displayText: 'Factchecks',
+        title: 'factchecks-search',
+        showOption: NavOptionShow.BASIC_DESKTOP
+      },
+      {
+        displayText: 'Falsehoods',
+        title: 'falsehoods-search',
+        showOption: NavOptionShow.BASIC_DESKTOP
+      }
+      // ,
+      // {
+      //   displayText: 'Welcome',
+      //   title: 'Welcome',
+      //   showOption: NavOptionShow.BASIC_DESKTOP
+      // }
+    ]
   }
 
   prepData() {
     this.dataEmitter.emit();
+  }
+
+  onNavigate(details: NavClickDetails){
+    this.router.navigateByUrl('/' + (details.navLink || details.title));
+  }
+
+  prepLogin(){
+    this.router.navigateByUrl('/Logon')
   }
 }

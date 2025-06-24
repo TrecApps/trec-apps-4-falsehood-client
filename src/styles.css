@@ -2,7 +2,7 @@
 
 @import '../node_modules/@tc/tc-ngx-general/assets/tc-styles.css';
 
-/* .flex-and-center {
+.flex-and-center {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,7 +13,7 @@
     flex-direction: row wrap;
     justify-content: center;
 }
-
+/* 
 .element-container {
     border: solid black 1px;
     padding: 5px;
@@ -38,7 +38,7 @@
 
 .element-item-default:focus {
     border: 3px solid #303030;
-} */
+} 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -47,9 +47,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .search-container {
     display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
 }
 
 .tc-header-row {
@@ -61,11 +62,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .arrow-button {
-    border: aqua 2px solid;
-    background-color: white;
-    display: flex;
+    border: aqua 2px solid;display: flex;
     height: 30px;
-    gap:3px;
+    gap: 5px;
+    background-color: aqua;
+    border-radius: 5px;
 
 }
 

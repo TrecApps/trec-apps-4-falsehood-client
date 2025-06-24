@@ -1,15 +1,6 @@
-<lib-nav-bar>
-    <div class="collapse navbar-collapse" id="factcheckNavCollapse">
-        <ul class="navbar-nav">
-            <li class="nav-item" (click)="prepData()">Prep Data</li>
-            <li class="nav-item"><a class="nav-link" routerLink="Welcome">Welcome</a></li>
-
-            <!-- <li class="nav-item"><a class="nav-link" routerLink="Subject">Brand Resource</a></li> -->
-            <li class="nav-item"><a class="nav-link" routerLink="falsehood-submit">Factcheck</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink="falsehoods-search">Falsehood</a></li>
-        
-            <li class="nav-item" *ngIf="!authService.loginToken"><a class="nav-link" routerLink="Logon" routerLinkActive>Log-In</a></li>
-
-        </ul>
-    </div>
+<lib-nav-bar [navOptions]="navOptions" (onNav)="onNavigate($event)" (onLoginRequestEmitter)="prepLogin()">
+    <button class="btn btn-primary" (click)="prepData()">Prep Data</button>
+    
 </lib-nav-bar>
+
+<div class="buffer-bar"></div>

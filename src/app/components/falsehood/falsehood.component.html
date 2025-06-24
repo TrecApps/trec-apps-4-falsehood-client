@@ -78,7 +78,7 @@
             <div *ngIf="canSubEdit()">
                 <button class="btn btn-primary" (click)="editingDate = true" *ngIf="!editingDate">Edit Date</button>
                 <button class="btn btn-danger" (click)="editingDate = false" *ngIf="editingDate">Edit Date</button>
-                <input class="form-check-button" *ngIf="editingDate" [(ngModel)]="useDate">
+                <input class="form-check-input" *ngIf="editingDate" [(ngModel)]="useDate">
                 <label class="form-check-label">Use Date</label>
                 <input type="date" *ngIf="editingDate && useDate" [(ngModel)]="date">
                 <button class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>

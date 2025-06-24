@@ -33,7 +33,9 @@ function createFalsehoodRet(id: string, userId: string, authorDisplayName: strin
 
 @Component({
   selector: 'app-search-falsehood',
-  imports: [CommonModule, FormsModule, BrandSearcherComponent, SearchOptionFilterPipe, TopBarComponent],
+  imports: [CommonModule, FormsModule, 
+    BrandSearcherComponent, SearchOptionFilterPipe, 
+    TopBarComponent],
   templateUrl: './search-falsehood.component.html',
   styleUrl: './search-falsehood.component.css'
 })
