@@ -2,12 +2,13 @@
 
 <div class="container">
     <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+            <label class="form-label">State Search</label>
             <select class="form-select" [(ngModel)]="searchOption" name="searchOption">
                 <option *ngFor="let opt of searchOptions | searchOptionFilter:authService.tcUser" [value]="opt">{{ opt.displayStatus }}</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Public Figure/Institution/Media Outlet</label>
             <app-brand-searcher [label]="'This can be blank'" (brandInfoSelected)="setBrandInfo($event)"></app-brand-searcher>
 
@@ -26,7 +27,7 @@
 
         </div>
 
-        <div class="flex-and-center" style="gap: 20px;">
+        <div class="flex-and-center element-item" [ngClass]="'element-item-' + styleService.style" style="gap: 20px;">
             <div class="form-group form-check flex-and-center" style="display:flex; gap:3px;">
                 <input class="form-check-input" type="checkbox" [(ngModel)]="useBefore" name="useBefore">
                 <label class="form-check-label">Before</label>
@@ -39,12 +40,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Max Results Per Page</label>
             <input class="form-control" type="number" [(ngModel)]="pageSize" name="pageSize">
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <button class="btn btn-primary" *ngIf="currentFalsehoodList.length == 0" (click)="performSearch()">Search</button>
             <button class="btn btn-warning" (click)="clearFields()">Clear Fields</button>
         </div>
@@ -66,7 +67,7 @@
                 <div class="flex-and-center" style="gap:5px;">
                     <p><b>Submitted By: </b>{{f.authorDisplayName}}</p>
                     <p><b>Date: </b>{{f.dateMade}}</p>
-                    <p><b>Severity: </b>{{ f.severity }}</p>
+                    <p><b>Severity: </b>{{ convertSeverity (f.severity) }}</p>
                     <p *ngIf="f.publicFigure?.name"><b>Figure: </b>{{ f.publicFigure?.name }}</p>
                     <p *ngIf="f.institution?.name"><b>Institution: </b>{{ f.institution?.name }}</p>
                     <p *ngIf="f.mediaOutlet?.name"><b>Outlet: </b>{{ f.mediaOutlet?.name }}</p>
@@ -81,7 +82,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="flex-and-center" style="gap: 10px;margin: 10px;">
@@ -98,3 +98,4 @@
         </div>
     </div>
 </div>
+<div class="bottom-bar"></div>

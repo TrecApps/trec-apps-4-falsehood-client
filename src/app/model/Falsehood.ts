@@ -22,6 +22,18 @@ export enum FalsehoodSeverity {
     TITLE_OR_SLOGAN                     // A chronic falsehood where an entity engages in false advertising or name
 }
 
+export function FalsehoodSeverityStr(fs: FalsehoodSeverity): string {
+    switch(fs){
+        case FalsehoodSeverity.OBJECTIVE: return "Objective";
+        case FalsehoodSeverity.OPPOSING_EVIDENCE_WITHHELD: return "Withheld Opposing Evidence";
+        case FalsehoodSeverity.SUPPORTING_EVIDENCE_WITHHELD: return "Withheld Supporting Evidence";
+        case FalsehoodSeverity.SUBJECTIVE: return "Subjective";
+        case FalsehoodSeverity.NARRATIVE_ISSUE: return "Isue with Narrative";
+        case FalsehoodSeverity.FAULTY_LOGIC: return "Faulty Logic";
+        case FalsehoodSeverity.TITLE_OR_SLOGAN: return "Title or Sloagan";
+    }
+}
+
 export interface Falsehood {
     
     id: string;

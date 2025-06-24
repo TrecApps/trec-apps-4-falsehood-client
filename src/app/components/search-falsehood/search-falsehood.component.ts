@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.component';
 import { AuthService, StylesService } from '@tc/tc-ngx-general';
 import { SearchOptionFilterPipe, SearchStatusOption } from '../../pipes/search-option-filter.pipe';
-import { FalsehoodRet, FalsehoodSeverity } from '../../model/Falsehood';
+import { FalsehoodRet, FalsehoodSeverity, FalsehoodSeverityStr } from '../../model/Falsehood';
 import { Observable } from 'rxjs';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { FalsehoodStage } from '../../model/Factcheck';
@@ -249,6 +249,10 @@ export class SearchFalsehoodComponent {
     this.falsehoodService.searchFalsehood(falsehood.id, () => {
       // ToDo: Navigate to Falsehood Present 
     });
+  }
+
+  convertSeverity(fs:FalsehoodSeverity): string {
+    return FalsehoodSeverityStr(fs);
   }
 
   onSwitchPage(next: boolean){

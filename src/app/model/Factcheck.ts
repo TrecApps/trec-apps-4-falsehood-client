@@ -12,6 +12,20 @@ export enum FalsehoodStage {
     DELETED
 }
 
+export function FalsehoodStageStr(fs: FalsehoodStage): string {
+    switch(fs){
+        case FalsehoodStage.SAVED: return "Saved";
+        case FalsehoodStage.SUBMITTED: return "Submitted";
+        case FalsehoodStage.REJECTED: return "Rejected";
+        case FalsehoodStage.R_APPEALED: return "Appealed (1st Stage)";
+        case FalsehoodStage.ACCEPTED: return "Accepted";
+        case FalsehoodStage.DENIED: return "Denied";
+        case FalsehoodStage.CONFIRMED: return "Confirmed";
+        case FalsehoodStage.S_APPEALED: return "Appealed (2nd Stage)";
+        case FalsehoodStage.DELETED: return "Deleted";
+    }
+}
+
 export interface Factcheck {
 
     

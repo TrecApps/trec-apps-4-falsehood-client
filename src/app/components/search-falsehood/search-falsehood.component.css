@@ -1,16 +1,8 @@
 
 
-.tag-bubble {
-    border-radius: 10px;
-    height: 25px;
-    /* background-color: darkturquoise; */
-    display: flex;
-    flex-direction: row;
-    width: min-content;
-}
 
-.tag-bubble > p {
-    margin: auto;
-    margin-left: 5px;
-    margin-right: 5px;
+
+.btn {
+    width: 100%;
+    margin: 5px auto;
 }

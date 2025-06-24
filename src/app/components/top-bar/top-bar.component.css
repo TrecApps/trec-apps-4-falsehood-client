@@ -1,13 +1,1 @@
 
-
-@media (max-width:641px) {
-    .buffer-bar {
-        height: 50px;
-    }
-}
-
-@media (min-width: 641px) {
-    .buffer-bar {
-        height: 50px;
-    }
-}

@@ -6,7 +6,7 @@ import { AuthService, NavBarComponent, NavClickDetails, NavOption, NavOptionShow
 
 @Component({
   selector: 'app-top-bar',
-  imports: [CommonModule, RouterLink, NavBarComponent],
+  imports: [CommonModule, NavBarComponent],
   templateUrl: './top-bar.component.html',
   styleUrl: './top-bar.component.css'
 })
