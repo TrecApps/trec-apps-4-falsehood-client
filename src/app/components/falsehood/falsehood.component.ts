@@ -2,16 +2,16 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FalsehoodService } from '../../services/falsehood.service';
 import { AuthService, MarkdownPipe, UpSliderComponent } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
-import { BrandInfo, BrandInfoImg } from '../../model/BrandInfo';
+import { BrandInfo, BrandInfoImg, ResourceType } from '../../model/BrandInfo';
 import { FormsModule } from '@angular/forms';
 import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.component';
-import { FalsehoodFull, FalsehoodRet, FalsehoodSeverity } from '../../model/Falsehood';
+import { FalsehoodFull, FalsehoodRet, FalsehoodSeverity, FalsehoodSeverityStr } from '../../model/Falsehood';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent, RouterLink } from '@angular/router';
 
 import { TagInputComponent, MarkdownEditorComponent, StylesService } from "@tc/tc-ngx-general";
 import { BriefComponent } from '../brief/brief.component';
 import { Brief, BriefPurpose } from '../../model/Brief';
-import { FalsehoodStage } from '../../model/Factcheck';
+import { FalsehoodStage, FalsehoodStageStr } from '../../model/Factcheck';
 import ResponseObj from '../../model/ResponseObj';
 import { Subscription } from 'rxjs';
 import { TopBarComponent } from '../top-bar/top-bar.component';
@@ -33,22 +33,44 @@ export class FalsehoodComponent implements OnDestroy{
       userId: '',
       brandId: '',
       authorDisplayName: '',
-      publicFigure: undefined,
+      publicFigure: {
+        id: '',
+        resourceTypePrimary: ResourceType.PUBLIC_FIGURE,
+        resourceTypeSecondary: undefined,
+        resourceTypeTertiary: undefined,
+        name: 'Bill Gates',
+        defaultLanguage: '',
+        brandId: undefined
+      },
       mediaOutlet: undefined,
       institution: undefined,
-      status: FalsehoodStage.SAVED,
+      status: FalsehoodStage.ACCEPTED,
       severity: FalsehoodSeverity.OBJECTIVE,
       factcheck: undefined,
       records: [],
       tags: [],
       notes: '',
-      title: ''
+      title: 'Windows 7'
     }
     this.falsehoodService.currentFalsehood = {
       content: [{ version: 1, contents: "Stuff", made: new Date()}],
       fullMetaData:metadata,
       initContent: undefined,
-      briefs: [],
+      briefs: [{
+        id: '',
+        falsehoodId: '',
+        userId: '',
+        brandId: '',
+        version: 0,
+        displayName: 'Harry Potter',
+        purpose: BriefPurpose.AFFIRM,
+        created: new Date(),
+        content: [{
+          version: 0,
+          made: new Date(),
+          contents: 'This needs to be confirmed'
+        }]
+      }],
       metadata: undefined
     }
   }
@@ -99,6 +121,17 @@ export class FalsehoodComponent implements OnDestroy{
   ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();
   }
+
+  convertSeverity(fs: FalsehoodSeverity): string {
+    return FalsehoodSeverityStr(fs);
+  }
+
+  convertStatus(fs: FalsehoodStage): string {
+    return FalsehoodStageStr(fs);
+  }
+
+  SAVED = FalsehoodStage.SAVED;
+  OBJECTIVE = FalsehoodSeverity.OBJECTIVE;
 
   META = 1;
   CONTENT = 2;
