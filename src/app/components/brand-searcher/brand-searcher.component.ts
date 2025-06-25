@@ -42,7 +42,7 @@ export class BrandSearcherComponent {
   }
 
   getBrandType(brandInfo: BrandInfo) : string {
-    console.log("Brand Passed: ", brandInfo);
+    // console.log("Brand Passed: ", brandInfo);
     if(this.isBrandType(brandInfo, ResourceType.PUBLIC_FIGURE))
       return "Public Figure";
 

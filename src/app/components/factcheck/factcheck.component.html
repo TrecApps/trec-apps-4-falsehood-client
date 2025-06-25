@@ -3,17 +3,17 @@
 
     <form *ngIf="submission" class="container element-container" [ngClass]="'element-container-' + styleService.style">
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Title</label>
             <input class="form-control" type="text" [(ngModel)]="submission.title" name="factcheckTitle">
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Article</label>
             <lib-markdown-editor #subMarkdownEditor [content]="submission.content"></lib-markdown-editor>
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Tags</label>
             <lib-tag-input #subTagEditor [tags]="submission.tags"></lib-tag-input>
         </div>
@@ -26,17 +26,29 @@
     
     <form *ngIf="!submission && factcheckService.currentFactcheck && factcheckService.currentContents" class="container element-container" [ngClass]="'element-container-' + styleService.style">
     
-        <button *ngIf="canEdit()" class="btn btn-primary" (click)="isEditing = !isEditing">{{ isEditing ? 'Stop Editing' : 'Edit'}}</button>
-        <button *ngIf="canReview()" class="btn btn-primary" (click)="isReviewing = !isReviewing">{{ isReviewing ? 'Stop Reviewing' : 'Review'}}</button>
-        <button *ngIf="canAppeal()" class="btn btn-primary" (click)="isAppealing = !isAppealing">{{ isAppealing ? 'Stop Appealing' : 'Appeal'}}</button>
+        <button 
+            *ngIf="canEdit()" 
+            class="btn btn-primary" 
+            (click)="isEditing = !isEditing"
+        >{{ isEditing ? 'Stop Editing' : 'Edit'}}</button>
+        <button 
+            *ngIf="canReview()"
+            class="btn btn-primary" 
+            (click)="isReviewing = !isReviewing"
+        >{{ isReviewing ? 'Stop Reviewing' : 'Review'}}</button>
+        <button 
+            *ngIf="canAppeal()"
+            class="btn btn-primary" 
+            (click)="isAppealing = !isAppealing"
+        >{{ isAppealing ? 'Stop Appealing' : 'Appeal'}}</button>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Title</label>
             <input [disabled]="!isEditing" class="form-control" [(ngModel)]="factcheckService.currentFactcheck.name" (change)="titleChanged = true" name="factcheckTitle">
             <button class="btn btn-warning" *ngIf="isEditing || titleChanged" (click)="patchFactcheck('title')">Update Title</button>
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Article</label>
             <div *ngIf="!isEditing" class="md-preview-side" [innerHtml]="factcheckService.currentContents| markdown"></div>
             <div *ngIf="isEditing" >
@@ -46,7 +58,7 @@
             
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Tags</label>
             <p *ngIf="!isEditing"><span *ngFor="let tag of factcheckService.currentFactcheck.tags"> {{tag }}</span></p>
             <div *ngIf="isEditing">
@@ -58,36 +70,42 @@
     
     </form>
 
-    <div *ngIf="factcheckService.currentFactcheck && isReviewing" class="review-panel">
-        <form class="form">
-            <div class="form-group">
-                <div *ngFor="let act of reviewMode" class="form-check">
+    <lib-up-slider (onClose)="isReviewing = false" [isActive]="(factcheckService.currentFactcheck !== undefined) && isReviewing">
+        <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
+            <!-- <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+                <div *ngFor="let act of re" class="form-check">
                     <input class="form-check-input" type="radio" [(ngModel)]="reviewMode" name="actionSelection" [id]="'actSelect'+ act">
                     <label class="form-check-label" [for]="'actSelect'+ act">
                       {{act}}
                     </label>
                 </div>
-            </div>
-            <div class="form-group">
+            </div> -->
+            <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
                 <label>Comment</label>
                 <textarea [(ngModel)]="reviewComment" class="form-control" name="factcheckReviewComment"></textarea>
             </div>
-            <button class="btn btn-primary" (click)="postReview()" *ngIf="reviewMode.length > 0 && reviewComment.trim().length > 0">Post Review</button>
-            <button class="btn btn-danger" (click)="isReviewing = false">Cancel</button>
+            <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+                <button class="btn btn-primary" (click)="postReview()" [disabled]="reviewMode.length == 0 || reviewComment.trim().length == 0">Post Review</button>
+                <button class="btn btn-danger" (click)="isReviewing = false">Cancel</button>
+            </div>
+            
         </form>
-    </div>
+    </lib-up-slider>
     
-    <div *ngIf="factcheckService.currentFactcheck && isAppealing" class="review-panel">
-        <form class="form">
-            <div class="form-group">
+    <lib-up-slider (onClose)="isAppealing" [isActive]="(factcheckService.currentFactcheck !== undefined) && isAppealing">
+        <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
+            <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
                 <label>Comment</label>
                 <textarea [(ngModel)]="appealComment" class="form-control" name="factcheckAppealComment"></textarea>
             </div>
-    
-            <button class="btn btn-primary" (click)="postAppeal()" *ngIf="appealComment.trim().length > 0">Post Appeal</button>
-            <button class="btn btn-danger" (click)="isAppealing = false">Cancel</button>
+            <div class=" element-item" [ngClass]="'element-item-' + styleService.style">
+                <button class="btn btn-primary" (click)="postAppeal()" [disabled]="appealComment.trim().length == 0">Post Appeal</button>
+                <button class="btn btn-danger" (click)="isAppealing = false">Cancel</button>
+            </div>
+            
         </form>
-    </div>
+    </lib-up-slider>
+
 
 
 

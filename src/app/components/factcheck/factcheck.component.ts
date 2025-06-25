@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FactcheckService } from '../../services/factcheck.service';
 import { FactcheckSubmission, FalsehoodStage } from '../../model/Factcheck';
 import ResponseObj from '../../model/ResponseObj';
-import { AuthService, MarkdownEditorComponent, MarkdownPipe, TagInputComponent, TcUser, StylesService } from '@tc/tc-ngx-general';
+import { AuthService, MarkdownEditorComponent, MarkdownPipe, TagInputComponent, TcUser, StylesService, UpSliderComponent } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TopBarComponent } from '../top-bar/top-bar.component';
@@ -11,7 +11,7 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
   selector: 'app-factcheck',
   imports: [CommonModule, FormsModule, MarkdownPipe, 
     TagInputComponent, MarkdownEditorComponent,  
-    TopBarComponent, ],
+    TopBarComponent, UpSliderComponent],
   templateUrl: './factcheck.component.html',
   styleUrl: './factcheck.component.css'
 })
