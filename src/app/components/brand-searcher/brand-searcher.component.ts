@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrandInfo, BrandInfoImg, ResourceType } from '../../model/BrandInfo';
-import { AuthService } from '@tc/tc-ngx-general';
+import { AuthService, StylesService } from '@tc/tc-ngx-general';
 import { Observable } from 'rxjs';
 import { ResourceService } from '../../services/resource.service';
 import { CommonModule } from '@angular/common';
@@ -30,7 +30,10 @@ export class BrandSearcherComponent {
 
   authService: AuthService;
 
-  constructor(private brandGetService: ResourceService, authService: AuthService){
+  styleService: StylesService;
+
+  constructor(private brandGetService: ResourceService, authService: AuthService, ss: StylesService){
+    this.styleService = ss;
     this.authService = authService;
   }
 
@@ -39,6 +42,7 @@ export class BrandSearcherComponent {
   }
 
   getBrandType(brandInfo: BrandInfo) : string {
+    console.log("Brand Passed: ", brandInfo);
     if(this.isBrandType(brandInfo, ResourceType.PUBLIC_FIGURE))
       return "Public Figure";
 

@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { AuthService, MarkdownEditorComponent, TagInputComponent, TcUser, StylesService } from '@tc/tc-ngx-general';
 import { Subscription } from 'rxjs';
 import { FalsehoodSeverity, FalsehoodSubmission } from '../../model/Falsehood';
-import { BrandInfoImg } from '../../model/BrandInfo';
+import { BrandInfoImg, ResourceType } from '../../model/BrandInfo';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.component';
@@ -39,6 +39,10 @@ export class FalsehoodSubmitComponent implements OnDestroy {
 
   tag: string = "";
 
+  typePublicFigure = "PUBLIC_FIGURE";
+  typeMediaOutlet = "MEDIA_OUTLET";
+  typeInstitution = "INSTITUTION";
+
   checkTagAndContent(): string {
     if(!this.newFalsehood) return "";
     let content = this.newFalsehood?.content;
@@ -73,20 +77,21 @@ export class FalsehoodSubmitComponent implements OnDestroy {
   constructor(private authService: AuthService, private router: Router, styleService: StylesService, private falsehoodService: FalsehoodService){
     this.styleService = styleService;
 
+
     this.routeSubscription = router.events.subscribe((event) => {
       if(event instanceof NavigationEnd){
         let endEvent : NavigationEnd = event;
 
         if(endEvent.url == "/falsehood-submit"){
           // if not authenticated, redirect to Logon page
-          if(!this.authService.hasActiveTokens()){
-            router.navigateByUrl("/Logon");
-            return;
-          }
+          // if(!this.authService.hasActiveTokens()){
+          //   router.navigateByUrl("/Logon");
+          //   return;
+          // }
 
-          if(!this.hasCredibility(this.authService.tcUser)){
-            this.newFalsehood = undefined;
-          } else if(!this.newFalsehood){
+          // if(!this.hasCredibility(this.authService.tcUser)){
+          //   this.newFalsehood = undefined;
+          // } else if(!this.newFalsehood){
             this.newFalsehood = {
               publicFigure: undefined,
               mediaOutlet: undefined,
@@ -99,7 +104,7 @@ export class FalsehoodSubmitComponent implements OnDestroy {
               notes: "",
               title: ""
             }
-          }
+          //}
 
         }
       }
@@ -110,11 +115,32 @@ export class FalsehoodSubmitComponent implements OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
+  canSubmit(): boolean {
+    let brandsProvided = this.publicFigure !== undefined && (
+      this.mediaOutlet !== undefined || this.institution !== undefined
+    );
+
+    let fieldsProvided = Boolean(this.fcMdEditor.getContent().trim()) //&& Boolean(this.newFalsehood?.severity)
+      && Boolean(this.newFalsehood?.title.trim().length);
+      
+    let remProvided = Boolean(this.newFalsehood?.dateMade) || this.newFalsehood?.severity == FalsehoodSeverity.TITLE_OR_SLOGAN;
+    
+    return brandsProvided && fieldsProvided && remProvided;
+  }
+
   enableSelection: boolean = true;
 
   submitFalsehood(doSubmit: boolean){
     this.tag = this.checkTagAndContent();
     if(this.tag.length || !this.newFalsehood) return;
+
+    this.newFalsehood.institution = this.institution?.brandInfo.id;
+    this.newFalsehood.mediaOutlet = this.mediaOutlet?.brandInfo.id;
+    this.newFalsehood.publicFigure = this.publicFigure?.brandInfo.id;
+
+    this.newFalsehood.content = this.fcMdEditor.getContent().toString();
+
+    this.newFalsehood.tags = this.tagComp.getTags();
 
     this.enableSelection = false;
     this.falsehoodService.submitFalsehood(this.newFalsehood, doSubmit).subscribe({

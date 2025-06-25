@@ -3,13 +3,13 @@
 <div class="container" *ngIf="newFalsehood">
 
     <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Title</label>
-            <input class="form-control" [(ngModel)]="newFalsehood.title">
+            <input class="form-control" [(ngModel)]="newFalsehood.title" name="title">
         </div>
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Severity</label>
-            <select class="form-select" [(ngModel)]="newFalsehood.severity">
+            <select class="form-select" [(ngModel)]="newFalsehood.severity" name="severity">
                 <option [value]="severityObjective">Objective</option>
                 <option [value]="severityOppWithheld">Opposing Evidence Withheld</option>
                 <option [value]="severitySuppWithheld">Supporting Evidence Withheld</option>
@@ -19,7 +19,7 @@
                 <option [value]="severitySlogan">Misleading Title/Slogan</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Public Figure<span *ngIf="!publicFigure">: Not Selected</span></label>
             <div class="brand-option"  *ngIf="publicFigure">
                 <div class="brand-img-holder">
@@ -33,10 +33,13 @@
                 </div>
             </div>
 
-            <app-brand-searcher (brandInfoSelected)="publicFigure = $event"></app-brand-searcher>
+            <app-brand-searcher
+                (brandInfoSelected)="publicFigure = $event"
+                [type]="typePublicFigure"
+            ></app-brand-searcher>
 
         </div>
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Media Outlet<span *ngIf="!mediaOutlet">: Not Selected</span></label>
             <div class="brand-option"  *ngIf="mediaOutlet">
                 <div class="brand-img-holder">
@@ -49,9 +52,12 @@
                     (X) <!-- ToDo: Style this -->
                 </div>
             </div>
-            <app-brand-searcher (brandInfoSelected)="mediaOutlet = $event"></app-brand-searcher>
+            <app-brand-searcher 
+                (brandInfoSelected)="mediaOutlet = $event"
+                [type]="typeMediaOutlet"
+            ></app-brand-searcher>
         </div>
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Institution<span *ngIf="!institution">: Not Selected</span></label>
             <div class="brand-option"  *ngIf="institution">
                 <div class="brand-img-holder">
@@ -64,34 +70,37 @@
                     (X) <!-- ToDo: Style this -->
                 </div>
             </div>
-            <app-brand-searcher (brandInfoSelected)="institution = $event"></app-brand-searcher>
+            <app-brand-searcher 
+                (brandInfoSelected)="institution = $event"
+                [type]="typeInstitution"
+            ></app-brand-searcher>
         </div>
 
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Date Made</label>
-            <input class="form-control" [(ngModel)]="newFalsehood.dateMade">
-            <button class="btn btn-danger" (click)="newFalsehood.dateMade = undefined">Remove Date</button>
+            <input class="form-control" type="date" [(ngModel)]="newFalsehood.dateMade" name="dateMade">
+            <button class="btn btn-danger" [disabled]="!newFalsehood.dateMade" (click)="newFalsehood.dateMade = undefined">Remove Date</button>
             <p *ngIf="newFalsehood.severity != severitySlogan">The severity is not set to Title/Slogan - a date must be provided</p>
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Tags</label>
             <p *ngIf="tag.length" class="text-danger">The tag {{ tag }} is not present in your article!</p>
             <lib-tag-input #tagComp [tags]="newFalsehood.tags"></lib-tag-input>
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Content</label>
-            <lib-markdown-editor #fcMdEditor ></lib-markdown-editor>
+            <lib-markdown-editor #fcMdEditor [content]="newFalsehood.content"></lib-markdown-editor>
         </div>
 
-        <div class="form-group">
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Notes</label>
-            <textarea class="form-control" [(ngModel)]="newFalsehood.notes"></textarea>
+            <textarea class="form-control" [(ngModel)]="newFalsehood.notes" name="notes"></textarea>
         </div>
 
-        <button class="btn btn-primary" *ngIf="newFalsehood.title.trim().length">Submit</button>
+        <button class="btn btn-primary" [disabled]="!canSubmit()" >Submit</button>
 
     </form>
 </div>
