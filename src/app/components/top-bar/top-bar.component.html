@@ -1,6 +1,19 @@
-<lib-nav-bar [navOptions]="navOptions" (onNav)="onNavigate($event)" (onLoginRequestEmitter)="prepLogin()">
+<lib-nav-bar 
+    [navOptions]="navOptions" 
+    (onNav)="onNavigate($event)" 
+    (onLoginRequestEmitter)="prepLogin()"
+
+>
     <button class="btn btn-primary" (click)="prepData()">Prep Data</button>
-    
+    <button 
+        class="btn btn-black" 
+        *ngIf="(authService.tcUser?.credibilityRating || 0) >=5"
+        (click)="createFalsehood()"
+    >Create Falsehood</button>
+
+    <profile-ext *ngIf="authService.tcUser">
+        <p><b>Credibility: </b> {{ authService.tcUser.credibilityRating }}</p>
+    </profile-ext>
 </lib-nav-bar>
 
 <div class="buffer-bar"></div>

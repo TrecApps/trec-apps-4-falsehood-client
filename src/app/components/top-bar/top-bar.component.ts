@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, NavBarComponent, NavClickDetails, NavOption, NavOptionShow } from '@tc/tc-ngx-general';
 
@@ -8,7 +8,8 @@ import { AuthService, NavBarComponent, NavClickDetails, NavOption, NavOptionShow
   selector: 'app-top-bar',
   imports: [CommonModule, NavBarComponent],
   templateUrl: './top-bar.component.html',
-  styleUrl: './top-bar.component.css'
+  styleUrl: './top-bar.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TopBarComponent {
 
@@ -57,5 +58,9 @@ export class TopBarComponent {
 
   prepLogin(){
     this.router.navigateByUrl('/Logon')
+  }
+
+  createFalsehood(){
+    this.router.navigateByUrl('/falsehood-submit');
   }
 }

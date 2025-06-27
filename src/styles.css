@@ -13,6 +13,10 @@
     flex-direction: row wrap;
     justify-content: center;
 }
+
+.jumbotron {
+    padding: 4rem 2rem;
+}
 /* 
 .element-container {
     border: solid black 1px;
