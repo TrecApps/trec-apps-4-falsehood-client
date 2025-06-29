@@ -84,14 +84,13 @@ export class FalsehoodSubmitComponent implements OnDestroy {
 
         if(endEvent.url == "/falsehood-submit"){
           // if not authenticated, redirect to Logon page
-          // if(!this.authService.hasActiveTokens()){
-          //   router.navigateByUrl("/Logon");
-          //   return;
-          // }
+          if(!this.authService.hasActiveTokens() || !this.hasCredibility(this.authService.tcUser)){
+            router.navigateByUrl("/Logon");
+            return;
+          }
 
-          // if(!this.hasCredibility(this.authService.tcUser)){
-          //   this.newFalsehood = undefined;
-          // } else if(!this.newFalsehood){
+          if(!this.newFalsehood){
+
             this.newFalsehood = {
               publicFigure: undefined,
               mediaOutlet: undefined,
@@ -104,7 +103,7 @@ export class FalsehoodSubmitComponent implements OnDestroy {
               notes: "",
               title: ""
             }
-          //}
+          }
 
         }
       }

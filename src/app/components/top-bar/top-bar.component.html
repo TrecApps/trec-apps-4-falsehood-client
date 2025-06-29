@@ -2,7 +2,7 @@
     [navOptions]="navOptions" 
     (onNav)="onNavigate($event)" 
     (onLoginRequestEmitter)="prepLogin()"
-
+    
 >
     <button class="btn btn-primary" (click)="prepData()">Prep Data</button>
     <button 
@@ -11,7 +11,7 @@
         (click)="createFalsehood()"
     >Create Falsehood</button>
 
-    <profile-ext *ngIf="authService.tcUser">
+    <profile-ext class="flex-and-center" *ngIf="authService.tcUser">
         <p><b>Credibility: </b> {{ authService.tcUser.credibilityRating }}</p>
     </profile-ext>
 </lib-nav-bar>
