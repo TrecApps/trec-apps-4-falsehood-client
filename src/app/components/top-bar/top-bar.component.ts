@@ -13,9 +13,6 @@ import { AuthService, NavBarComponent, NavClickDetails, NavOption, NavOptionShow
 })
 export class TopBarComponent {
 
-  @Output()
-  dataEmitter = new EventEmitter();
-
   authService: AuthService;
 
   navOptions: NavOption[];
@@ -48,9 +45,7 @@ export class TopBarComponent {
     ]
   }
 
-  prepData() {
-    this.dataEmitter.emit();
-  }
+
 
   onNavigate(details: NavClickDetails){
     this.router.navigateByUrl('/' + (details.navLink || details.title));

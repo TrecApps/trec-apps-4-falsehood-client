@@ -26,56 +26,6 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
 })
 export class FalsehoodComponent implements OnDestroy{
 
-  prepData(){
-    let metadata: FalsehoodRet = {
-      id: '',
-      dateMade: undefined,
-      userId: '',
-      brandId: '',
-      authorDisplayName: '',
-      publicFigure: {
-        id: '',
-        resourceTypePrimary: ResourceType.PUBLIC_FIGURE,
-        resourceTypeSecondary: undefined,
-        resourceTypeTertiary: undefined,
-        name: 'Bill Gates',
-        defaultLanguage: '',
-        brandId: undefined
-      },
-      mediaOutlet: undefined,
-      institution: undefined,
-      status: FalsehoodStage.ACCEPTED,
-      severity: FalsehoodSeverity.OBJECTIVE,
-      factcheck: undefined,
-      records: [],
-      tags: [],
-      notes: '',
-      title: 'Windows 7'
-    }
-    this.falsehoodService.currentFalsehood = {
-      content: [{ version: 1, contents: "Stuff", made: new Date()}],
-      fullMetaData:metadata,
-      initContent: undefined,
-      briefs: [{
-        id: '',
-        falsehoodId: '',
-        userId: '',
-        brandId: '',
-        version: 0,
-        displayName: 'Harry Potter',
-        purpose: BriefPurpose.AFFIRM,
-        created: new Date(),
-        content: [{
-          version: 0,
-          made: new Date(),
-          contents: 'This needs to be confirmed'
-        }]
-      }],
-      metadata: undefined
-    }
-  }
-
-
   falsehoodService: FalsehoodService;
   authService: AuthService;
   styleService: StylesService;

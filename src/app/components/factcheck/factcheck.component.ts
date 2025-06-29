@@ -17,37 +17,6 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
 })
 export class FactcheckComponent {
 
-  prepData(){
-    this.factcheckService.currentFactcheck = {
-      id: '3',
-      name: 'Title3',
-      userId: '1',
-      brandId: undefined,
-      authorDisplayName: 'Steve Rogers',
-      created: new Date(),
-      published: new Date(),
-      status: FalsehoodStage.SAVED,
-      records: [],
-      tags: ["three", "triez", "trois"]
-    }
-
-    this.factcheckService.currentContents = "# Thanos is coming \n The avengers need to assemble";
-
-    this.authService.loginToken = {
-      access_token: "access",
-      refresh_token: "refresh",
-      token_type: "temp",
-      id_token: "id",
-      expires_in: 1000
-    }
-    let user = new TcUser();
-    this.authService.tcUser = user;
-
-    user.id = "1";
-    user.displayName = "John";
-
-  }
-
   factcheckService: FactcheckService;
   styleService: StylesService;
   constructor(factcheckService: FactcheckService,styleService: StylesService, private authService: AuthService) {

@@ -160,8 +160,4 @@ export class FalsehoodSubmitComponent implements OnDestroy {
     
   }
 
-  prepData(){
-    
-  }
-
 }

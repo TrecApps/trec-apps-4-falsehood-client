@@ -4,7 +4,7 @@
     (onLoginRequestEmitter)="prepLogin()"
     
 >
-    <button class="btn btn-primary" (click)="prepData()">Prep Data</button>
+    
     <button 
         class="btn btn-black" 
         *ngIf="(authService.tcUser?.credibilityRating || 0) >=5"
