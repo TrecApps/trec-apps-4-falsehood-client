@@ -10,6 +10,7 @@ import { FalsehoodRet, FalsehoodSeverity, FalsehoodSeverityStr } from '../../mod
 import { Observable } from 'rxjs';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { FalsehoodStage } from '../../model/Factcheck';
+import { Router } from '@angular/router';
 
 function createFalsehoodRet(id: string, userId: string, authorDisplayName: string, tags: string[], title: string) : FalsehoodRet {
   return {
@@ -61,7 +62,7 @@ export class SearchFalsehoodComponent {
 
   searchOption: SearchStatusOption = this.searchOptions[5];
 
-  constructor(fs: FalsehoodService, ss: StylesService, authService: AuthService){
+  constructor(fs: FalsehoodService, ss: StylesService, authService: AuthService, private router: Router){
     this.falsehoodService = fs;
     this.styleService = ss;
     this.authService = authService;
@@ -201,6 +202,11 @@ export class SearchFalsehoodComponent {
   onSelect(falsehood:FalsehoodRet){
     this.falsehoodService.searchFalsehood(falsehood.id, () => {
       // ToDo: Navigate to Falsehood Present 
+      this.router.navigate(["/falsehood"], {
+        queryParams: {
+          id: falsehood.id
+        }
+      })
     });
   }
 

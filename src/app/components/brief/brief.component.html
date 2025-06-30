@@ -2,7 +2,7 @@
 
     <div class="element-item" style="display: flex;" [ngClass]="'element-item-' + styleService.style">
         <p><b>Submitter: </b>{{ brief.displayName }}</p>
-        <button class="btn btn-submit" *ngIf="canEdit() && !editing" (click)="editing = true">Edit</button>
+        <button class="btn btn-primary" *ngIf="canEdit() && !editing" (click)="editing = true">Edit</button>
     </div>
 
     <div class="element-item" [ngClass]="'element-item-' + styleService.style">

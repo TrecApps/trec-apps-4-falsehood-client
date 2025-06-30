@@ -93,12 +93,27 @@ export class FalsehoodComponent implements OnDestroy{
     this.mode = mode;
   }
 
+  // Whether we are the submitter and they can edit
   canSubEdit(): boolean {
-    return false;
+    let curFalsehood = this.falsehoodService.currentFalsehood;
+
+    let currentUser = this.authService.getCurrentUserId();
+    if(!currentUser || !curFalsehood ||
+       currentUser != curFalsehood.fullMetaData?.userId)
+      return false;
+    
+    return curFalsehood.fullMetaData.status == FalsehoodStage.SAVED || curFalsehood.fullMetaData.status == FalsehoodStage.SUBMITTED
+
   }
 
   canEmpEdit(): boolean {
-    return false;
+
+    let curFalsehood = this.falsehoodService.currentFalsehood;
+
+    if(!this.authService.hasPermission('') || !curFalsehood)
+      return false;
+
+    return curFalsehood.fullMetaData?.status == FalsehoodStage.ACCEPTED;
   }
 
   editingPF: boolean = false;
