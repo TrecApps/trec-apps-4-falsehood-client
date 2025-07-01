@@ -31,6 +31,13 @@
                 [disabled]="isAppealing"
                 (click)="isAppealing = true"
             >Appeal</button>
+
+            <button
+                class="btn btn-primary"
+                *ngIf="canSubmit()"
+                [disabled]="isSubmitting"
+                (click)="makeSubmitted()"
+            >Submit</button>
         </div>
 
         <div 

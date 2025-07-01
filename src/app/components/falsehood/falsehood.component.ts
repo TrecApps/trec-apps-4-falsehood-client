@@ -95,6 +95,45 @@ export class FalsehoodComponent implements OnDestroy{
     this.mode = mode;
   }
 
+  isSubmitting: boolean = false;
+
+  makeSubmitted(){
+    if(this.isSubmitting) return;
+    let curFalsehood = this.falsehoodService.currentFalsehood;
+    if(!curFalsehood?.fullMetaData?.id) return;
+
+    this.isSubmitting = true;
+
+    this.falsehoodService.submitSavedFalsehood(curFalsehood.fullMetaData.id).subscribe({
+      next: (vale: ResponseObj) => {
+        this.isSubmitting = false;
+        if(!curFalsehood.fullMetaData) return;
+          curFalsehood.fullMetaData.status = FalsehoodStage.SUBMITTED;
+      
+        // To-Do - toast notification
+      },
+      error: () => {
+        this.isSubmitting = false;
+      }
+    })
+  }
+
+  canSubmit(): boolean {
+    let curFalsehood = this.falsehoodService.currentFalsehood;
+    if(!curFalsehood?.fullMetaData?.id) return false;
+
+    return this.authService.getCurrentUserId() == curFalsehood.fullMetaData.userId && (
+      curFalsehood.fullMetaData.status.toString() == "SAVED" || curFalsehood.fullMetaData.status == FalsehoodStage.SAVED
+    );
+  }
+
+  editStatus = [
+    FalsehoodStage.SAVED,
+    FalsehoodStage.SUBMITTED,
+    "SAVED",
+    "SUBMITTED"
+  ];
+
   // Whether we are the submitter and they can edit
   canSubEdit(): boolean {
     let curFalsehood = this.falsehoodService.currentFalsehood;
@@ -104,7 +143,7 @@ export class FalsehoodComponent implements OnDestroy{
        currentUser != curFalsehood.fullMetaData?.userId)
       return false;
     
-    return curFalsehood.fullMetaData.status == FalsehoodStage.SAVED || curFalsehood.fullMetaData.status == FalsehoodStage.SUBMITTED
+    return this.editStatus.includes(curFalsehood.fullMetaData.status);
 
   }
 
@@ -115,7 +154,7 @@ export class FalsehoodComponent implements OnDestroy{
     if(!this.authService.hasPermission('') || !curFalsehood)
       return false;
 
-    return curFalsehood.fullMetaData?.status == FalsehoodStage.ACCEPTED;
+    return curFalsehood.fullMetaData?.status == FalsehoodStage.ACCEPTED || curFalsehood.fullMetaData?.status.toString() == "ACCEPTED";
   }
 
   editingPF: boolean = false;

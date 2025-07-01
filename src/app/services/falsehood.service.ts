@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService, HttpContentType } from '@tc/tc-ngx-general';
 import { FalsehoodFull, FalsehoodRet, FalsehoodSubmission } from '../model/Falsehood';
@@ -347,6 +347,13 @@ export class FalsehoodService {
     return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Falsehood`, newFalsehood, {
       headers: this.authService.getHttpHeaders2(HttpContentType.JSON),
       params
+    });
+  }
+
+  submitSavedFalsehood(id: string) : Observable<ResponseObj> {
+
+    return this.client.get<ResponseObj>(`${environment.FALSEHOOD_URL}/Falsehood/submit/${id}`, {
+      headers: this.authService.getHttpHeaders2(HttpContentType.NONE)
     });
   }
 }
