@@ -73,10 +73,12 @@ export class FalsehoodComponent implements OnDestroy{
   }
 
   convertSeverity(fs: FalsehoodSeverity): string {
+    if(typeof fs == 'string') return fs;
     return FalsehoodSeverityStr(fs);
   }
 
   convertStatus(fs: FalsehoodStage): string {
+    if(typeof fs == 'string') return fs;
     return FalsehoodStageStr(fs);
   }
 

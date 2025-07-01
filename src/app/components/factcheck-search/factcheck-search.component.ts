@@ -66,6 +66,7 @@ export class FactcheckSearchComponent implements OnDestroy{
   }
 
   convertStage(fs: FalsehoodStage): string {
+    if(typeof fs == 'string') return fs;
     return FalsehoodStageStr(fs);
   }
 

@@ -100,7 +100,8 @@
             <textarea class="form-control" [(ngModel)]="newFalsehood.notes" name="notes"></textarea>
         </div>
 
-        <button class="btn btn-primary" [disabled]="!canSubmit()" >Submit</button>
+        <button class="btn btn-white" [disabled]="!canSubmit()" (click)="submitFalsehood(false)">Save</button>
+        <button class="btn btn-primary" [disabled]="!canSubmit()" (click)="submitFalsehood(true)">Submit</button>
 
     </form>
 </div>

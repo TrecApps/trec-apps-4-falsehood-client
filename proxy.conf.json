@@ -6,7 +6,7 @@
       "changeOrigin": true,
       "pathRewrite": {"^/User-api" : ""}
     },
-    "/Falsehood-api/*" : {
+    "/Falsehood-api/**" : {
       "target": "http://localhost:8082",
       "secure": false,
       "logLevel": "debug",

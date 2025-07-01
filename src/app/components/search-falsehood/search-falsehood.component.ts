@@ -211,6 +211,7 @@ export class SearchFalsehoodComponent {
   }
 
   convertSeverity(fs:FalsehoodSeverity): string {
+    if(typeof fs == 'string') return fs;
     return FalsehoodSeverityStr(fs);
   }
 

@@ -132,7 +132,7 @@
         </div>
 
         <div 
-            *ngfor="let record of falsehoodService.currentFalsehood.fullMetaData.records" 
+            *ngFor="let record of falsehoodService.currentFalsehood.fullMetaData?.records || []" 
             class="element-item" 
             [ngClass]="'element-item-' + styleService.style"
         >

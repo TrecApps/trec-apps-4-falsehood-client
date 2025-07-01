@@ -342,7 +342,7 @@ export class FalsehoodService {
 
   submitFalsehood(newFalsehood: FalsehoodSubmission, doSubmit: boolean): Observable<ResponseObj>{
     
-    let params = new HttpParams().append("submit", doSubmit);
+    let params = new HttpParams().append("doSubmit", doSubmit);
     
     return this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Falsehood`, newFalsehood, {
       headers: this.authService.getHttpHeaders2(HttpContentType.JSON),

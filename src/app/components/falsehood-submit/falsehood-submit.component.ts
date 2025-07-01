@@ -53,7 +53,7 @@ export class FalsehoodSubmitComponent implements OnDestroy {
       .toLowerCase();
 
       for(let tag of this.newFalsehood.tags){
-        if(content.indexOf(tag.toLowerCase()) != -1){
+        if(content.indexOf(tag.toLowerCase()) == -1){
           return tag;
         }
       }
@@ -124,7 +124,7 @@ export class FalsehoodSubmitComponent implements OnDestroy {
       
     let remProvided = Boolean(this.newFalsehood?.dateMade) || this.newFalsehood?.severity == FalsehoodSeverity.TITLE_OR_SLOGAN;
     
-    return brandsProvided && fieldsProvided && remProvided;
+    return (brandsProvided || (this.newFalsehood?.notes?.trim().length || 0) > 0) && fieldsProvided && remProvided && (this.checkTagAndContent().length == 0);
   }
 
   enableSelection: boolean = true;
@@ -147,9 +147,12 @@ export class FalsehoodSubmitComponent implements OnDestroy {
         setTimeout(() => {
           this.enableSelection = true;
           this.newFalsehood = undefined;
-          this.router.navigate(["falsehood"], {queryParams: {
-            id: value.id
-          }})
+
+          this.router.navigate(["/falsehood"], {
+            queryParams: {
+              id: value.id
+            }
+          })
         })
 
       }, error: () => {
