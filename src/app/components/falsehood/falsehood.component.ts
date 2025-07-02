@@ -59,6 +59,8 @@ export class FalsehoodComponent implements OnDestroy{
               this.falsehoodService.searchFalsehood(id).subscribe({
                 next: (value: FalsehoodFull) => {
                   this.severity = value.fullMetaData?.severity || FalsehoodSeverity.OBJECTIVE; 
+
+                  setTimeout(()=> this.content = this.getContent(), 50);
                 }
               })
             }
@@ -259,6 +261,8 @@ export class FalsehoodComponent implements OnDestroy{
     })
   }
 
+  content: string = "";
+
   getContent(): string {
     let contentDetails = this.falsehoodService.currentFalsehood?.content;
     let content = "";
@@ -288,7 +292,7 @@ export class FalsehoodComponent implements OnDestroy{
   editingTags: boolean = false;
   cantUpdateTags: string = "";
   updateTags(){
-    let tags = this.tagComp.getTags();
+    let tags = this.falsehoodService.currentFalsehood?.fullMetaData?.tags || [];
     this.cantUpdateTags = this.checkTagsUpdate(tags).trim();
     if(this.cantUpdateTags.length) return;
 
@@ -319,14 +323,13 @@ export class FalsehoodComponent implements OnDestroy{
 
   editingContent: boolean = false;
   updateContent() {
-    let content = this.fcMdEditor.getContent().toString();
-    this.cantUpdateTags = this.checkContentUpdate(content).trim();
+    this.cantUpdateTags = this.checkContentUpdate(this.content).trim();
     if(this.cantUpdateTags.length) return;
 
-    this.falsehoodService.runPatch("content", content, () => {
+    this.falsehoodService.runPatch("content", this.content, () => {
       if(this.falsehoodService.currentFalsehood){
         this.falsehoodService.currentFalsehood.content.push({
-          contents: content,
+          contents: this.content,
           made: new Date(),
           version: this.falsehoodService.currentFalsehood.content.length
         });
@@ -353,11 +356,12 @@ export class FalsehoodComponent implements OnDestroy{
   purposeSuggest = BriefPurpose.SUGGEST;
   purpose: BriefPurpose = this.purposeAffirm;
 
+  briefContent: string = "";
+
   submitBrief() {
     let id = this.falsehoodService.currentFalsehood?.fullMetaData?.id;
     if(!id) return;
-    let content = this.briefEditor.getContent().toString();
-    this.falsehoodService.submitBrief(id, this.purpose, content).subscribe({
+    this.falsehoodService.submitBrief(id, this.purpose, this.briefContent).subscribe({
       next: (value: ResponseObj) => {
         let brief: Brief = {
           id: value.id || '',
@@ -369,7 +373,7 @@ export class FalsehoodComponent implements OnDestroy{
           purpose: this.purpose,
           created: new Date(),
           content: [{
-            contents: content,
+            contents: this.briefContent,
             version: 1,
             made: new Date()
           }]

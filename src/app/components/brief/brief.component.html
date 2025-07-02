@@ -2,7 +2,7 @@
 
     <div class="element-item" style="display: flex;" [ngClass]="'element-item-' + styleService.style">
         <p><b>Submitter: </b>{{ brief.displayName }}</p>
-        <button class="btn btn-primary" *ngIf="canEdit() && !editing" (click)="editing = true">Edit</button>
+        <button type="button" class="btn btn-primary" *ngIf="canEdit() && !editing" (click)="editing = true">Edit</button>
     </div>
 
     <div class="element-item" [ngClass]="'element-item-' + styleService.style">
@@ -13,10 +13,10 @@
     </div>
 
     <div class="element-item" [ngClass]="'element-item-' + styleService.style">
-        <div *ngIf="!editing" class="md-preview-side" [innerHtml]="getContent() | markdown"></div>
+        <div *ngIf="!editing" class="md-preview-side" [innerHtml]="content | markdown"></div>
 
-        <lib-markdown-editor #editBriefEditor *ngIf="editing" [content]="getContent()"></lib-markdown-editor>
-        <button class="btn btn-light" *ngIf="editing" (click)="updateContent()">Update Tags</button>
+        <lib-markdown-editor #editBriefEditor *ngIf="editing" [(content)]="content"></lib-markdown-editor>
+        <button type="button" class="btn btn-light" *ngIf="editing" (click)="updateContent()">Update Tags</button>
     </div>
 
 </div>

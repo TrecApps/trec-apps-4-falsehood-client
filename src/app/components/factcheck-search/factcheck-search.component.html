@@ -15,7 +15,7 @@
             <input class="form-control" [(ngModel)]="query" name="factcheckQuery">
         </div>
         <div class=" element-item" [ngClass]="'element-item-' + styleService.style">
-            <button class="btn btn-primary" (click)="performSearch()">Search</button>
+            <button type="button" class="btn btn-primary" (click)="performSearch()">Search</button>
         </div>
         
     </form>
@@ -67,14 +67,14 @@
         </table> -->
         <div  class="flex-and-center" style="gap: 10px;margin: 10px;">
             <!--ToDo: Create stylized buttons-->
-            <button class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)">
+            <button type="button" class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)">
                 <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
                 Previous
             </button>
             <div>
                 <p style="margin: auto;">Page {{ currentPage + 1 }}</p>
             </div>
-            <button class="arrow-button" [disabled]="currentPage >= factcheckContainer.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
+            <button type="button" class="arrow-button" [disabled]="currentPage >= factcheckContainer.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
                 Next
                 <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%" style="transform: rotate(180deg);"/>
             </button>

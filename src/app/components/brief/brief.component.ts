@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Brief, BriefPurpose } from '../../model/Brief';
 import { AuthService, MarkdownEditorComponent, MarkdownPipe, StylesService } from '@tc/tc-ngx-general';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import ResponseObj from '../../model/ResponseObj';
   templateUrl: './brief.component.html',
   styleUrl: './brief.component.css'
 })
-export class BriefComponent {
+export class BriefComponent implements OnInit {
 
   @Input()
   brief: Brief = {
@@ -37,6 +37,9 @@ export class BriefComponent {
   constructor(private authService: AuthService,styleService: StylesService, private falsehoodService: FalsehoodService){
     this.styleService = styleService;
   }
+  ngOnInit(): void {
+    this.content = this.getContent();
+  }
 
   canEdit(): boolean {
     if(!this.authService.hasActiveTokens()) return false;
@@ -49,6 +52,8 @@ export class BriefComponent {
 
   editing: boolean = false;
 
+  content: string = "";
+
   getContent(): string {
     return this.brief.content.length > 0 ? (
       this.brief.content[this.brief.content.length - 1].contents
@@ -58,10 +63,10 @@ export class BriefComponent {
 
   updateContent( ) {
     
-    this.falsehoodService.editBrief(this.falsehoodId, this.brief.id, this.editBriefEditor.getContent().toString()).subscribe({
+    this.falsehoodService.editBrief(this.falsehoodId, this.brief.id, this.content).subscribe({
       next: (value: ResponseObj) => {
         this.brief.content.push({
-          contents: this.editBriefEditor.getContent().toString(),
+          contents: this.content,
           made: new Date(),
           version: this.brief.content.length + 1
         });

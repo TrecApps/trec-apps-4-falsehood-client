@@ -115,11 +115,13 @@ export class FalsehoodSubmitComponent implements OnDestroy {
   }
 
   canSubmit(): boolean {
+    if(!this.newFalsehood) return false;
+
     let brandsProvided = this.publicFigure !== undefined && (
       this.mediaOutlet !== undefined || this.institution !== undefined
     );
 
-    let fieldsProvided = Boolean(this.fcMdEditor.getContent().trim()) //&& Boolean(this.newFalsehood?.severity)
+    let fieldsProvided = Boolean(this.newFalsehood.content.trim()) //&& Boolean(this.newFalsehood?.severity)
       && Boolean(this.newFalsehood?.title.trim().length);
       
     let remProvided = Boolean(this.newFalsehood?.dateMade) || this.newFalsehood?.severity == FalsehoodSeverity.TITLE_OR_SLOGAN;
@@ -137,9 +139,9 @@ export class FalsehoodSubmitComponent implements OnDestroy {
     this.newFalsehood.mediaOutlet = this.mediaOutlet?.brandInfo.id;
     this.newFalsehood.publicFigure = this.publicFigure?.brandInfo.id;
 
-    this.newFalsehood.content = this.fcMdEditor.getContent().toString();
+    //this.newFalsehood.content = this.fcMdEditor.getContent().toString();
 
-    this.newFalsehood.tags = this.tagComp.getTags();
+    // this.newFalsehood.tags = this.tagComp.getTags();
 
     this.enableSelection = false;
     this.falsehoodService.submitFalsehood(this.newFalsehood, doSubmit).subscribe({

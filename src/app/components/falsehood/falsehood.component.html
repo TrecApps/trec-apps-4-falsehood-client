@@ -2,7 +2,7 @@
 <div class="container" *ngIf="falsehoodService.currentFalsehood">
 
     <nav class="rs-nav-bar navbar navbar-expand-lg">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#factcheckNavCollapse" aria-controls="factcheckNavCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <button type="button" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#factcheckNavCollapse" aria-controls="factcheckNavCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <!-- Common Across the entire app -->
@@ -18,21 +18,21 @@
     <form *ngIf="mode == META" class="form element-container" [ngClass]="'element-container-' + styleService.style">
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label" style="width: 100%; text-align: center">Status: {{ convertStatus(falsehoodService.currentFalsehood.fullMetaData?.status || SAVED)}}</label>
-            <button 
+            <button type="button" 
                 class="btn btn-primary"     
                 *ngIf="canReview()"
                 [disabled]="isReviewing"
                 (click)="prepReview()"
             >Review</button>
             
-            <button 
+            <button type="button" 
                 class="btn btn-primary" 
                 *ngIf="canAppeal()"
                 [disabled]="isAppealing"
                 (click)="isAppealing = true"
             >Appeal</button>
 
-            <button
+            <button type="button"
                 class="btn btn-primary"
                 *ngIf="canSubmit()"
                 [disabled]="isSubmitting"
@@ -52,7 +52,7 @@
                 (ngModelChange)="titleChanged = true"
                 name="title"
             >
-            <button class="btn btn-primary" *ngIf="titleChanged && falsehoodService.currentFalsehood.fullMetaData.title.trim().length" (click)="onUpdateTitle()"
+            <button type="button" class="btn btn-primary" *ngIf="titleChanged && falsehoodService.currentFalsehood.fullMetaData.title.trim().length" (click)="onUpdateTitle()"
                 [disabled]="titleUpdating">Update Title</button>
         </div>
 
@@ -61,10 +61,10 @@
             <label>Public Figure</label>
             <p>{{ falsehoodService.currentFalsehood.fullMetaData?.publicFigure?.name || 'N.A.' }}</p>
             <div *ngIf="canSubEdit() || canEmpEdit()">
-                <button class="btn btn-primary" (click)="editingPF = true" *ngIf="!editingPF">Edit Public Figure</button>
-                <button class="btn btn-danger" (click)="editingPF = false" *ngIf="editingPF">Edit Public Figure</button>
+                <button type="button" class="btn btn-primary" (click)="editingPF = true" *ngIf="!editingPF">Edit Public Figure</button>
+                <button type="button" class="btn btn-danger" (click)="editingPF = false" *ngIf="editingPF">Edit Public Figure</button>
                 <app-brand-searcher *ngIf="editingPF" (brandInfoSelected)="publicFigure = $event"></app-brand-searcher>
-                <button class="btn btn-light" *ngIf="changedPf()" (click)="updatePublicFigure()">Update Public Figure</button>
+                <button type="button" class="btn btn-light" *ngIf="changedPf()" (click)="updatePublicFigure()">Update Public Figure</button>
             </div>
 
         </div>
@@ -73,10 +73,10 @@
             <label>Media Outlet</label>
             <p>{{ falsehoodService.currentFalsehood.fullMetaData?.mediaOutlet?.name || 'N.A.' }}</p>
             <div *ngIf="canSubEdit() || canEmpEdit()">
-                <button class="btn btn-primary" (click)="editingMO = true" *ngIf="!editingMO">Edit Media Outlet</button>
-                <button class="btn btn-danger" (click)="editingMO = false" *ngIf="editingMO">Edit Media Outlet</button>
+                <button type="button" class="btn btn-primary" (click)="editingMO = true" *ngIf="!editingMO">Edit Media Outlet</button>
+                <button type="button" class="btn btn-danger" (click)="editingMO = false" *ngIf="editingMO">Edit Media Outlet</button>
                 <app-brand-searcher *ngIf="editingMO" (brandInfoSelected)="mediaOutlet = $event"></app-brand-searcher>
-                <button class="btn btn-light" *ngIf="changedMo()" (click)="updateMediaOutlet()">Update Media Outlet</button>
+                <button type="button" class="btn btn-light" *ngIf="changedMo()" (click)="updateMediaOutlet()">Update Media Outlet</button>
             </div>
 
         </div>
@@ -85,10 +85,10 @@
             <label>Institution</label>
             <p>{{ falsehoodService.currentFalsehood.fullMetaData?.institution?.name || 'N.A.' }}</p>
             <div *ngIf="canSubEdit() || canEmpEdit()">
-                <button class="btn btn-primary" (click)="editingIN = true" *ngIf="!editingIN">Edit Institution</button>
-                <button class="btn btn-danger" (click)="editingIN = false" *ngIf="editingIN">Edit Institution</button>
+                <button type="button" class="btn btn-primary" (click)="editingIN = true" *ngIf="!editingIN">Edit Institution</button>
+                <button type="button" class="btn btn-danger" (click)="editingIN = false" *ngIf="editingIN">Edit Institution</button>
                 <app-brand-searcher *ngIf="editingIN" (brandInfoSelected)="institution = $event"></app-brand-searcher>
-                <button class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>
+                <button type="button" class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>
             </div>
 
         </div>
@@ -96,12 +96,12 @@
             <label>Date Made</label>
             <p>{{ falsehoodService.currentFalsehood.fullMetaData?.dateMade }}</p>
             <div *ngIf="canSubEdit()" >
-                <button class="btn btn-primary" (click)="editingDate = true" *ngIf="!editingDate">Edit Date</button>
-                <button class="btn btn-danger" (click)="editingDate = false" *ngIf="editingDate">Edit Date</button>
+                <button type="button" class="btn btn-primary" (click)="editingDate = true" *ngIf="!editingDate">Edit Date</button>
+                <button type="button" class="btn btn-danger" (click)="editingDate = false" *ngIf="editingDate">Edit Date</button>
                 <input class="form-check-input" *ngIf="editingDate" [(ngModel)]="useDate" name="useDate">
                 <label class="form-check-label">Use Date</label>
                 <input type="date" *ngIf="editingDate && useDate" [(ngModel)]="date" name="date">
-                <button class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>
+                <button type="button" class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>
             </div>
         </div>
 
@@ -110,8 +110,8 @@
             <p>{{ convertSeverity(falsehoodService.currentFalsehood.fullMetaData?.severity || OBJECTIVE)}}</p>
             
             <div *ngIf="canSubEdit() || canEmpEdit()">
-                <button class="btn btn-primary" (click)="editingSeverity = true" *ngIf="!editingSeverity">Edit Severity</button>
-                <button class="btn btn-danger" (click)="editingSeverity = false" *ngIf="editingSeverity">Edit Severity</button>
+                <button type="button" class="btn btn-primary" (click)="editingSeverity = true" *ngIf="!editingSeverity">Edit Severity</button>
+                <button type="button" class="btn btn-danger" (click)="editingSeverity = false" *ngIf="editingSeverity">Edit Severity</button>
                 <select class="form-select" [(ngModel)]="severity" name="severity">
                     <option [value]="severityObjective">Objective</option>
                     <option [value]="severityOppWithheld">Opposing Evidence Withheld</option>
@@ -121,7 +121,7 @@
                     <option [value]="severityNarrative">Misleading Narrative</option>
                     <option [value]="severitySlogan">Misleading Title/Slogan</option>
                 </select>
-                <button class="btn btn-light" *ngIf="falsehoodService.currentFalsehood.fullMetaData?.severity !== severity" (click)="updateInstitution()">Update Institution</button>
+                <button type="button" class="btn btn-light" *ngIf="falsehoodService.currentFalsehood.fullMetaData?.severity !== severity" (click)="updateInstitution()">Update Institution</button>
             </div>
         </div>
 
@@ -129,12 +129,12 @@
             <label>Tags</label>
             <p><span *ngFor="let tag of falsehoodService.currentFalsehood.fullMetaData?.tags"> {{tag }}</span></p>
             
-            <div *ngIf="canSubEdit()">
-                <button class="btn btn-primary" (click)="editingTags = true" *ngIf="!editingTags">Edit Tags</button>
-                <button class="btn btn-danger" (click)="editingTags = false" *ngIf="editingTags">Edit Tags</button>
-                <lib-tag-input  #tagComp [tags]="falsehoodService.currentFalsehood.fullMetaData?.tags || []"></lib-tag-input>
+            <div *ngIf="falsehoodService.currentFalsehood.fullMetaData && canSubEdit()">
+                <button type="button" class="btn btn-primary" (click)="editingTags = true" *ngIf="!editingTags">Edit Tags</button>
+                <button type="button" class="btn btn-danger" (click)="editingTags = false" *ngIf="editingTags">Edit Tags</button>
+                <lib-tag-input  #tagComp [(tags)]="falsehoodService.currentFalsehood.fullMetaData.tags"></lib-tag-input>
                 <p class="text-danger" *ngIf="cantUpdateTags.length">Each tag must be found within the contents of the Falsehood. {{cantUpdateTags}} was not found</p>
-                <button class="btn btn-light" (click)="updateTags()">Update Tags</button>
+                <button type="button" class="btn btn-light" (click)="updateTags()">Update Tags</button>
             </div>
         </div>
 
@@ -153,19 +153,19 @@
     <form *ngIf="mode == CONTENT" class="form element-container" [ngClass]="'element-container-' + styleService.style">
         <h3>Explaination</h3>
         <div *ngIf="canSubEdit()">
-            <button class="btn btn-primary" (click)="editingContent = true" *ngIf="!editingContent">Edit Tags</button>
-            <button class="btn btn-danger" (click)="editingContent = false" *ngIf="editingContent">Edit Tags</button>
+            <button type="button" class="btn btn-primary" (click)="editingContent = true" *ngIf="!editingContent">Edit Tags</button>
+            <button type="button" class="btn btn-danger" (click)="editingContent = false" *ngIf="editingContent">Edit Tags</button>
 
-            <lib-markdown-editor #fcMdEditor *ngIf="editingContent" [content]="getContent()"></lib-markdown-editor>
+            <lib-markdown-editor #fcMdEditor *ngIf="editingContent" [(content)]="content"></lib-markdown-editor>
             <p class="text-danger" *ngIf="cantUpdateTags.length">Each tag must be found within the contents of the Falsehood. {{cantUpdateTags}} was not found</p>
-            <button class="btn btn-light" *ngIf="editingContent" (click)="updateContent()">Update Tags</button>
+            <button type="button" class="btn btn-light" *ngIf="editingContent" (click)="updateContent()">Update Tags</button>
         </div>
-        <div *ngIf="!editingContent" class="md-preview-side" [innerHtml]="getContent() | markdown"></div>
+        <div *ngIf="!editingContent" class="md-preview-side" [innerHtml]="content | markdown"></div>
     </form>
 
     <form *ngIf="mode == BRIEFS">
 
-        <button class="btn btn-primary" *ngIf="canAddbrief() && !addingBrief && isAccepted()" (click)="addingBrief = true">Submit Brief</button>
+        <button type="button" class="btn btn-primary" *ngIf="canAddbrief() && !addingBrief && isAccepted()" (click)="addingBrief = true; briefContent = ''">Submit Brief</button>
         <div *ngIf="addingBrief">
             <select class="form-select" [(ngModel)]="purpose" name="purpose">
                 <option [value]="purposeAffirm">Affirm (you support Confirmation)</option>
@@ -173,9 +173,9 @@
                 <option [value]="purposeSuggest">Suggest</option>
             </select>
 
-            <lib-markdown-editor #briefEditor [content]="getContent()"></lib-markdown-editor>
-            <button class="btn btn-danger" (click)="addingBrief = false">Cancel</button>
-            <button class="btn btn-primary" (click)="submitBrief()">Submit</button>
+            <lib-markdown-editor #briefEditor [(content)]="briefContent"></lib-markdown-editor>
+            <button type="button" class="btn btn-danger" (click)="addingBrief = false">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="submitBrief()">Submit</button>
         </div>
 
         <hr>
@@ -233,8 +233,8 @@
                 style="margin-left: 10px"
             >
         </div>
-        <button class="btn btn-primary" (click)="submitReview()" [disabled]="reviewOption.length == 0 || reviewComent.trim().length == 0">Post Review</button>
-        <button class="btn btn-danger" (click)="isReviewing = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="submitReview()" [disabled]="reviewOption.length == 0 || reviewComent.trim().length == 0">Post Review</button>
+        <button type="button" class="btn btn-danger" (click)="isReviewing = false">Cancel</button>
     </form>
 </lib-up-slider>
 
@@ -253,8 +253,8 @@
             ></textarea>
         </div>
 
-        <button class="btn btn-primary" (click)="submitAppeal()" [disabled]="appealComment.trim().length == 0">Post Appeal</button>
-        <button class="btn btn-danger" (click)="isAppealing = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="submitAppeal()" [disabled]="appealComment.trim().length == 0">Post Appeal</button>
+        <button type="button" class="btn btn-danger" (click)="isAppealing = false">Cancel</button>
     </form>
 </lib-up-slider>
 

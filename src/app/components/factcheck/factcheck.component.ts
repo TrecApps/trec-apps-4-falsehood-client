@@ -118,14 +118,14 @@ export class FactcheckComponent {
         value = this.factcheckService.currentFactcheck.name;
         break;
       case "content":
-        this.tag = this.checkTagAndArticle(this.editTagEditor.getTags(), this.editMardownEditor.getContent().toString());
+        this.tag = this.checkTagAndArticle(this.submission?.tags || [], this.submission?.content || "");
         if(this.tag.length) return;
-        value = this.editMardownEditor.getContent().toString();
+        value = this.submission?.content || "";
         break;
       case "tags":
-        this.tag = this.checkTagAndArticle(this.editTagEditor.getTags(), this.editMardownEditor.getContent().toString());
+        this.tag = this.checkTagAndArticle(this.submission?.tags || [], this.submission?.content || "");
         if(this.tag.length) return;
-        value = this.editTagEditor.getTags().join(";");
+        value = (this.submission?.tags || []).join(";");
         break;
       default: return;
     }

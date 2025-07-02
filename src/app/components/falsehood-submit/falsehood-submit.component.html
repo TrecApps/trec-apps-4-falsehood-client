@@ -80,19 +80,19 @@
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Date Made</label>
             <input class="form-control" type="date" [(ngModel)]="newFalsehood.dateMade" name="dateMade">
-            <button class="btn btn-danger" [disabled]="!newFalsehood.dateMade" (click)="newFalsehood.dateMade = undefined">Remove Date</button>
+            <button type="button" class="btn btn-danger" [disabled]="!newFalsehood.dateMade" (click)="newFalsehood.dateMade = undefined">Remove Date</button>
             <p *ngIf="newFalsehood.severity != severitySlogan">The severity is not set to Title/Slogan - a date must be provided</p>
         </div>
 
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Tags</label>
             <p *ngIf="tag.length" class="text-danger">The tag {{ tag }} is not present in your article!</p>
-            <lib-tag-input #tagComp [tags]="newFalsehood.tags"></lib-tag-input>
+            <lib-tag-input #tagComp [(tags)]="newFalsehood.tags"></lib-tag-input>
         </div>
 
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
             <label class="form-label">Content</label>
-            <lib-markdown-editor #fcMdEditor [content]="newFalsehood.content"></lib-markdown-editor>
+            <lib-markdown-editor #fcMdEditor [(content)]="newFalsehood.content"></lib-markdown-editor>
         </div>
 
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
@@ -100,8 +100,8 @@
             <textarea class="form-control" [(ngModel)]="newFalsehood.notes" name="notes"></textarea>
         </div>
 
-        <button class="btn btn-white" [disabled]="!canSubmit()" (click)="submitFalsehood(false)">Save</button>
-        <button class="btn btn-primary" [disabled]="!canSubmit()" (click)="submitFalsehood(true)">Submit</button>
+        <button type="button" class="btn btn-white" [disabled]="!canSubmit()" (click)="submitFalsehood(false)">Save</button>
+        <button type="button" class="btn btn-primary" [disabled]="!canSubmit()" (click)="submitFalsehood(true)">Submit</button>
 
     </form>
 </div>

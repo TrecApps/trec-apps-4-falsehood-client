@@ -46,8 +46,8 @@
         </div>
 
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-            <button class="btn btn-primary" *ngIf="currentFalsehoodList.length == 0" (click)="performSearch()">Search</button>
-            <button class="btn btn-warning" (click)="clearFields()">Clear Fields</button>
+            <button type="button" class="btn btn-primary" *ngIf="currentFalsehoodList.length == 0" (click)="performSearch()">Search</button>
+            <button type="button" class="btn btn-warning" (click)="clearFields()">Clear Fields</button>
         </div>
     </form>
     <div *ngIf="currentFalsehoodList.length" class="search-container">
@@ -86,12 +86,12 @@
 
         <div class="flex-and-center" style="gap: 10px;margin: 10px;">
             <!--ToDo: Create stylized buttons-->
-            <button class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)"><img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
+            <button type="button" class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)"><img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
                 Previous</button>
             <div>
                 <p style="margin: auto;">Page {{ currentPage + 1 }}</p>
             </div>
-            <button class="arrow-button" [disabled]="currentPage >= falsehoodCollection.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
+            <button type="button" class="arrow-button" [disabled]="currentPage >= falsehoodCollection.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
                 Next
                 <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%" style="transform: rotate(180deg);"/>
             </button>
