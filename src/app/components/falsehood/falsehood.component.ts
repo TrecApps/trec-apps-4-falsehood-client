@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { BrandInfo, BrandInfoImg, ResourceType } from '../../model/BrandInfo';
 import { FormsModule } from '@angular/forms';
 import { BrandSearcherComponent } from '../brand-searcher/brand-searcher.component';
-import { FalsehoodFull, FalsehoodRet, FalsehoodSeverity, FalsehoodSeverityStr } from '../../model/Falsehood';
+import { FalsehoodFull, FalsehoodRet, FalsehoodSeverity, FalsehoodSeverityStr, getSeverityValue } from '../../model/Falsehood';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent, RouterLink } from '@angular/router';
 
 import { TagInputComponent, MarkdownEditorComponent, StylesService } from "@tc/tc-ngx-general";
@@ -41,6 +41,10 @@ export class FalsehoodComponent implements OnDestroy{
   @ViewChild("briefEditor")
   briefEditor: MarkdownEditorComponent = new MarkdownEditorComponent();
 
+  typePublicFigure = "PUBLIC_FIGURE";
+  typeMediaOutlet = "MEDIA_OUTLET";
+  typeInstitution = "INSTITUTION";
+
   constructor(falsehoodService: FalsehoodService, authService: AuthService, router: Router,private route: ActivatedRoute, styleService: StylesService){
     this.falsehoodService = falsehoodService;
     this.authService = authService;
@@ -51,14 +55,43 @@ export class FalsehoodComponent implements OnDestroy{
       if(event instanceof NavigationEnd){
         let endEvent : NavigationEnd = event;
 
-        if(endEvent.url == "/Falsehood"){
+        if(endEvent.url == "/falsehood" || endEvent.url.startsWith("/falsehood?")){
           
+          this.editingContent = this.editingDate = this.editingIN =
+            this.editingMO = this.editingPF = this.editingSeverity = this.editingTags = false;
+
           if(this.route.snapshot.queryParamMap.has("id")){
             let id = this.route.snapshot.queryParamMap.get("id");
             if(id){
               this.falsehoodService.searchFalsehood(id).subscribe({
                 next: (value: FalsehoodFull) => {
-                  this.severity = value.fullMetaData?.severity || FalsehoodSeverity.OBJECTIVE; 
+                  this.severity = getSeverityValue(value.fullMetaData?.severity, FalsehoodSeverity.OBJECTIVE); 
+
+                  this.severityChanged = false;
+
+                  if(value.fullMetaData?.publicFigure){
+                    this.publicFigure = {
+                      imgData: "",
+                      brandInfo:value.fullMetaData.publicFigure
+                    }
+                  }
+
+                  if(value.fullMetaData?.mediaOutlet) {
+                    this.mediaOutlet = {
+                      imgData: "",
+                      brandInfo:value.fullMetaData.mediaOutlet
+                    }
+                  }
+
+                  if(value.fullMetaData?.institution) {
+                    this.institution = {
+                      imgData: "",
+                      brandInfo:value.fullMetaData.institution
+                    }
+                  }
+
+                  this.date = value.fullMetaData?.dateMade;
+                  this.curTags = value.fullMetaData?.tags || [];
 
                   setTimeout(()=> this.content = this.getContent(), 50);
                 }
@@ -124,7 +157,7 @@ export class FalsehoodComponent implements OnDestroy{
     let curFalsehood = this.falsehoodService.currentFalsehood;
     if(!curFalsehood?.fullMetaData?.id) return false;
 
-    return this.authService.getCurrentUserId() == curFalsehood.fullMetaData.userId && (
+    return this.authService.getCurrentUserId() == `User-${curFalsehood.fullMetaData.userId}` && (
       curFalsehood.fullMetaData.status.toString() == "SAVED" || curFalsehood.fullMetaData.status == FalsehoodStage.SAVED
     );
   }
@@ -141,8 +174,8 @@ export class FalsehoodComponent implements OnDestroy{
     let curFalsehood = this.falsehoodService.currentFalsehood;
 
     let currentUser = this.authService.getCurrentUserId();
-    if(!currentUser || !curFalsehood ||
-       currentUser != curFalsehood.fullMetaData?.userId)
+    if(!currentUser || !curFalsehood || !curFalsehood.fullMetaData ||
+       currentUser != `User-${curFalsehood.fullMetaData?.userId}`)
       return false;
     
     return this.editStatus.includes(curFalsehood.fullMetaData.status);
@@ -172,8 +205,11 @@ export class FalsehoodComponent implements OnDestroy{
   }
   updatePublicFigure(){
     this.falsehoodService.runPatch("publicFigure", this.publicFigure?.brandInfo.id || "", () => {
-      if(this.falsehoodService.currentFalsehood?.fullMetaData)
+      if(this.falsehoodService.currentFalsehood?.fullMetaData?.publicFigure){
         this.falsehoodService.currentFalsehood.fullMetaData.publicFigure = this.publicFigure?.brandInfo;
+      }
+
+      this.editingPF = false;
     })
   }
 
@@ -190,8 +226,10 @@ export class FalsehoodComponent implements OnDestroy{
   }
   updateMediaOutlet(){
     this.falsehoodService.runPatch("mediaOutlet", this.mediaOutlet?.brandInfo.id || "", () => {
-      if(this.falsehoodService.currentFalsehood?.fullMetaData)
+      if(this.falsehoodService.currentFalsehood?.fullMetaData?.mediaOutlet){
         this.falsehoodService.currentFalsehood.fullMetaData.mediaOutlet = this.mediaOutlet?.brandInfo;
+      }
+      this.editingMO = false;
     })
   }
 
@@ -208,16 +246,18 @@ export class FalsehoodComponent implements OnDestroy{
   }
   updateInstitution(){
     this.falsehoodService.runPatch("institution", this.institution?.brandInfo.id || "", () => {
-      if(this.falsehoodService.currentFalsehood?.fullMetaData)
+      if(this.falsehoodService.currentFalsehood?.fullMetaData?.institution){
         this.falsehoodService.currentFalsehood.fullMetaData.institution = this.institution?.brandInfo;
+      }
+      this.editingIN = false;
     })
   }
 
   editingDate: boolean = false;
-  date: Date = new Date();
+  date: Date | undefined;
   useDate: boolean = true;
   changedDate(): boolean {
-    if(!this.falsehoodService.currentFalsehood) return false;
+    if(!this.falsehoodService.currentFalsehood) return !this.date == false;
     let i = this.falsehoodService.currentFalsehood.fullMetaData?.dateMade;
     if(i){
       return i != this.date;
@@ -225,20 +265,25 @@ export class FalsehoodComponent implements OnDestroy{
     return this.useDate;
   }
   updateDate(){
-    this.falsehoodService.runPatch("dateMade", this.useDate ? this.date.toUTCString() : undefined, () => {
+    this.falsehoodService.runPatch("dateMade", this.useDate && this.date ? new Date(this.date.toString()).toUTCString() : undefined, () => {
       if(this.falsehoodService.currentFalsehood?.fullMetaData)
         this.falsehoodService.currentFalsehood.fullMetaData.dateMade = this.useDate ? this.date : undefined;
+
+      this.editingDate = false;
     })
   }
 
   titleChanged: boolean = false;
   titleUpdating: boolean = false;
+//  curTitle: string = "";
   onUpdateTitle(){
     if(this.titleUpdating) return;
     this.titleUpdating = true;
     this.falsehoodService.runPatch("title", this.falsehoodService.currentFalsehood?.fullMetaData?.title, (result: boolean) => {
-      this.titleChanged = result;
+      this.titleChanged = !result;
       this.titleUpdating = false;
+      // if(this.falsehoodService.currentFalsehood?.fullMetaData?.title)
+      //   this.curTitle = this.falsehoodService.currentFalsehood?.fullMetaData.title;
     })
   }
 
@@ -254,10 +299,16 @@ export class FalsehoodComponent implements OnDestroy{
 
   editingSeverity: boolean = false;
   severity: FalsehoodSeverity = FalsehoodSeverity.OBJECTIVE;
+
+  severityChanged: boolean = false;
+
   updateSeverity(){
-    this.falsehoodService.runPatch("severity", this.severity.toString(), () => {
+    let severityStr = this.convertSeverity(this.severity);
+    this.falsehoodService.runPatch("severity", severityStr, (result: boolean) => {
       if(this.falsehoodService.currentFalsehood?.fullMetaData)
-        this.falsehoodService.currentFalsehood.fullMetaData.severity = this.severity;
+        this.falsehoodService.currentFalsehood.fullMetaData.severity = getSeverityValue(severityStr, this.severity);
+      this.editingSeverity = false;
+      this.severityChanged = !result;
     })
   }
 
@@ -281,7 +332,7 @@ export class FalsehoodComponent implements OnDestroy{
       .toLowerCase();
 
       for(let tag of tags){
-        if(content.indexOf(tag.toLowerCase()) != -1){
+        if(content.indexOf(tag.toLowerCase()) == -1){
           return tag;
         }
       }
@@ -291,6 +342,7 @@ export class FalsehoodComponent implements OnDestroy{
 
   editingTags: boolean = false;
   cantUpdateTags: string = "";
+  curTags: string[] = [];
   updateTags(){
     let tags = this.falsehoodService.currentFalsehood?.fullMetaData?.tags || [];
     this.cantUpdateTags = this.checkTagsUpdate(tags).trim();
@@ -300,6 +352,7 @@ export class FalsehoodComponent implements OnDestroy{
       if(this.falsehoodService.currentFalsehood?.fullMetaData)
         this.falsehoodService.currentFalsehood.fullMetaData.tags = tags;
       this.editingTags = false;
+      this.curTags = tags;
     })
   }
 

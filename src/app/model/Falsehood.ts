@@ -12,14 +12,14 @@ export interface FalsehoodPatch {
 
 
 export enum FalsehoodSeverity {
-    OBJECTIVE,                          // The given claim is objectively false
-    OPPOSING_EVIDENCE_WITHHELD,         // The claim is undermined by evidence hidden from the audience/readers
-    SUPPORTING_EVIDENCE_WITHHELD,       // There was supporting evidence, but it was withheld
+    OBJECTIVE = "OBJECTIVE",                          // The given claim is objectively false
+    OPPOSING_EVIDENCE_WITHHELD = "OPPOSING_EVIDENCE_WITHHELD",         // The claim is undermined by evidence hidden from the audience/readers
+    SUPPORTING_EVIDENCE_WITHHELD = "SUPPORTING_EVIDENCE_WITHHELD",       // There was supporting evidence, but it was withheld
                                                 // (possibly to mislead the services contributors)
-    SUBJECTIVE,                         // The given claim uses a standard not consistently used by the person or organization served
-    NARRATIVE_ISSUE,                    // (MISC - avoid until clear guidance is set)
-    FAULTY_LOGIC,                       // The logic used to support a narrative is faulty and can be undermined with solid logic
-    TITLE_OR_SLOGAN                     // A chronic falsehood where an entity engages in false advertising or name
+    SUBJECTIVE = "SUBJECTIVE",                         // The given claim uses a standard not consistently used by the person or organization served
+    NARRATIVE_ISSUE = "NARRATIVE_ISSUE",                    // (MISC - avoid until clear guidance is set)
+    FAULTY_LOGIC = "FAULTY_LOGIC",                       // The logic used to support a narrative is faulty and can be undermined with solid logic
+    TITLE_OR_SLOGAN = "TITLE_OR_SLOGAN"                    // A chronic falsehood where an entity engages in false advertising or name
 }
 
 export function FalsehoodSeverityStr(fs: FalsehoodSeverity): string {
@@ -28,10 +28,35 @@ export function FalsehoodSeverityStr(fs: FalsehoodSeverity): string {
         case FalsehoodSeverity.OPPOSING_EVIDENCE_WITHHELD: return "Withheld Opposing Evidence";
         case FalsehoodSeverity.SUPPORTING_EVIDENCE_WITHHELD: return "Withheld Supporting Evidence";
         case FalsehoodSeverity.SUBJECTIVE: return "Subjective";
-        case FalsehoodSeverity.NARRATIVE_ISSUE: return "Isue with Narrative";
+        case FalsehoodSeverity.NARRATIVE_ISSUE: return "Issue with Narrative";
         case FalsehoodSeverity.FAULTY_LOGIC: return "Faulty Logic";
         case FalsehoodSeverity.TITLE_OR_SLOGAN: return "Title or Sloagan";
     }
+}
+
+export function getSeverityValue(input: FalsehoodSeverity | string | null | undefined, fallback: FalsehoodSeverity): FalsehoodSeverity {
+    if(!input) return fallback;
+
+    if(typeof input === "string"){
+        switch(input.trim().replaceAll(" ", "_").toUpperCase()){
+            case "OBJECTIVE": return FalsehoodSeverity.OBJECTIVE;
+            case "OPPOSING_EVIDENCE_WITHHELD": 
+            case "WITHHELD_OPPOSING_EVIDENCE":
+                return FalsehoodSeverity.OPPOSING_EVIDENCE_WITHHELD;
+            case "SUPPORTING_EVIDENCE_WITHHELD": 
+            case "WITHHELD_SUPPORTING_EVIDENCE":
+                return FalsehoodSeverity.SUPPORTING_EVIDENCE_WITHHELD;
+            case "SUBJECTIVE": return FalsehoodSeverity.SUBJECTIVE;
+            case "NARRATIVE_ISSUE": 
+            case "ISSUE_WITH_NARRATIVE":
+                return FalsehoodSeverity.NARRATIVE_ISSUE;
+            case "FAULTY_LOGIC": return FalsehoodSeverity.FAULTY_LOGIC;
+            case "TITLE_OR_SLOGAN": return FalsehoodSeverity.TITLE_OR_SLOGAN;
+            default: return fallback;
+        }
+    }
+
+    return input;
 }
 
 export interface Falsehood {

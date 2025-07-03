@@ -51,7 +51,7 @@ export class FactcheckComponent {
         this.factcheckService.currentFactcheck = {
           id: value.id,
           name: this.submission?.title || "",
-          userId: this.authService.getCurrentUserId() || "",
+          userId: this.authService.getCurrentUserId()?.substring(5) || "",
           brandId: "",
           authorDisplayName: this.authService.getCurrentDisplayName() || "",
           created: new Date(),
@@ -181,7 +181,7 @@ export class FactcheckComponent {
     if(factcheck.status != FalsehoodStage.REJECTED && factcheck.status != FalsehoodStage.R_APPEALED) return false;
 
     if(factcheck.status == FalsehoodStage.REJECTED)
-      return factcheck.userId == this.authService.getCurrentUserId();
+      return `User-${factcheck.userId}` == this.authService.getCurrentUserId();
 
     let user = this.authService.tcUser;
     return user != undefined && (user.authRoles.includes("FALSEHOOD_EMPLOYEE") || user.authRoles.includes("FALSEHOOD_JUROR"));

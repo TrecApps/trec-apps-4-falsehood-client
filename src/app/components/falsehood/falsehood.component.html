@@ -63,8 +63,11 @@
             <div *ngIf="canSubEdit() || canEmpEdit()">
                 <button type="button" class="btn btn-primary" (click)="editingPF = true" *ngIf="!editingPF">Edit Public Figure</button>
                 <button type="button" class="btn btn-danger" (click)="editingPF = false" *ngIf="editingPF">Edit Public Figure</button>
-                <app-brand-searcher *ngIf="editingPF" (brandInfoSelected)="publicFigure = $event"></app-brand-searcher>
-                <button type="button" class="btn btn-light" *ngIf="changedPf()" (click)="updatePublicFigure()">Update Public Figure</button>
+                <app-brand-searcher *ngIf="editingPF" 
+                    (brandInfoSelected)="publicFigure = $event"
+                    [type]="typePublicFigure"
+                ></app-brand-searcher>
+                <button type="button" class="btn btn-light" *ngIf="editingPF && changedPf()" (click)="updatePublicFigure()">Update Public Figure</button>
             </div>
 
         </div>
@@ -75,8 +78,11 @@
             <div *ngIf="canSubEdit() || canEmpEdit()">
                 <button type="button" class="btn btn-primary" (click)="editingMO = true" *ngIf="!editingMO">Edit Media Outlet</button>
                 <button type="button" class="btn btn-danger" (click)="editingMO = false" *ngIf="editingMO">Edit Media Outlet</button>
-                <app-brand-searcher *ngIf="editingMO" (brandInfoSelected)="mediaOutlet = $event"></app-brand-searcher>
-                <button type="button" class="btn btn-light" *ngIf="changedMo()" (click)="updateMediaOutlet()">Update Media Outlet</button>
+                <app-brand-searcher *ngIf="editingMO" 
+                    (brandInfoSelected)="mediaOutlet = $event"
+                    [type]="typeMediaOutlet"
+                ></app-brand-searcher>
+                <button type="button" class="btn btn-light" *ngIf="editingMO && changedMo()" (click)="updateMediaOutlet()">Update Media Outlet</button>
             </div>
 
         </div>
@@ -87,8 +93,11 @@
             <div *ngIf="canSubEdit() || canEmpEdit()">
                 <button type="button" class="btn btn-primary" (click)="editingIN = true" *ngIf="!editingIN">Edit Institution</button>
                 <button type="button" class="btn btn-danger" (click)="editingIN = false" *ngIf="editingIN">Edit Institution</button>
-                <app-brand-searcher *ngIf="editingIN" (brandInfoSelected)="institution = $event"></app-brand-searcher>
-                <button type="button" class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>
+                <app-brand-searcher *ngIf="editingIN"  
+                    (brandInfoSelected)="institution = $event"
+                    [type]="typeInstitution"
+                ></app-brand-searcher>
+                <button type="button" class="btn btn-light" *ngIf="editingIN && changedIn()" (click)="updateInstitution()">Update Institution</button>
             </div>
 
         </div>
@@ -98,10 +107,10 @@
             <div *ngIf="canSubEdit()" >
                 <button type="button" class="btn btn-primary" (click)="editingDate = true" *ngIf="!editingDate">Edit Date</button>
                 <button type="button" class="btn btn-danger" (click)="editingDate = false" *ngIf="editingDate">Edit Date</button>
-                <input class="form-check-input" *ngIf="editingDate" [(ngModel)]="useDate" name="useDate">
+                <input type="checkbox" class="form-check-input" *ngIf="editingDate" [(ngModel)]="useDate" name="useDate">
                 <label class="form-check-label">Use Date</label>
                 <input type="date" *ngIf="editingDate && useDate" [(ngModel)]="date" name="date">
-                <button type="button" class="btn btn-light" *ngIf="changedIn()" (click)="updateInstitution()">Update Institution</button>
+                <button type="button" class="btn btn-light" *ngIf="editingDate && changedDate()" (click)="updateDate()">Update Date</button>
             </div>
         </div>
 
@@ -112,16 +121,21 @@
             <div *ngIf="canSubEdit() || canEmpEdit()">
                 <button type="button" class="btn btn-primary" (click)="editingSeverity = true" *ngIf="!editingSeverity">Edit Severity</button>
                 <button type="button" class="btn btn-danger" (click)="editingSeverity = false" *ngIf="editingSeverity">Edit Severity</button>
-                <select class="form-select" [(ngModel)]="severity" name="severity">
-                    <option [value]="severityObjective">Objective</option>
-                    <option [value]="severityOppWithheld">Opposing Evidence Withheld</option>
-                    <option [value]="severitySuppWithheld">Supporting Evidence Withheld</option>
-                    <option [value]="severitySubjective">Double Stadard</option>
-                    <option [value]="severityLogic">Faulty Logic</option>
-                    <option [value]="severityNarrative">Misleading Narrative</option>
-                    <option [value]="severitySlogan">Misleading Title/Slogan</option>
+                <select class="form-select" *ngIf="editingSeverity" [(ngModel)]="severity" name="severity" (change)="severityChanged = true">
+                    <option [ngValue]="severityObjective">Objective</option>
+                    <option [ngValue]="severityOppWithheld">Opposing Evidence Withheld</option>
+                    <option [ngValue]="severitySuppWithheld">Supporting Evidence Withheld</option>
+                    <option [ngValue]="severitySubjective">Double Stadard</option>
+                    <option [ngValue]="severityLogic">Faulty Logic</option>
+                    <option [ngValue]="severityNarrative">Misleading Narrative</option>
+                    <option [ngValue]="severitySlogan">Misleading Title/Slogan</option>
                 </select>
-                <button type="button" class="btn btn-light" *ngIf="falsehoodService.currentFalsehood.fullMetaData?.severity !== severity" (click)="updateInstitution()">Update Institution</button>
+                <button 
+                    type="button" 
+                    class="btn btn-light" 
+                    *ngIf="editingSeverity && severityChanged" 
+                    (click)="updateSeverity()"
+                >Update Severity</button>
             </div>
         </div>
 
@@ -134,7 +148,7 @@
                 <button type="button" class="btn btn-danger" (click)="editingTags = false" *ngIf="editingTags">Edit Tags</button>
                 <lib-tag-input  #tagComp [(tags)]="falsehoodService.currentFalsehood.fullMetaData.tags"></lib-tag-input>
                 <p class="text-danger" *ngIf="cantUpdateTags.length">Each tag must be found within the contents of the Falsehood. {{cantUpdateTags}} was not found</p>
-                <button type="button" class="btn btn-light" (click)="updateTags()">Update Tags</button>
+                <button type="button" class="btn btn-light" *ngIf="editingTags && curTags != falsehoodService.currentFalsehood.fullMetaData.tags" (click)="updateTags()">Update Tags</button>
             </div>
         </div>
 
@@ -153,12 +167,12 @@
     <form *ngIf="mode == CONTENT" class="form element-container" [ngClass]="'element-container-' + styleService.style">
         <h3>Explaination</h3>
         <div *ngIf="canSubEdit()">
-            <button type="button" class="btn btn-primary" (click)="editingContent = true" *ngIf="!editingContent">Edit Tags</button>
-            <button type="button" class="btn btn-danger" (click)="editingContent = false" *ngIf="editingContent">Edit Tags</button>
+            <button type="button" class="btn btn-primary" (click)="editingContent = true" *ngIf="!editingContent">Edit Explaination</button>
+            <button type="button" class="btn btn-danger" (click)="editingContent = false" *ngIf="editingContent">Stop Edit</button>
 
             <lib-markdown-editor #fcMdEditor *ngIf="editingContent" [(content)]="content"></lib-markdown-editor>
             <p class="text-danger" *ngIf="cantUpdateTags.length">Each tag must be found within the contents of the Falsehood. {{cantUpdateTags}} was not found</p>
-            <button type="button" class="btn btn-light" *ngIf="editingContent" (click)="updateContent()">Update Tags</button>
+            <button type="button" class="btn btn-light" *ngIf="editingContent" (click)="updateContent()">Update Explaination</button>
         </div>
         <div *ngIf="!editingContent" class="md-preview-side" [innerHtml]="content | markdown"></div>
     </form>
