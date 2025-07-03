@@ -146,7 +146,7 @@
             <div *ngIf="falsehoodService.currentFalsehood.fullMetaData && canSubEdit()">
                 <button type="button" class="btn btn-primary" (click)="editingTags = true" *ngIf="!editingTags">Edit Tags</button>
                 <button type="button" class="btn btn-danger" (click)="editingTags = false" *ngIf="editingTags">Edit Tags</button>
-                <lib-tag-input  #tagComp [(tags)]="falsehoodService.currentFalsehood.fullMetaData.tags"></lib-tag-input>
+                <lib-tag-input *ngIf="editingTags" #tagComp [(tags)]="falsehoodService.currentFalsehood.fullMetaData.tags"></lib-tag-input>
                 <p class="text-danger" *ngIf="cantUpdateTags.length">Each tag must be found within the contents of the Falsehood. {{cantUpdateTags}} was not found</p>
                 <button type="button" class="btn btn-light" *ngIf="editingTags && curTags != falsehoodService.currentFalsehood.fullMetaData.tags" (click)="updateTags()">Update Tags</button>
             </div>

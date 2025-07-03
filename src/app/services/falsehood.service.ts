@@ -190,13 +190,15 @@ export class FalsehoodService {
     if(!this.currentFalsehood?.fullMetaData || !this.authService.hasActiveTokens() || !this.authService.tcUser) return false;
     let user = this.authService.tcUser;
     let status = this.currentFalsehood.fullMetaData.status;
-    if(status == FalsehoodStage.SUBMITTED) {
+    if(status == FalsehoodStage.SUBMITTED || status.toString() == "SUBMITTED") {
       return (user.credibilityRating && user.credibilityRating >= 45) || user.authRoles.includes("EMPLOYEE_AUTH");
     }
-    if(status == FalsehoodStage.ACCEPTED) {
+    if(status == FalsehoodStage.ACCEPTED || status.toString() == "ACCEPTED") {
       return user.authRoles.includes("EMPLOYEE_AUTH") || user.authRoles.includes("FALSEHOOD_JUR");
     }
-    if(status == FalsehoodStage.R_APPEALED || status == FalsehoodStage.S_APPEALED){
+    if(status == FalsehoodStage.R_APPEALED || status == FalsehoodStage.S_APPEALED
+       || status.toString() == "R_APPEALED"  || status.toString() == "S_APPEALED"
+    ){
       return user.authRoles.includes("EMPLOYEE_AUTH")
     }
     return false;
@@ -205,12 +207,16 @@ export class FalsehoodService {
   getReviewOptions(): string[] {
     if(!this.currentFalsehood?.fullMetaData) return [];
     let status = this.currentFalsehood.fullMetaData.status;
-    switch(status){
-      case FalsehoodStage.ACCEPTED: // second Review
-      case FalsehoodStage.S_APPEALED:
+    switch(status.toString()){
+      case FalsehoodStage.ACCEPTED.toString(): // second Review
+      case "ACCEPTED":
+      case FalsehoodStage.S_APPEALED.toString():
+      case "S_APPEALED":
         return ["confirm", "deny"]
-      case FalsehoodStage.SUBMITTED:
-      case FalsehoodStage.R_APPEALED:
+      case FalsehoodStage.SUBMITTED.toString():
+      case FalsehoodStage.R_APPEALED.toString():
+      case "SUBMITTED":
+      case "R_APPEALED":
         return ["approve","reject","penalize","suggest"]
       default: return []
     }
