@@ -281,11 +281,13 @@ export class FalsehoodService {
     let meta = this.currentFalsehood.fullMetaData;
     let status = meta.status;
 
-    if(status == FalsehoodStage.REJECTED){
+    if(status == FalsehoodStage.REJECTED || status.toString() == "REJECTED"){
       return this.currentFalsehood.fullMetaData.userId == user.id;
     }
 
-    if(status == FalsehoodStage.CONFIRMED || status == FalsehoodStage.DENIED) {
+    if(status == FalsehoodStage.CONFIRMED || status == FalsehoodStage.DENIED ||
+      status.toString() == "CONFIRMED" || status.toString() == "DENIED"
+    ) {
 
       let brand = this.authService.tcBrand?.infoId;
       if(brand && (brand == meta.publicFigure?.brandId || brand == meta.mediaOutlet?.brandId ||brand == meta.institution?.brandId ))
@@ -310,7 +312,7 @@ export class FalsehoodService {
 
     let action = "";
 
-    if(status == FalsehoodStage.REJECTED){
+    if(status == FalsehoodStage.REJECTED || status.toString() == "REJECTED"){
       ret = this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/FalsehoodReview/appeal/${id}`, comment, {
         headers: this.authService.getHttpHeaders2(HttpContentType.PLAIN_TEXT)
       })

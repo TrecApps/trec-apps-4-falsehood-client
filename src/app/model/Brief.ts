@@ -5,9 +5,9 @@ export interface ContentVersion {
 }
 
 export enum BriefPurpose {
-    AFFIRM,
-    OPPOSE,
-    SUGGEST
+    AFFIRM = "AFFIRM",
+    OPPOSE = "OPPOSE",
+    SUGGEST = "SUGGEST"
 }
 
 export interface Brief {

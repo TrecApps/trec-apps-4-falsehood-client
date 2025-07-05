@@ -182,9 +182,9 @@
         <button type="button" class="btn btn-primary" *ngIf="canAddbrief() && !addingBrief && isAccepted()" (click)="addingBrief = true; briefContent = ''">Submit Brief</button>
         <div *ngIf="addingBrief">
             <select class="form-select" [(ngModel)]="purpose" name="purpose">
-                <option [value]="purposeAffirm">Affirm (you support Confirmation)</option>
-                <option [value]="purposeOppose">Oppose (you oppose Confirmation)</option>
-                <option [value]="purposeSuggest">Suggest</option>
+                <option [ngValue]="purposeAffirm">Affirm (you support Confirmation)</option>
+                <option [ngValue]="purposeOppose">Oppose (you oppose Confirmation)</option>
+                <option [ngValue]="purposeSuggest">Suggest</option>
             </select>
 
             <lib-markdown-editor #briefEditor [(content)]="briefContent"></lib-markdown-editor>
@@ -252,9 +252,6 @@
     </form>
 </lib-up-slider>
 
-<!-- <div *ngIf="falsehoodService.currentFalsehood && isReviewing" class="review-panel">
-    
-</div> -->
 
 <lib-up-slider (onClose)="isAppealing = false" [isActive]="(falsehoodService.currentFalsehood !== undefined) && isAppealing">
     <form class="form">
@@ -272,9 +269,7 @@
     </form>
 </lib-up-slider>
 
-<!-- <div *ngIf="falsehoodService.currentFalsehood && isAppealing" class="review-panel">
 
-</div> -->
 
 <div *ngIf="!falsehoodService.currentFalsehood">
     <!--ToDo: handle situation-->

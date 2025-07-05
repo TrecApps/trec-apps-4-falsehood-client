@@ -393,7 +393,9 @@ export class FalsehoodComponent implements OnDestroy{
 
 
   isAccepted(): boolean {
-    return FalsehoodStage.ACCEPTED == this.falsehoodService.currentFalsehood?.fullMetaData?.status;
+    let status = this.falsehoodService.currentFalsehood?.fullMetaData?.status;
+    if(!status) return false;
+    return FalsehoodStage.ACCEPTED == status || "ACCEPTED" == status.toString();
   }
 
   addingBrief: boolean = false;
