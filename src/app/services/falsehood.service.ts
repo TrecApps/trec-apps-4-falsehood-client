@@ -243,7 +243,7 @@ export class FalsehoodService {
     let ret: Observable<ResponseObj>;
 
     if(action == "confirm" || action == "deny") {
-      ret = this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Review2/verdict/${action}/`, {
+      ret = this.client.post<ResponseObj>(`${environment.FALSEHOOD_URL}/Review2/verdict/${action}`, {
         falsehoodId: id,
         comment,
         denyPoints: points
