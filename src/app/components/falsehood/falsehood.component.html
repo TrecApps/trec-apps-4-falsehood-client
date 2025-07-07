@@ -135,6 +135,7 @@
                     class="btn btn-light" 
                     *ngIf="editingSeverity && severityChanged" 
                     (click)="updateSeverity()"
+                    [disabled]="severityUpdating"
                 >Update Severity</button>
             </div>
         </div>
@@ -148,7 +149,31 @@
                 <button type="button" class="btn btn-danger" (click)="editingTags = false" *ngIf="editingTags">Edit Tags</button>
                 <lib-tag-input *ngIf="editingTags" #tagComp [(tags)]="falsehoodService.currentFalsehood.fullMetaData.tags"></lib-tag-input>
                 <p class="text-danger" *ngIf="cantUpdateTags.length">Each tag must be found within the contents of the Falsehood. {{cantUpdateTags}} was not found</p>
-                <button type="button" class="btn btn-light" *ngIf="editingTags && curTags != falsehoodService.currentFalsehood.fullMetaData.tags" (click)="updateTags()">Update Tags</button>
+                <button 
+                    type="button" 
+                    class="btn btn-light" 
+                    *ngIf="editingTags && curTags != falsehoodService.currentFalsehood.fullMetaData.tags" 
+                    (click)="updateTags()"
+                    [disabled]="tagsUpdating"
+                >Update Tags</button>
+            </div>
+        </div>
+
+        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+            <label>Notes</label>
+            <p *ngIf="!editingNotes">{{ falsehoodService.currentFalsehood.fullMetaData?.notes }}</p>
+            
+            <div *ngIf="falsehoodService.currentFalsehood.fullMetaData && canSubEdit()">
+                <button type="button" class="btn btn-primary" (click)="editingNotes = true" *ngIf="!editingNotes">Edit Notes</button>
+                <button type="button" class="btn btn-danger" (click)="editingNotes = false" *ngIf="editingNotes">Cancel Edit</button>
+                
+                <button 
+                    type="button" 
+                    class="btn btn-light" 
+                    *ngIf="editingNotes && (currentNotes != falsehoodService.currentFalsehood.fullMetaData.notes)" 
+                    (click)="updateNotes()"
+                    [disabled]="notesUpdating"
+                >Update Notes</button>
             </div>
         </div>
 

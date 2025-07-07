@@ -57,7 +57,7 @@ export class FalsehoodComponent implements OnDestroy{
 
         if(endEvent.url == "/falsehood" || endEvent.url.startsWith("/falsehood?")){
           
-          this.editingContent = this.editingDate = this.editingIN =
+          this.editingContent = this.editingDate = this.editingIN = this.editingNotes = 
             this.editingMO = this.editingPF = this.editingSeverity = this.editingTags = false;
 
           if(this.route.snapshot.queryParamMap.has("id")){
@@ -92,6 +92,7 @@ export class FalsehoodComponent implements OnDestroy{
 
                   this.date = value.fullMetaData?.dateMade;
                   this.curTags = value.fullMetaData?.tags || [];
+                  this.currentNotes = value.fullMetaData?.notes || "";
 
                   setTimeout(()=> this.content = this.getContent(), 50);
                 }
@@ -301,13 +302,16 @@ export class FalsehoodComponent implements OnDestroy{
   severity: FalsehoodSeverity = FalsehoodSeverity.OBJECTIVE;
 
   severityChanged: boolean = false;
-
+  severityUpdating: boolean = false;
   updateSeverity(){
+    if(this.severityUpdating) return;
+    this.severityUpdating = true;
     let severityStr = this.convertSeverity(this.severity);
     this.falsehoodService.runPatch("severity", severityStr, (result: boolean) => {
       if(this.falsehoodService.currentFalsehood?.fullMetaData)
         this.falsehoodService.currentFalsehood.fullMetaData.severity = getSeverityValue(severityStr, this.severity);
       this.editingSeverity = false;
+      this.severityUpdating = false;
       this.severityChanged = !result;
     })
   }
@@ -341,18 +345,38 @@ export class FalsehoodComponent implements OnDestroy{
   }
 
   editingTags: boolean = false;
+  tagsUpdating: boolean = false;
   cantUpdateTags: string = "";
   curTags: string[] = [];
   updateTags(){
+
+    if(this.tagsUpdating) return;
+
     let tags = this.falsehoodService.currentFalsehood?.fullMetaData?.tags || [];
     this.cantUpdateTags = this.checkTagsUpdate(tags).trim();
     if(this.cantUpdateTags.length) return;
-
+    this.tagsUpdating = true;
     this.falsehoodService.runPatch("tags", tags.join(';'), () => {
       if(this.falsehoodService.currentFalsehood?.fullMetaData)
         this.falsehoodService.currentFalsehood.fullMetaData.tags = tags;
       this.editingTags = false;
       this.curTags = tags;
+      this.tagsUpdating = false;
+    })
+  }
+
+  editingNotes: boolean = false;
+  currentNotes: string = "";
+  notesUpdating: boolean = false;
+  updateNotes(){
+    if(this.notesUpdating || !this.falsehoodService.currentFalsehood?.fullMetaData) return;
+    this.notesUpdating = true;
+    this.falsehoodService.runPatch("notes", this.falsehoodService.currentFalsehood.fullMetaData.notes, (worked: boolean) => {
+      this.currentNotes = this.falsehoodService.currentFalsehood?.fullMetaData?.notes || "";
+
+      this.notesUpdating = false;
+      if(worked)
+        this.editingNotes = false;
     })
   }
 
