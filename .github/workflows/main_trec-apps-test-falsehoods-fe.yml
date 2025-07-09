@@ -23,11 +23,25 @@ jobs:
         with:
           node-version: '22.x'
 
+      - uses: ponicode/azure-devops-npm-action@master
+        with:
+          organisation: ${{ secrets.AZURE_ORG }}
+          project: ${{ secrets.AZURE_PROJECT }}
+          registry: ${{ secrets.AZURE_REGISTRY }}
+          user: ${{ secrets.AZURE_USER }}
+          password: ${{ secrets.AZURE_TOKEN }}
+          email: ${{ secrets.AZURE_EMAIL }}
+
+
+
       - name: npm install, build, and test
         run: |
           npm install
           npm run build --if-present
           npm run test --if-present
+      
+      - name: build Angular project
+        run: ng build
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
