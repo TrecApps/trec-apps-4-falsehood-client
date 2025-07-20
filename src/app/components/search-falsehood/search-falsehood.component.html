@@ -51,7 +51,7 @@
         </div>
     </form>
     <div *ngIf="currentFalsehoodList.length" class="search-container">
-        <p>Showing {{ (pageSize * currentPage) + 1}} - {{ pageSize * (currentPage + 1) }} Falsehoods</p>
+        <p>Showing {{ (currentSize * currentPage) + 1}} - {{ currentSize * (currentPage + 1) }} Falsehoods</p>
 
 
         <div class="element-container" [ngClass]="'element-container-' + styleService.style" style="width: 100%;" >

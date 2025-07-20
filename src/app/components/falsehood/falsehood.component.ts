@@ -15,6 +15,7 @@ import { FalsehoodStage, FalsehoodStageStr } from '../../model/Factcheck';
 import ResponseObj from '../../model/ResponseObj';
 import { Subscription } from 'rxjs';
 import { TopBarComponent } from '../top-bar/top-bar.component';
+import { UrlService } from '../../services/url.service';
 
 @Component({
   selector: 'app-falsehood',
@@ -45,7 +46,13 @@ export class FalsehoodComponent implements OnDestroy{
   typeMediaOutlet = "MEDIA_OUTLET";
   typeInstitution = "INSTITUTION";
 
-  constructor(falsehoodService: FalsehoodService, authService: AuthService, router: Router,private route: ActivatedRoute, styleService: StylesService){
+  constructor(falsehoodService: FalsehoodService, 
+    authService: AuthService, 
+    router: Router,
+    private route: ActivatedRoute, 
+    styleService: StylesService,
+    private urlService: UrlService
+  ){
     this.falsehoodService = falsehoodService;
     this.authService = authService;
     this.styleService = styleService;
@@ -60,11 +67,19 @@ export class FalsehoodComponent implements OnDestroy{
           this.editingContent = this.editingDate = this.editingIN = this.editingNotes = 
             this.editingMO = this.editingPF = this.editingSeverity = this.editingTags = false;
 
+          this.urlService.url = "/falsehood";
+          this.urlService.params = undefined;
+
           if(this.route.snapshot.queryParamMap.has("id")){
             let id = this.route.snapshot.queryParamMap.get("id");
             if(id){
               this.falsehoodService.searchFalsehood(id).subscribe({
                 next: (value: FalsehoodFull) => {
+
+                  this.urlService.params = {
+                    id
+                  }
+
                   this.severity = getSeverityValue(value.fullMetaData?.severity, FalsehoodSeverity.OBJECTIVE); 
 
                   this.severityChanged = false;

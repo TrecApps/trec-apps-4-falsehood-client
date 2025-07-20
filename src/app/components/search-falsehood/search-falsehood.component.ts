@@ -112,6 +112,7 @@ export class SearchFalsehoodComponent {
   pageSize: number = 20;
 
   currentPage: number = 0;
+  currentSize: number = this.pageSize;
 
   // Results
   falsehoodCollection: FalsehoodRet[][] = [];
@@ -191,7 +192,9 @@ export class SearchFalsehoodComponent {
       next: (value: FalsehoodRet[]) => {
         this.falsehoodCollection.push(value);
         this.currentFalsehoodList = value;
+
         this.isSearching = false;
+        this.currentSize = this.pageSize;
       },
       error: () => {
         this.isSearching = false;
@@ -217,6 +220,7 @@ export class SearchFalsehoodComponent {
 
   onSwitchPage(next: boolean){
     if(this.isSearching) return;
+    this.pageSize = this.currentPage;
     if(next){
       this.currentPage++;
       if(this.currentPage == this.falsehoodCollection.length){

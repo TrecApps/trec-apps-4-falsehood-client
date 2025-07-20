@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService, NavBarComponent, NavClickDetails, NavOption, NavOptionShow } from '@tc/tc-ngx-general';
+import { AuthService, HttpContentType, NavBarComponent, NavClickDetails, NavOption, NavOptionShow, PopupComponent, ProfileItemGroup, ResponseObj, StylesService } from '@tc/tc-ngx-general';
+import { environment } from '../../environment/environment';
+import { ColorOption, ColorPanelComponent } from '../color-panel/color-panel.component';
 
 
 @Component({
   selector: 'app-top-bar',
-  imports: [CommonModule, NavBarComponent],
+  imports: [CommonModule, NavBarComponent, PopupComponent, ColorPanelComponent],
   templateUrl: './top-bar.component.html',
   styleUrl: './top-bar.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -17,8 +20,102 @@ export class TopBarComponent {
 
   navOptions: NavOption[];
 
-  constructor(authService: AuthService, private router:Router){
+    profileItemGroups: ProfileItemGroup[] = [
+    {
+      itemList: [
+        {
+          item: 'cStyle',
+          displayItem: 'App Style'
+        },
+        {
+          item: 'logout',
+          displayItem: 'Logout'
+        }
+      ]
+    }
+  ]
+
+  onProfilePanelSelect(item:string) {
+    if(item == 'logout'){
+      this.authService.logout(undefined);
+    } else if(item == 'cStyle'){
+      this.showStylePopup = true;
+    }
+  }
+
+  showStylePopup: boolean = false;
+  styleUpdating: boolean = false;
+
+  updateStyle(){
+
+    if(this.styleUpdating) return;
+      this.styleUpdating = true;
+
+    this.client.patch<ResponseObj>(`${environment.USER_SERVICE_URL}Users/styles`, {
+        style: this.ss.style,
+        useDark: this.ss.isDark
+    
+    }, {
+      params: new HttpParams().append("app", environment.app_name),
+      headers: this.authService.getHttpHeaders2(HttpContentType.JSON)
+    }).subscribe({
+      next: (val: ResponseObj) => {
+        this.styleUpdating = false;
+        this.colorChanged = false;
+      },
+      error: ()=> {
+        this.styleUpdating = false;
+        this.colorChanged = false;
+      }
+    })
+  }
+
+    colorList: ColorOption[] = [
+    {
+      colorStyle: '#d1d1d1',
+      styleName: 'default'
+    },{
+      colorStyle: '#ff0000ff',
+      styleName: 'red'
+    },{
+      colorStyle: 'rgb(0, 171, 255)',
+      styleName: 'blue'
+    },{
+      colorStyle: 'rgb(8, 223, 41)',
+      styleName: 'green'
+    },{
+      colorStyle: 'rgb(255, 239, 1)',
+      styleName: 'yellow'
+    },{
+      colorStyle: 'rgb(255, 120, 1)',
+      styleName: 'orange'
+    },{
+      colorStyle: 'rgb(221, 99, 255)',
+      styleName: 'purple'
+    },{
+      colorStyle: 'rgb(255, 59, 243)',
+      styleName: 'pink'
+    }
+  ]
+
+  colorChanged: boolean = false;
+
+  onColorSelect(styleColor: string){
+    this.ss.setStyle(styleColor);
+    this.colorChanged = true;
+  }
+  onUseDarkChecked(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    this.colorChanged = true;
+
+    this.ss.setDarkMode(checkbox.checked);
+  }
+  
+  ss: StylesService;
+
+  constructor(authService: AuthService, private router:Router, ss: StylesService, private client: HttpClient){
     this.authService = authService;
+    this.ss = ss;
 
     this.navOptions = [
       {
