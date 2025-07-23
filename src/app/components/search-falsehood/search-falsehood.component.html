@@ -46,7 +46,13 @@
         </div>
 
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-            <button type="button" class="btn btn-primary" *ngIf="currentFalsehoodList.length == 0" (click)="performSearch()">Search</button>
+            <button 
+                type="button" 
+                class="btn btn-primary" 
+                *ngIf="currentFalsehoodList.length == 0" 
+                (click)="performSearch()"
+                [disabled]="isSearching"    
+            >Search</button>
             <button type="button" class="btn btn-warning" (click)="clearFields()">Clear Fields</button>
         </div>
     </form>
@@ -64,7 +70,7 @@
             >
                 <div class="flex-and-center">{{ f.title }}</div>
                 <hr>
-                <div class="flex-and-center" style="gap:5px;">
+                <div class="flex-and-center" style="gap:5px; flex-flow: row wrap;">
                     <p><b>Submitted By: </b>{{f.authorDisplayName}}</p>
                     <p><b>Date: </b>{{f.dateMade}}</p>
                     <p><b>Severity: </b>{{ convertSeverity (f.severity) }}</p>
