@@ -126,19 +126,19 @@ export class TopBarComponent {
         displayText: 'Welcome',
         title: 'Welcome',
         showOption: NavOptionShow.BASIC_DESKTOP,
-        baseImg: 'Welcome-icon.png'
+        baseImg: 'assets/Welcome-icon.png'
       },
       {
         displayText: 'Factchecks',
         title: 'factchecks-search',
         showOption: NavOptionShow.BASIC_DESKTOP,
-        baseImg: 'Factcheck-logo-mob.png'
+        baseImg: 'assets/Factcheck-logo-mob.png'
       },
       {
         displayText: 'Falsehoods',
         title: 'falsehoods-search',
         showOption: NavOptionShow.BASIC_DESKTOP,
-        baseImg: 'Falsehood-icon-mob.png'
+        baseImg: 'assets/Falsehood-icon-mob.png'
       }
       // ,
       // {
