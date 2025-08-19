@@ -22,6 +22,7 @@ export class AppComponent {
 
 
     this.backEndService.appendUrl("UserService", environment.USER_SERVICE_URL);
+    this.backEndService.appendUrl('login_route', "/Logon")
     this.backEndService.setAppName(environment.app_name);
     this.authService.setLogOnAction(() => {
       if(urlService.params) {

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, HttpContentType, NavBarComponent, NavClickDetails, NavOption, NavOptionShow, PopupComponent, ProfileItemGroup, ResponseObj, StylesService } from '@tc/tc-ngx-general';
 import { environment } from '../../environment/environment';
@@ -28,6 +28,13 @@ export class TopBarComponent {
           displayItem: 'App Style'
         },
         {
+          item: 'brand',
+          displayItem: 'View Brand Accounts'
+        }
+      ]
+    }, {
+      itemList: [
+        {
           item: 'logout',
           displayItem: 'Logout'
         }
@@ -35,11 +42,16 @@ export class TopBarComponent {
     }
   ]
 
+  @ViewChild("navBar")
+  navBar!: NavBarComponent;
+
   onProfilePanelSelect(item:string) {
     if(item == 'logout'){
       this.authService.logout(undefined);
     } else if(item == 'cStyle'){
       this.showStylePopup = true;
+    } else if(item == 'brand'){
+      this.navBar.onFocusBrands();
     }
   }
 

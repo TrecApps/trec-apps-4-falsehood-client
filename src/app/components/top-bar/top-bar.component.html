@@ -1,4 +1,5 @@
 <lib-nav-bar 
+    #navBar
     [navOptions]="navOptions" 
     (onNav)="onNavigate($event)" 
     (onLoginRequestEmitter)="prepLogin()"
@@ -7,6 +8,7 @@
     (onProfileItemClicked)="onProfilePanelSelect($event)"
     [blankProfileImg]="'non-profile-mob.png'"
     [logoSrc]="'assets/Falsehood-icon-Desktop.png'"
+    [baseUserUrl]="'https://test.trecapps.com/Users'"
 >
     
     <button type="button" 
