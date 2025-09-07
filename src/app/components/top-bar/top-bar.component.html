@@ -1,42 +1,46 @@
-<lib-nav-bar 
-    #navBar
-    [navOptions]="navOptions" 
-    (onNav)="onNavigate($event)" 
-    (onLoginRequestEmitter)="prepLogin()"
-    [basicImageUrl]="'https://test.trecapps.com/Images-api/Images/profile/'"
-    [items]="profileItemGroups"
-    (onProfileItemClicked)="onProfilePanelSelect($event)"
-    [blankProfileImg]="'non-profile-mob.png'"
-    [logoSrc]="'assets/Falsehood-icon-Desktop.png'"
-    [baseUserUrl]="'https://test.trecapps.com/Users'"
->
-    
-    <button type="button" 
-        class="btn btn-black" 
-        *ngIf="(authService.tcUser?.credibilityRating || 0) >=5"
-        (click)="createFalsehood()"
+<lib-nav-bar
+  #navBar
+  [navOptions]="navOptions"
+  (onNav)="onNavigate($event)"
+  (onLoginRequestEmitter)="prepLogin()"
+  [basicImageUrl]="'https://test.trecapps.com/Images-api/Images/profile/'"
+  [items]="profileItemGroups"
+  (onProfileItemClicked)="onProfilePanelSelect($event)"
+  [blankProfileImg]="'non-profile-mob.png'"
+  [logoSrc]="'assets/Falsehood-icon-Desktop.png'"
+  [baseUserUrl]="'https://test.trecapps.com/Users'"
+  >
+
+  @if ((authService.tcUser?.credibilityRating || 0) >=5) {
+    <button type="button"
+      class="btn btn-black"
+      (click)="createFalsehood()"
     >Create Falsehood</button>
+  }
 
-    <profile-ext class="flex-and-center" *ngIf="authService.tcUser">
-        <p><b>Credibility: </b> {{ authService.tcUser.credibilityRating }}</p>
+  @if (authService.tcUser) {
+    <profile-ext class="flex-and-center">
+      <p><b>Credibility: </b> {{ authService.tcUser.credibilityRating }}</p>
     </profile-ext>
+  }
 </lib-nav-bar>
-<app-popup *ngIf="showStylePopup" (onClose)="showStylePopup = false">
+@if (showStylePopup) {
+  <app-popup (onClose)="showStylePopup = false">
     <app-color-panel (onColorSelect)="onColorSelect($event)"
-                [colors]="colorList"></app-color-panel>
-
+    [colors]="colorList"></app-color-panel>
     <div class="form-group">
-        <input 
-            type="checkbox" 
-            class="form-check-input" 
-            (change)="onUseDarkChecked($event)" 
+      <input
+        type="checkbox"
+        class="form-check-input"
+        (change)="onUseDarkChecked($event)"
         >
         <label class="form-check-label">Use Dark mode</label>
-
         <div class="element-item" [ngClass]="'element-item-' + ss.style" style="height: 10px"></div>
-        <button *ngIf="authService.hasActiveTokens()" [disabled]="!colorChanged" class="btn btn-primary" (click)="updateStyle()"> Persist Style</button>
-    </div>
+        @if (authService.hasActiveTokens()) {
+          <button [disabled]="!colorChanged" class="btn btn-primary" (click)="updateStyle()"> Persist Style</button>
+        }
+      </div>
+    </app-popup>
+  }
 
-</app-popup>
-
-<div class="buffer-bar"></div>
+  <div class="buffer-bar"></div>

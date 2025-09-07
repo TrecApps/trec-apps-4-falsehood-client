@@ -1,92 +1,92 @@
 <app-top-bar></app-top-bar>
 <div class="container">
-    <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
-        <div *ngIf="isAuthenticated"  class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-            <select class="form-select"[(ngModel)]="mode" name="factcheckMode">
-                <option value="query">Query</option>
-                <option value="owned">Your Factchecks</option>
-                <option value="submitted">Submitted Factchecks</option>
-                <option value="appealed">Appealed Factchecks</option>
-            </select>
-        </div>
+  <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
+    @if (isAuthenticated) {
+      <div  class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+        <select class="form-select"[(ngModel)]="mode" name="factcheckMode">
+          <option value="query">Query</option>
+          <option value="owned">Your Factchecks</option>
+          <option value="submitted">Submitted Factchecks</option>
+          <option value="appealed">Appealed Factchecks</option>
+        </select>
+      </div>
+    }
 
-        <div *ngIf="mode == 'query'" class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-            <label class="form-label">Query</label>
-            <input class="form-control" [(ngModel)]="query" name="factcheckQuery">
-        </div>
-        <div class=" element-item" [ngClass]="'element-item-' + styleService.style">
-            <button 
-                type="button" 
-                class="btn btn-primary" 
-                (click)="performSearch()"
-                [disabled]="isSearching"
-            >Search</button>
-        </div>
-        
-    </form>
-
-    <div *ngIf="currentFactcheckList.length" class="search-container">
-        <p>Showing {{ (pageSize * currentPage) + 1}} - {{ pageSize * (currentPage + 1) }} Factchecks</p>
-        
-        <div class="element-container" [ngClass]="'element-container-' + styleService.style" style="width: 100%;" >
-
-            <div 
-                class="element-item" 
-                [ngClass]="'element-item-' + styleService.style"
-                *ngFor="let f of currentFactcheckList" 
-                (click)="onSelect(f)"
-            > 
-                <div class="flex-and-center">{{ f.name }}</div>
-                <hr>
-                <div class="flex-and-center" style="gap:5px; flex-flow: row wrap;">
-                    <p><b>By: </b>{{f.authorDisplayName}}</p>
-                    <p><b>Status: </b>{{ convertStage(f.status) }}</p>
-                    <div
-                        class="tag-bubble"
-                        [ngClass]="'element-container-' + styleService.style"
-                        *ngFor="let tag of f.tags"
-                    >
-                        <p>{{tag}}</p>
-                    </div>
-                </div>
-        </div>
-        
-        
-        
-        
-        <!-- <table class="table table-striped table-hover">
-            <thead class="tc-header-row">
-                <th>Submitter</th>
-                <th>Title</th>
-                <th>Tags</th>
-                <th>Status</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let f of currentFactcheckList">
-                    <td>{{ f.authorDisplayName }}</td>
-                    <td>{{ f.name }}</td>
-                    <td>{{ f.tags }} </td>
-                    <td>{{ f.status }}</td>
-                </tr>
-            </tbody>
-        </table> -->
-        <div  class="flex-and-center" style="gap: 10px;margin: 10px;">
-            <!--ToDo: Create stylized buttons-->
-            <button type="button" class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)">
-                <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
-                Previous
-            </button>
-            <div>
-                <p style="margin: auto;">Page {{ currentPage + 1 }}</p>
-            </div>
-            <button type="button" class="arrow-button" [disabled]="currentPage >= factcheckContainer.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
-                Next
-                <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%" style="transform: rotate(180deg);"/>
-            </button>
-        </div>
+    @if (mode == 'query') {
+      <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+        <label class="form-label">Query</label>
+        <input class="form-control" [(ngModel)]="query" name="factcheckQuery">
+      </div>
+    }
+    <div class=" element-item" [ngClass]="'element-item-' + styleService.style">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="performSearch()"
+        [disabled]="isSearching"
+      >Search</button>
     </div>
 
+  </form>
 
-</div>
+  @if (currentFactcheckList.length) {
+    <div class="search-container">
+      <p>Showing {{ (pageSize * currentPage) + 1}} - {{ pageSize * (currentPage + 1) }} Factchecks</p>
+      <div class="element-container" [ngClass]="'element-container-' + styleService.style" style="width: 100%;" >
+        @for (f of currentFactcheckList; track f) {
+          <div
+            class="element-item"
+            [ngClass]="'element-item-' + styleService.style"
+            (click)="onSelect(f)"
+            >
+            <div class="flex-and-center">{{ f.name }}</div>
+            <hr>
+              <div class="flex-and-center" style="gap:5px; flex-flow: row wrap;">
+                <p><b>By: </b>{{f.authorDisplayName}}</p>
+                <p><b>Status: </b>{{ convertStage(f.status) }}</p>
+                @for (tag of f.tags; track tag) {
+                  <div
+                    class="tag-bubble"
+                    [ngClass]="'element-container-' + styleService.style"
+                    >
+                    <p>{{tag}}</p>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+          <!-- <table class="table table-striped table-hover">
+          <thead class="tc-header-row">
+            <th>Submitter</th>
+            <th>Title</th>
+            <th>Tags</th>
+            <th>Status</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let f of currentFactcheckList">
+              <td>{{ f.authorDisplayName }}</td>
+              <td>{{ f.name }}</td>
+              <td>{{ f.tags }} </td>
+              <td>{{ f.status }}</td>
+            </tr>
+          </tbody>
+        </table> -->
+        <div  class="flex-and-center" style="gap: 10px;margin: 10px;">
+          <!--ToDo: Create stylized buttons-->
+          <button type="button" class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)">
+            <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
+            Previous
+          </button>
+          <div>
+            <p style="margin: auto;">Page {{ currentPage + 1 }}</p>
+          </div>
+          <button type="button" class="arrow-button" [disabled]="currentPage >= factcheckContainer.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
+            Next
+            <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%" style="transform: rotate(180deg);"/>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 
-<div class="bottom-bar"></div>
+  <div class="bottom-bar"></div>

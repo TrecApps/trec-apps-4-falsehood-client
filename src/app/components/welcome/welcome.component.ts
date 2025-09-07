@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AuthService } from '@tc/tc-ngx-general';
@@ -12,7 +12,7 @@ interface GuidelineEntry{
 
 @Component({
   selector: 'app-welcome',
-  imports: [CommonModule, TopBarComponent],
+  imports: [TopBarComponent],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.css'
 })
