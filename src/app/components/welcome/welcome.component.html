@@ -2,14 +2,18 @@
 <div class="container">
 
 
-    <h1>Welcome to the TrecApps Falsehood Tracking Service</h1>
-    
-    <div *ngFor="let guideline of guidelines">
-        <h2>{{ guideline.label }}</h2>
-        <p *ngFor="let detail of guideline.content">{{ detail }}</p>
+  <h1>Welcome to the TrecApps Falsehood Tracking Service</h1>
+
+  @for (guideline of guidelines; track guideline) {
+    <div>
+      <h2>{{ guideline.label }}</h2>
+      @for (detail of guideline.content; track detail) {
+        <p>{{ detail }}</p>
+      }
     </div>
-    
-    
+  }
+
+
 </div>
 
 <div class="bottom-bar"></div>

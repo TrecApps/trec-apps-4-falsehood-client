@@ -1,107 +1,124 @@
 <app-top-bar></app-top-bar>
 
 <div class="container">
-    <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
-        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-            <label class="form-label">State Search</label>
-            <select class="form-select" [(ngModel)]="searchOption" name="searchOption">
-                <option *ngFor="let opt of searchOptions | searchOptionFilter:authService.tcUser" [ngValue]="opt">{{ opt.displayStatus }}</option>
-            </select>
-        </div>
-        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-            <label class="form-label">Public Figure/Institution/Media Outlet</label>
-            <app-brand-searcher [label]="'This can be blank'" (brandInfoSelected)="setBrandInfo($event)"></app-brand-searcher>
-
-            <div class="brand-option"  *ngIf="brandInfo">
-                <div class="brand-img-holder">
-                    <img [src]="brandInfo.imgData || '/assets/icons/none.png'">
-                </div>
-                <div class="brand-name-holder">
-                    <h5 class="brand-name">{{ brandInfo.brandInfo.name }}</h5>
-                    <p>{{ getBrandType(brandInfo.brandInfo) }}</p>
-                </div>
-                <div (click)="setBrandInfo(undefined)">
-                    (X) <!-- ToDo: Style this -->
-                </div>
-            </div>
-
-        </div>
-
-        <div class="flex-and-center element-item" [ngClass]="'element-item-' + styleService.style" style="gap: 20px;">
-            <div class="form-group form-check flex-and-center" style="display:flex; gap:3px;">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="useBefore" name="useBefore">
-                <label class="form-check-label">Before</label>
-                <input class="form-control" type="date" [(ngModel)]="before" name="before" *ngIf="useBefore">
-            </div>
-            <div class="form-group flex-and-center form-check" style="display:flex; gap:3px">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="useAfter" name="useAfter">
-                <label class="form-check-label">After</label>
-                <input class="form-control" type="date" [(ngModel)]="after" name="after" *ngIf="useAfter">
-            </div>
-        </div>
-
-        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-            <label class="form-label">Max Results Per Page</label>
-            <input class="form-control" type="number" [(ngModel)]="pageSize" name="pageSize">
-        </div>
-
-        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-            <button 
-                type="button" 
-                class="btn btn-primary" 
-                *ngIf="currentFalsehoodList.length == 0" 
-                (click)="performSearch()"
-                [disabled]="isSearching"    
-            >Search</button>
-            <button type="button" class="btn btn-warning" (click)="clearFields()">Clear Fields</button>
-        </div>
-    </form>
-    <div *ngIf="currentFalsehoodList.length" class="search-container">
-        <p>Showing {{ (currentSize * currentPage) + 1}} - {{ currentSize * (currentPage + 1) }} Falsehoods</p>
-
-
-        <div class="element-container" [ngClass]="'element-container-' + styleService.style" style="width: 100%;" >
-
-            <div 
-                class="element-item" 
-                [ngClass]="'element-item-' + styleService.style"
-                *ngFor="let f of currentFalsehoodList" 
-                (click)="onSelect(f)"
-            >
-                <div class="flex-and-center">{{ f.title }}</div>
-                <hr>
-                <div class="flex-and-center" style="gap:5px; flex-flow: row wrap;">
-                    <p><b>Submitted By: </b>{{f.authorDisplayName}}</p>
-                    <p><b>Date: </b>{{f.dateMade}}</p>
-                    <p><b>Severity: </b>{{ convertSeverity (f.severity) }}</p>
-                    <p *ngIf="f.publicFigure?.name"><b>Figure: </b>{{ f.publicFigure?.name }}</p>
-                    <p *ngIf="f.institution?.name"><b>Institution: </b>{{ f.institution?.name }}</p>
-                    <p *ngIf="f.mediaOutlet?.name"><b>Outlet: </b>{{ f.mediaOutlet?.name }}</p>
-                </div>
-                <div *ngIf="f.tags.length" style="padding: 5px">
-                    <div
-                        class="tag-bubble"
-                        [ngClass]="'element-container-' + styleService.style"
-                        *ngFor="let tag of f.tags"
-                    >
-                        <p>{{tag}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex-and-center" style="gap: 10px;margin: 10px;">
-            <!--ToDo: Create stylized buttons-->
-            <button type="button" class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)"><img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
-                Previous</button>
-            <div>
-                <p style="margin: auto;">Page {{ currentPage + 1 }}</p>
-            </div>
-            <button type="button" class="arrow-button" [disabled]="currentPage >= falsehoodCollection.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
-                Next
-                <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%" style="transform: rotate(180deg);"/>
-            </button>
-        </div>
+  <form class="form element-container" [ngClass]="'element-container-' + styleService.style">
+    <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+      <label class="form-label">State Search</label>
+      <select class="form-select" [(ngModel)]="searchOption" name="searchOption">
+        @for (opt of searchOptions | searchOptionFilter:authService.tcUser; track opt) {
+          <option [ngValue]="opt">{{ opt.displayStatus }}</option>
+        }
+      </select>
     </div>
-</div>
-<div class="bottom-bar"></div>
+    <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+      <label class="form-label">Public Figure/Institution/Media Outlet</label>
+      <app-brand-searcher [label]="'This can be blank'" (brandInfoSelected)="setBrandInfo($event)"></app-brand-searcher>
+
+      @if (brandInfo) {
+        <div class="brand-option" >
+          <div class="brand-img-holder">
+            <img [src]="brandInfo.imgData || '/assets/icons/none.png'">
+          </div>
+          <div class="brand-name-holder">
+            <h5 class="brand-name">{{ brandInfo.brandInfo.name }}</h5>
+            <p>{{ getBrandType(brandInfo.brandInfo) }}</p>
+          </div>
+          <div (click)="setBrandInfo(undefined)">
+            (X) <!-- ToDo: Style this -->
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <div class="flex-and-center element-item" [ngClass]="'element-item-' + styleService.style" style="gap: 20px;">
+      <div class="form-group form-check flex-and-center" style="display:flex; gap:3px;">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="useBefore" name="useBefore">
+        <label class="form-check-label">Before</label>
+        @if (useBefore) {
+          <input class="form-control" type="date" [(ngModel)]="before" name="before">
+        }
+      </div>
+      <div class="form-group flex-and-center form-check" style="display:flex; gap:3px">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="useAfter" name="useAfter">
+        <label class="form-check-label">After</label>
+        @if (useAfter) {
+          <input class="form-control" type="date" [(ngModel)]="after" name="after">
+        }
+      </div>
+    </div>
+
+    <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+      <label class="form-label">Max Results Per Page</label>
+      <input class="form-control" type="number" [(ngModel)]="pageSize" name="pageSize">
+    </div>
+
+    <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
+      @if (currentFalsehoodList.length == 0) {
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="performSearch()"
+          [disabled]="isSearching"
+        >Search</button>
+      }
+      <button type="button" class="btn btn-warning" (click)="clearFields()">Clear Fields</button>
+    </div>
+  </form>
+  @if (currentFalsehoodList.length) {
+    <div class="search-container">
+      <p>Showing {{ (currentSize * currentPage) + 1}} - {{ currentSize * (currentPage + 1) }} Falsehoods</p>
+      <div class="element-container" [ngClass]="'element-container-' + styleService.style" style="width: 100%;" >
+        @for (f of currentFalsehoodList; track f) {
+          <div
+            class="element-item"
+            [ngClass]="'element-item-' + styleService.style"
+            (click)="onSelect(f)"
+            >
+            <div class="flex-and-center">{{ f.title }}</div>
+            <hr>
+              <div class="flex-and-center" style="gap:5px; flex-flow: row wrap;">
+                <p><b>Submitted By: </b>{{f.authorDisplayName}}</p>
+                <p><b>Date: </b>{{f.dateMade}}</p>
+                <p><b>Severity: </b>{{ convertSeverity (f.severity) }}</p>
+                @if (f.publicFigure?.name) {
+                  <p><b>Figure: </b>{{ f.publicFigure?.name }}</p>
+                }
+                @if (f.institution?.name) {
+                  <p><b>Institution: </b>{{ f.institution?.name }}</p>
+                }
+                @if (f.mediaOutlet?.name) {
+                  <p><b>Outlet: </b>{{ f.mediaOutlet?.name }}</p>
+                }
+              </div>
+              @if (f.tags.length) {
+                <div style="padding: 5px">
+                  @for (tag of f.tags; track tag) {
+                    <div
+                      class="tag-bubble"
+                      [ngClass]="'element-container-' + styleService.style"
+                      >
+                      <p>{{tag}}</p>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+        <div class="flex-and-center" style="gap: 10px;margin: 10px;">
+          <!--ToDo: Create stylized buttons-->
+          <button type="button" class="arrow-button" [disabled]="currentPage <= 0" (click)="onSwitchPage(false)"><img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%"/>
+          Previous</button>
+          <div>
+            <p style="margin: auto;">Page {{ currentPage + 1 }}</p>
+          </div>
+          <button type="button" class="arrow-button" [disabled]="currentPage >= falsehoodCollection.length - 1 && !hasMore()" (click)="onSwitchPage(true)">
+            Next
+            <img src="assets/icons/botton-Arrow-B.png" width="90%" height="90%" style="transform: rotate(180deg);"/>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="bottom-bar"></div>

@@ -1,22 +1,30 @@
 <div class="element-container"  [ngClass]="'element-container-' + styleService.style">
 
-    <div class="element-item" style="display: flex;" [ngClass]="'element-item-' + styleService.style">
-        <p><b>Submitter: </b>{{ brief.displayName }}</p>
-        <button type="button" class="btn btn-primary" *ngIf="canEdit() && !editing" (click)="editing = true">Edit</button>
-    </div>
+  <div class="element-item" style="display: flex;" [ngClass]="'element-item-' + styleService.style">
+    <p><b>Submitter: </b>{{ brief.displayName }}</p>
+    @if (canEdit() && !editing) {
+      <button type="button" class="btn btn-primary" (click)="editing = true">Edit</button>
+    }
+  </div>
 
-    <div class="element-item" [ngClass]="'element-item-' + styleService.style">
-        <p><b>Type: </b>{{ brief.purpose }}</p>
-    </div>
-    <div class="element-item" [ngClass]="'element-item-' + styleService.style">
-        <p><b>Added: </b>{{ brief.created }}</p>
-    </div>
+  <div class="element-item" [ngClass]="'element-item-' + styleService.style">
+    <p><b>Type: </b>{{ brief.purpose }}</p>
+  </div>
+  <div class="element-item" [ngClass]="'element-item-' + styleService.style">
+    <p><b>Added: </b>{{ brief.created }}</p>
+  </div>
 
-    <div class="element-item" [ngClass]="'element-item-' + styleService.style">
-        <div *ngIf="!editing" class="md-preview-side" [innerHtml]="content | markdown"></div>
+  <div class="element-item" [ngClass]="'element-item-' + styleService.style">
+    @if (!editing) {
+      <div class="md-preview-side" [innerHtml]="content | markdown"></div>
+    }
 
-        <lib-markdown-editor #editBriefEditor *ngIf="editing" [(content)]="content"></lib-markdown-editor>
-        <button type="button" class="btn btn-light" *ngIf="editing" (click)="updateContent()">Update Tags</button>
-    </div>
+    @if (editing) {
+      <lib-markdown-editor #editBriefEditor [(content)]="content"></lib-markdown-editor>
+    }
+    @if (editing) {
+      <button type="button" class="btn btn-light" (click)="updateContent()">Update Tags</button>
+    }
+  </div>
 
 </div>
