@@ -24,7 +24,7 @@
     "@angular/router": "^20.2.4",
     "@angular/ssr": "^20.2.2",
     "@nguniversal/express-engine": "^7.0.2",
-    "@tc/tc-ngx-general": "^0.4.00",
+    "@tc/tc-ngx-general": "^0.4.01",
     "bootstrap": "^5.3.3",
     "express": "^4.18.2",
     "rxjs": "~7.8.0",

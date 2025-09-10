@@ -1,7 +1,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { AuthService } from '@tc/tc-ngx-general';
+import { AuthService, ElementContainerDirective, ElementItemDirective } from '@tc/tc-ngx-general';
 import { environment } from '../../environment/environment';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 
@@ -12,7 +12,7 @@ interface GuidelineEntry{
 
 @Component({
   selector: 'app-welcome',
-  imports: [TopBarComponent],
+  imports: [TopBarComponent, ElementContainerDirective, ElementItemDirective],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.css'
 })
