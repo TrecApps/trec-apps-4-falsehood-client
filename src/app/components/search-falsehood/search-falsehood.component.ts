@@ -26,6 +26,7 @@ function createFalsehoodRet(id: string, userId: string, authorDisplayName: strin
         severity: FalsehoodSeverity.OBJECTIVE,
         factcheck: undefined,
         records: [],
+        culprits: [],
         tags,
         notes: '',
         title
