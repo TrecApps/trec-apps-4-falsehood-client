@@ -62,75 +62,30 @@
             }
           </div>
         }
+
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-          <label>Public Figure</label>
-          <p>{{ falsehoodService.currentFalsehood.fullMetaData?.publicFigure?.name || 'N.A.' }}</p>
-          @if (canSubEdit() || canEmpEdit()) {
-            <div>
-              @if (!editingPF) {
-                <button type="button" class="btn btn-primary" (click)="editingPF = true">Edit Public Figure</button>
+          <label>Culprits</label>
+          @if(canSubEdit() || canEmpEdit()) {
+            <app-brand-searcher
+              (brandInfoSelected)="addCulprit($event)"
+            ></app-brand-searcher>
+          }
+          @for(culprit of culprits; track culprit) {
+            <div class="brand-option" >
+              <p>{{ culprit.brandInfo.name }}</p>
+              @if(canSubEdit() || canEmpEdit()) {
+                <div (click)="removeCulprit(culprit)">
+                  (X) <!-- ToDo: Style this -->
+                </div>
               }
-              @if (editingPF) {
-                <button type="button" class="btn btn-danger" (click)="editingPF = false">Edit Public Figure</button>
-              }
-              @if (editingPF) {
-                <app-brand-searcher
-                  (brandInfoSelected)="publicFigure = $event"
-                  [type]="typePublicFigure"
-                ></app-brand-searcher>
-              }
-              @if (editingPF && changedPf()) {
-                <button type="button" class="btn btn-light" (click)="updatePublicFigure()">Update Public Figure</button>
-              }
+              <hr>
+              <div class="brand-name-holder">
+                <h5 class="brand-name">{{ culprit.brandInfo.name }}</h5>
+              </div>
             </div>
           }
         </div>
-        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-          <label>Media Outlet</label>
-          <p>{{ falsehoodService.currentFalsehood.fullMetaData?.mediaOutlet?.name || 'N.A.' }}</p>
-          @if (canSubEdit() || canEmpEdit()) {
-            <div>
-              @if (!editingMO) {
-                <button type="button" class="btn btn-primary" (click)="editingMO = true">Edit Media Outlet</button>
-              }
-              @if (editingMO) {
-                <button type="button" class="btn btn-danger" (click)="editingMO = false">Edit Media Outlet</button>
-              }
-              @if (editingMO) {
-                <app-brand-searcher
-                  (brandInfoSelected)="mediaOutlet = $event"
-                  [type]="typeMediaOutlet"
-                ></app-brand-searcher>
-              }
-              @if (editingMO && changedMo()) {
-                <button type="button" class="btn btn-light" (click)="updateMediaOutlet()">Update Media Outlet</button>
-              }
-            </div>
-          }
-        </div>
-        <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-          <label>Institution</label>
-          <p>{{ falsehoodService.currentFalsehood.fullMetaData?.institution?.name || 'N.A.' }}</p>
-          @if (canSubEdit() || canEmpEdit()) {
-            <div>
-              @if (!editingIN) {
-                <button type="button" class="btn btn-primary" (click)="editingIN = true">Edit Institution</button>
-              }
-              @if (editingIN) {
-                <button type="button" class="btn btn-danger" (click)="editingIN = false">Edit Institution</button>
-              }
-              @if (editingIN) {
-                <app-brand-searcher
-                  (brandInfoSelected)="institution = $event"
-                  [type]="typeInstitution"
-                ></app-brand-searcher>
-              }
-              @if (editingIN && changedIn()) {
-                <button type="button" class="btn btn-light" (click)="updateInstitution()">Update Institution</button>
-              }
-            </div>
-          }
-        </div>
+
         <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
           <label>Date Made</label>
           <p>{{ falsehoodService.currentFalsehood.fullMetaData?.dateMade }}</p>

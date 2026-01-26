@@ -27,6 +27,38 @@ import { UrlService } from '../../services/url.service';
 })
 export class FalsehoodComponent implements OnDestroy{
 
+  updatingCulprits: boolean = false;
+  removeCulprit(culprit: BrandInfoImg) {
+    if(this.updatingCulprits) return;
+    this.updatingCulprits = true;
+
+    this.falsehoodService.runPatch("culprits-remove", culprit.brandInfo.id, (worked: boolean) => {
+      if(worked){
+        this.culprits = this.culprits.filter(c => c.brandInfo.id != culprit.brandInfo.id);
+      }
+      this.updatingCulprits = false;
+    })
+
+  }
+
+  addCulprit($event: BrandInfoImg) {
+    for(let culprit of this.culprits){
+      if(culprit.brandInfo.id == $event.brandInfo.id){
+        return;
+      }
+    }
+
+    if(this.updatingCulprits) return;
+    this.updatingCulprits = true;
+
+    this.falsehoodService.runPatch("culprits", $event.brandInfo.id, (worked: boolean) => {
+      if(worked){
+        this.culprits.push($event);
+      }
+      this.updatingCulprits = false;
+    });
+  }
+
   falsehoodService: FalsehoodService;
   authService: AuthService;
   styleService: StylesService;
@@ -45,6 +77,8 @@ export class FalsehoodComponent implements OnDestroy{
   typePublicFigure = "PUBLIC_FIGURE";
   typeMediaOutlet = "MEDIA_OUTLET";
   typeInstitution = "INSTITUTION";
+
+  culprits: BrandInfoImg[] = [];
 
   constructor(falsehoodService: FalsehoodService, 
     authService: AuthService, 
@@ -104,6 +138,18 @@ export class FalsehoodComponent implements OnDestroy{
                       brandInfo:value.fullMetaData.institution
                     }
                   }
+
+                  this.culprits = [];
+                  if(value.fullMetaData?.culprits && value.fullMetaData.culprits.length){
+                    for(let culprit of value.fullMetaData.culprits){
+                      this.culprits.push({
+                        imgData: "",
+                        brandInfo: culprit
+                      });
+                    }
+                  }
+
+                  //this.falsehoodService.currentFalsehood = value;
 
                   this.date = value.fullMetaData?.dateMade;
                   this.curTags = value.fullMetaData?.tags || [];

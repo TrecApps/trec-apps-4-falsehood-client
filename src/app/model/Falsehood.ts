@@ -69,6 +69,8 @@ export interface Falsehood {
     brandId: string;
     authorDisplayName: string;
 
+    culprits: string[];
+
     publicFigure: string; // ID of the Public FIgure "Brand" object stored in a SQL DB
     mediaOutlet: string;
     institution: string;
@@ -99,6 +101,8 @@ export interface FalsehoodRet {
     publicFigure: BrandInfo | undefined; // ID of the Public FIgure "Brand" object stored in a SQL DB
     mediaOutlet: BrandInfo | undefined;
     institution: BrandInfo | undefined;
+
+    culprits: BrandInfo[];
     status: FalsehoodStage;
     severity: FalsehoodSeverity;
 
@@ -124,6 +128,8 @@ export interface FalsehoodSubmission {
     publicFigure: string | undefined;
     mediaOutlet: string | undefined;
     institution: string | undefined;
+
+    culprits: string[];
 
     dateMade: Date | undefined;
 

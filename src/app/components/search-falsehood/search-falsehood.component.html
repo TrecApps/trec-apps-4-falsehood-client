@@ -81,15 +81,16 @@
                 <p><b>Submitted By: </b>{{f.authorDisplayName}}</p>
                 <p><b>Date: </b>{{f.dateMade}}</p>
                 <p><b>Severity: </b>{{ convertSeverity (f.severity) }}</p>
-                @if (f.publicFigure?.name) {
-                  <p><b>Figure: </b>{{ f.publicFigure?.name }}</p>
+
+                @if(f.culprits.length) {
+                  <div style="padding: 5px; width: 100%;">
+                    <b>Culprits:</b>
+                    @for (culprit of f.culprits; track culprit) {
+                      <span>{{ culprit.name }}</span>
+                    }
+                  </div>
                 }
-                @if (f.institution?.name) {
-                  <p><b>Institution: </b>{{ f.institution?.name }}</p>
-                }
-                @if (f.mediaOutlet?.name) {
-                  <p><b>Outlet: </b>{{ f.mediaOutlet?.name }}</p>
-                }
+
               </div>
               @if (f.tags.length) {
                 <div style="padding: 5px">

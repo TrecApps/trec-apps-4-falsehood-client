@@ -19,72 +19,30 @@
           <option [value]="severitySlogan">Misleading Title/Slogan</option>
         </select>
       </div>
+
       <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-        <label class="form-label">Public Figure@if (!publicFigure) {
-          <span>: Not Selected</span>
+        <label class="form-label">Culprits@if (!culprits.length) {
+          <span>: None Selected</span>
         }</label>
-        @if (publicFigure) {
+        @for (culprit of culprits; track culprit) {
           <div class="brand-option" >
             <div class="brand-img-holder">
-              <img [src]="publicFigure.imgData || '/assets/icons/none.png'">
+              <img [src]="culprit.imgData || '/assets/icons/none.png'">
             </div>
             <div class="brand-name-holder">
-              <h5 class="brand-name">{{ publicFigure.brandInfo.name }}</h5>
+              <h5 class="brand-name">{{ culprit.brandInfo.name }}</h5>
             </div>
-            <div (click)="publicFigure = (undefined)">
+            <div (click)="removeCulprit(culprits.indexOf(culprit))">
               (X) <!-- ToDo: Style this -->
             </div>
           </div>
         }
         <app-brand-searcher
-          (brandInfoSelected)="publicFigure = $event"
-          [type]="typePublicFigure"
+          (brandInfoSelected)="addCulprit($event)"
         ></app-brand-searcher>
       </div>
-      <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-        <label class="form-label">Media Outlet@if (!mediaOutlet) {
-          <span>: Not Selected</span>
-        }</label>
-        @if (mediaOutlet) {
-          <div class="brand-option" >
-            <div class="brand-img-holder">
-              <img [src]="mediaOutlet.imgData || '/assets/icons/none.png'">
-            </div>
-            <div class="brand-name-holder">
-              <h5 class="brand-name">{{ mediaOutlet.brandInfo.name }}</h5>
-            </div>
-            <div (click)="mediaOutlet = (undefined)">
-              (X) <!-- ToDo: Style this -->
-            </div>
-          </div>
-        }
-        <app-brand-searcher
-          (brandInfoSelected)="mediaOutlet = $event"
-          [type]="typeMediaOutlet"
-        ></app-brand-searcher>
-      </div>
-      <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
-        <label class="form-label">Institution@if (!institution) {
-          <span>: Not Selected</span>
-        }</label>
-        @if (institution) {
-          <div class="brand-option" >
-            <div class="brand-img-holder">
-              <img [src]="institution.imgData || '/assets/icons/none.png'">
-            </div>
-            <div class="brand-name-holder">
-              <h5 class="brand-name">{{ institution.brandInfo.name }}</h5>
-            </div>
-            <div (click)="institution = (undefined)">
-              (X) <!-- ToDo: Style this -->
-            </div>
-          </div>
-        }
-        <app-brand-searcher
-          (brandInfoSelected)="institution = $event"
-          [type]="typeInstitution"
-        ></app-brand-searcher>
-      </div>
+
+
       <div class="form-group element-item" [ngClass]="'element-item-' + styleService.style">
         <label class="form-label">Date Made</label>
         <input class="form-control" type="date" [(ngModel)]="newFalsehood.dateMade" name="dateMade">

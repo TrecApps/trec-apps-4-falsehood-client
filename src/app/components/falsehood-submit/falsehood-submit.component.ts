@@ -18,6 +18,17 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
   styleUrl: './falsehood-submit.component.css'
 })
 export class FalsehoodSubmitComponent implements OnDestroy {
+addCulprit($event: BrandInfoImg) {
+    for(let culprit of this.culprits){
+      if(culprit.brandInfo.id == $event.brandInfo.id){
+        return;
+      }
+      this.culprits.push($event);
+    }
+  }
+  removeCulprit(index: number) {
+    this.culprits.splice(index, 1);
+  }
 
   routeSubscription: Subscription;
   styleService: StylesService;
@@ -28,6 +39,8 @@ export class FalsehoodSubmitComponent implements OnDestroy {
   publicFigure: undefined | BrandInfoImg;
   mediaOutlet: undefined | BrandInfoImg;
   institution: undefined | BrandInfoImg;
+
+  culprits: BrandInfoImg[] = [];
 
   severityObjective = FalsehoodSeverity.OBJECTIVE;
   severityOppWithheld = FalsehoodSeverity.OPPOSING_EVIDENCE_WITHHELD;
@@ -99,6 +112,7 @@ export class FalsehoodSubmitComponent implements OnDestroy {
               severity: FalsehoodSeverity.OBJECTIVE,
               factcheck: undefined,
               tags: [],
+              culprits: [],
               content: "",
               notes: "",
               title: ""
@@ -138,6 +152,8 @@ export class FalsehoodSubmitComponent implements OnDestroy {
     this.newFalsehood.institution = this.institution?.brandInfo.id;
     this.newFalsehood.mediaOutlet = this.mediaOutlet?.brandInfo.id;
     this.newFalsehood.publicFigure = this.publicFigure?.brandInfo.id;
+
+    this.newFalsehood.culprits = this.culprits.map(c => c.brandInfo.id);
 
     //this.newFalsehood.content = this.fcMdEditor.getContent().toString();
 
